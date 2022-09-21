@@ -1,7 +1,7 @@
 public class Submarine extends Ship
 {
-	public Submarine()
+	public Submarine(Tile origin)
 	{
-		super(3, 0, 0, Tile(), SUBMARINE);	
+		super(3, 0, 0, origin, SUBMARINE);	
 	}
 }

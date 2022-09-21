@@ -3,9 +3,9 @@ public class Ship
 	enum ShipType
 	{
 		SUBMARINE,
-		PATROLBOAT,
+		CRUSIER,
 		DESTROYER,
-		AIRCRAFTCARRIER,
+		CARRIER,
 		BATTLESHIP
 	};
 
