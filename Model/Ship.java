@@ -37,9 +37,13 @@ public class Ship
 			this.origin = input_board.getTile(x, y);
 			switch(direction) {
 				case NORTH: for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
+						    break;
 				case SOUTH: for(int i = 0; i < size; i++) input_board.getTile(x, y - i).addShip();
+						    break;
 				case EAST:	for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
+							break;
 				case WEST:	for(int i = 0; i < size; i++) input_board.getTile(x, y - i).addShip();
+							break;
 			}
 		} catch(Exception out_of_bounds) { // TODO update exception to whatever it should be
 			return false;
