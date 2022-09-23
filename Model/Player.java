@@ -5,7 +5,7 @@ public class Player
 	private Board target_board;
 	private string ip_address;
 
-	Player(string ip_address)
+	Player()
 	{	
 		ship_list = new Ship[5];
 		ship_list[0] = new Submarine();
@@ -16,6 +16,10 @@ public class Player
 
 		ocean_board = new ShipBoard();
 		target_board = new Board();
+	}
+
+	public void setIP(string ip_address)
+	{
 		this.ip_address = ip_address;
 	}
 

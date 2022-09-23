@@ -5,7 +5,8 @@ public class Tile
 		SHIP,
 		SEA,
 		HIT,
-		MISS
+		MISS,
+		OVERLAP
 	};
 
 	private int x;
@@ -34,6 +35,14 @@ public class Tile
 
 	public void addShip()
 	{
-		type = SHIP;
+		if (TYPE == SHIP || TYPE == OVERLAP)
+			TYPE = OVERLAP;
+		else
+			type = SHIP;
 	}	
+
+	public void addMiss()
+	{
+		type = MISS;
+	}
 }
