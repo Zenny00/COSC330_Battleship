@@ -1,14 +1,5 @@
 public class Tile
 {
-	enum TileType
-	{
-		SHIP,
-		SEA,
-		HIT,
-		MISS,
-		OVERLAP
-	};
-
 	private int x;
 	private int y;
 	private TileType type;

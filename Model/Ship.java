@@ -1,21 +1,12 @@
 public class Ship
 {
-	enum ShipType
-	{
-		SUBMARINE,
-		CRUSIER,
-		DESTROYER,
-		CARRIER,
-		BATTLESHIP
-	};
-
 	private int size;
 	private int numHits;
-	private int direction;
+	private Direction direction;
 	private Tile origin;
 	private	ShipType type;
 
-	Ship(int size, int numHits, int direction, Tile origin, ShipType type)
+	Ship(int size, int numHits, Direction direction, Tile origin, ShipType type)
 	{
 		this.size = size;
 		this.numHits = numHits;
@@ -39,8 +30,20 @@ public class Ship
 		return size == numHits;
 	}
 
-	public bool placeShip(Tile location, Board input_board, int x, int y)
+	public bool placeShip(Board input_board, Direction direction, int x, int y)
 	{
-
+		try {
+			this.direction = direction;
+			this.origin = input_board.getTile(x, y);
+			switch(direction) {
+				case NORTH: for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
+				case SOUTH: for(int i = 0; i < size; i++) input_board.getTile(x, y - i).addShip();
+				case EAST:	for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
+				case WEST:	for(int i = 0; i < size; i++) input_board.getTile(x, y - i).addShip();
+			}
+		} catch(Exception out_of_bounds) { // TODO update exception to whatever it should be
+			return false;
+		}
+		return true;
 	}
 }

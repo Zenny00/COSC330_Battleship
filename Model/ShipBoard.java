@@ -8,7 +8,10 @@ public class ShipBoard
 
 	public bool validBoard()
 	{
-		//Check every tile to make sure no ships overlap
+		for(int i = 0; i < 10; i++)
+			for(int j = 0; j < 10; j++)
+				if(tiles[i][j].getTileType() == OVERLAP)
+					return false;
 	}	
 
 	public bool placeShip(Ship)

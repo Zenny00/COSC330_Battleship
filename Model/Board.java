@@ -12,7 +12,7 @@ public class Board
 	public Tile getTile(int x, int y)
 	{
 		if (x <= 9 && y <= 9)
-			return tiles[x][y];
+			return tiles[x-1][y-1];
 		else
 		{
 			//Error
