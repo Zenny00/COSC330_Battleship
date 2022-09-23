@@ -23,20 +23,35 @@ public class Player
 		this.ip_address = ip_address;
 	}
 
+	// TODO: this is the automatic ship placement function I think
 	public void setBoard(bool)
 	{
 
 	}
 
-	public void updateBoard(Board input_board, int x, int y)
+	// For us in updated ocean_board since target_board 
+	// should be updated when fireShot() is called
+	public void updateBoard(int x, int y, TileType status)
 	{
-
+		ocean_board.getTile(x, y).setType(status);
 	}
 
-	public void fireShot(Board input_board, int x, int y)
+	public ShipBoard getShipBoard() 
+	{
+		return ocean_board;
+	}
+
+	public Board getTargetBoard()
+	{
+		return target_board;
+	}
+
+	// input_board should be the enemy sea board I think
+	public TileType fireShot(Board input_board, int x, int y)
 	{
 		Tile target = input_board.getTile(x, y);
-		target.addShot();
+		TileType status = target.addShot();
+		return status;
 	}
 
 	public bool hasLost()

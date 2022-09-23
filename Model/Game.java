@@ -20,9 +20,10 @@ public class BattleshipGame
 		}
 	}
 
-	public bool checkHit(Player player1, Player player2)
+	public bool checkHit(Player current_player, Player target_player, int x, int y)
 	{
-
+		TileType status = current_player.fireShot(target_player.getShipBoard(), x, y);
+		current_player.updateBoard(x, y, status);
 	}
 
 	BattleshipGame()
@@ -32,6 +33,6 @@ public class BattleshipGame
 
 		// TODO: get player_ip from client/server interaction
 		// startGame(player1_ip, player2_ip);
-		
+
 	}
 }

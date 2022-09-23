@@ -29,12 +29,18 @@ public class Tile
 		type = MISS;
 	}
 
-	public void addShot()
+	public void setType(TileType status)
+	{
+		type = status;
+	}
+
+	public TileType addShot()
 	{
 		if (type == SHIP)
 			this.addHit();
 		else if (type == SEA)
 			this.addMiss();
+		return type;
 	}
 
 	public void addShip()
