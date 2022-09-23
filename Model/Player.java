@@ -35,7 +35,8 @@ public class Player
 
 	public void fireShot(Board input_board, int x, int y)
 	{
-
+		Tile target = input_board.getTile(x, y);
+		target.addShot();
 	}
 
 	public bool hasLost()

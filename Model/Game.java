@@ -5,10 +5,10 @@ public class BattleshipGame
 
 	public void startGame(string player1_ip, string player2_ip)
 	{
-		// TODO: get player_ip from client/server interaction
 		player_list[0].setIP(player1_ip);
 		player_list[1].setIP(player2_ip);
 
+		// This is the gameplay loop
 		while (!(player_list[0].hasLost()) && !(player_list[1].hasLost()))
 		{
 			
@@ -29,5 +29,9 @@ public class BattleshipGame
 	{
 		current_turn = 0;
 		player_list = new Player[2];
+
+		// TODO: get player_ip from client/server interaction
+		// startGame(player1_ip, player2_ip);
+		
 	}
 }

@@ -19,21 +19,31 @@ public class Tile
 		return type;
 	}
 
-	public void addHit()
+	private void addHit()
 	{
 		type = HIT;
 	}
 
+	private void addMiss()
+	{
+		type = MISS;
+	}
+
+	public void addShot()
+	{
+		if (type == SHIP)
+			this.addHit();
+		else if (type == SEA)
+			this.addMiss();
+	}
+
 	public void addShip()
 	{
-		if (TYPE == SHIP || TYPE == OVERLAP)
-			TYPE = OVERLAP;
+		if (type == SHIP || type == OVERLAP)
+			type = OVERLAP;
 		else
 			type = SHIP;
 	}	
 
-	public void addMiss()
-	{
-		type = MISS;
-	}
+
 }
