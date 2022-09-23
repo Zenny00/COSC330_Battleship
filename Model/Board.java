@@ -9,7 +9,7 @@ public class Board
 		isClickable = false;
 	}
 
-	public Tile getTile(int x, int y) throws nonTileException
+	public Tile getTile(int x, int y)
 	{
 		if (x <= 9 && y <= 9)
 			return tiles[x-1][y-1];
