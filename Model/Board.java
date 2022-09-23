@@ -9,13 +9,21 @@ public class Board
 		isClickable = false;
 	}
 
-	public Tile getTile(int x, int y)
+	public Tile getTile(int x, int y) throws nonTileException
 	{
 		if (x <= 9 && y <= 9)
 			return tiles[x-1][y-1];
 		else
 		{
-			//Error
+			throw new nonTileException("Tile does not exist");
 		}
 	}	
+}
+
+class nonTileException extends Exception
+{
+	public nonTileException(String s)
+	{
+		super(s);
+	}
 }
