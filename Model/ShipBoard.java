@@ -1,10 +1,6 @@
 public class ShipBoard
 {
-	public ShipBoard()
-	{
-		tiles = new Tile[10][10];
-		isClickable = true;
-	}
+	public ShipBoard(){tiles = new Tile[10][10];}
 
 	public bool validBoard()
 	{
@@ -13,9 +9,4 @@ public class ShipBoard
 				if(tiles[i][j].getTileType() == OVERLAP)
 					return false;
 	}	
-
-	public bool placeShip(Ship)
-	{
-		//Place a ship and check if valid
-	}
 }

@@ -18,10 +18,7 @@ public class Player
 		target_board = new Board();
 	}
 
-	public void setIP(string ip_address)
-	{
-		this.ip_address = ip_address;
-	}
+	public void setIP(string ip_address){this.ip_address = ip_address;}
 
 	// TODO: this is the automatic ship placement function I think
 	public void setBoard(bool)
@@ -31,46 +28,34 @@ public class Player
 
 	// For us in updated ocean_board since target_board 
 	// should be updated when fireShot() is called
-	public void updateBoard(int x, int y, TileType status)
-	{
+	public void updateBoard(int x, int y, TileType status){
 		ocean_board.getTile(x, y).setType(status);
 	}
 
-	public ShipBoard getShipBoard() 
-	{
-		return ocean_board;
-	}
-
-	public Board getTargetBoard()
-	{
-		return target_board;
-	}
-
-	// input_board should be the enemy sea board I think
-	public TileType fireShot(Board input_board, int x, int y)
-	{
-		Tile target = input_board.getTile(x, y);
-		TileType status = target.addShot();
-		return status;
-	}
-
-	public bool hasLost()
-	{
-		for (Ship currentShip : ship_list)
-			if (!currentShip.isSunk())
-			       return false;
-
-		return true;	
-	}
-
-	public int getRemainingShips()
-	{
+	public ShipBoard getShipBoard(){return ocean_board;}
+	public Board getTargetBoard(){return target_board;}
+	public int getRemainingShips(){
 		int ship_count = 0;
 
 		for (Ship currentShip : ship_list)
 			if (!currentShip.isSunk())
 				ship_count++;
-
 		return ship_count;
 	}
+
+	// input_board should be the enemy sea board I think
+	public TileType fireShot(Board input_board, int x, int y) {
+		Tile target = input_board.getTile(x, y);
+		TileType status = target.addShot();
+		return status;
+	}
+
+	public bool hasLost() {
+		for (Ship currentShip : ship_list)
+			if (!currentShip.isSunk())
+			       return false;
+		return true;	
+	}
+
+	public bool validTarget(int x, int y){return ocean_board.getClickable(x, y);}
 }

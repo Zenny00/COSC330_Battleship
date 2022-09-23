@@ -3,48 +3,28 @@ public class Tile
 	private int x;
 	private int y;
 	private TileType type;
+	private bool clickable;
 
-	public int getX()
-	{
-		return x;
-	}
+	Tile(){clickable = true;}
 
-	public int getY()
-	{
-		return y;
-	}
+	public bool isClickable(){return clickable;}
+	public int getX(){return x;}
+	public int getY(){return y;}
+	public TileType getTileType(){return type;}
 
-	public TileType getTileType()
-	{
-		return type;
-	}
+	private void addHit(){type = HIT;}
+	private void addMiss(){type = MISS;}
+	public void setType(TileType status){type = status;}
 
-	private void addHit()
-	{
-		type = HIT;
-	}
-
-	private void addMiss()
-	{
-		type = MISS;
-	}
-
-	public void setType(TileType status)
-	{
-		type = status;
-	}
-
-	public TileType addShot()
-	{
+	public TileType addShot() {
 		if (type == SHIP)
 			this.addHit();
 		else if (type == SEA)
 			this.addMiss();
+		clickable = false;
 		return type;
 	}
-
-	public void addShip()
-	{
+	public void addShip() {
 		if (type == SHIP || type == OVERLAP)
 			type = OVERLAP;
 		else

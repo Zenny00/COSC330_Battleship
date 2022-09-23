@@ -5,6 +5,7 @@ public class Ship
 	private Direction direction;
 	private Tile origin;
 	private	ShipType type;
+	private bool placed;
 
 	Ship(int size, int numHits, Direction direction, Tile origin, ShipType type)
 	{
@@ -13,22 +14,14 @@ public class Ship
 		this.direction = direction;
 		this.origin = origin;
 		this.type = type;
+		placed = false;
 	}
 
-	public void incrementHits()
-	{
-		numHits++;
-	}
+	public void incrementHits(){numHits++;}
 
-	public ShipType getType()
-	{
-		return type;
-	}
-
-	public bool isSunk()
-	{
-		return size == numHits;
-	}
+	public ShipType getType(){return type;}
+	public bool isSunk(){return size == numHits;}
+	public bool isPlaced(){return placed;}
 
 	public bool placeShip(Board input_board, Direction direction, int x, int y)
 	{
@@ -48,6 +41,6 @@ public class Ship
 		} catch(Exception out_of_bounds) { // TODO update exception to whatever it should be
 			return false;
 		}
-		return true;
+		return placed = true;
 	}
 }
