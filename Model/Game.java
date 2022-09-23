@@ -7,21 +7,23 @@ public class BattleshipGame
 	{
 		player_list[0].setIP(player1_ip);
 		player_list[1].setIP(player2_ip);
-		Player active_player, next_player;
-		int x, y;
+		Player active_player = player_list[0];
+		Player next_player = player_list[1];
+		int x, y; // x and y should be constrained somehow to valid limits
+
+		// SETTING PHASE
+		// next two lines should run in parallel hopefully
+		active_player.setBoard();
+		next_player.setBoard();
 
 		// This is the gameplay loop
 		while (!(player_list[0].hasLost()) && !(player_list[1].hasLost()))
 		{
 			active_player = player_list[current_player];
 			next_player = player_list[current_player ^ 1];
-			// SETTING PHASE
-			// read in direction, x, y
-
-
 
 			// COMBAT PHASE
-			// read in player selection
+			// read in player tile selection as x, y coordinates
 			while (!checkHit(active_player, next_player, x, y))
 				// read in player selection
 			// output result to chat

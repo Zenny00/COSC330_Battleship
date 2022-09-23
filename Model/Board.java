@@ -4,7 +4,7 @@ public class Board
 
 	public Board(){tiles = new Tile[10][10];}
 
-	public Tile getTile(int x, int y) // throws nonTile exception
+	public Tile getTile(int x, int y) throws nonTileException
 	{
 		if (x <= 9 && y <= 9)
 			return tiles[x][y];

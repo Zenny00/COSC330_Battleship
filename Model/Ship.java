@@ -38,7 +38,7 @@ public class Ship
 				case WEST:	for(int i = 0; i < size; i++) input_board.getTile(x, y - i).addShip();
 							break;
 			}
-		} catch(Exception out_of_bounds) { // TODO update exception to whatever it should be
+		} catch(Exception nonTileException) { // TODO update exception to whatever it should be
 			return false;
 		}
 		return placed = true;
