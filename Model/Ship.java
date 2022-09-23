@@ -1,21 +1,12 @@
 public class Ship
 {
-	enum ShipType
-	{
-		SUBMARINE,
-		CRUSIER,
-		DESTROYER,
-		CARRIER,
-		BATTLESHIP
-	};
-
 	private int size;
 	private int numHits;
-	private int direction;
+	private Direction direction;
 	private Tile origin;
 	private	ShipType type;
 
-	Ship(int size, int numHits, int direction, Tile origin, ShipType type)
+	Ship(int size, int numHits, Direction direction, Tile origin, ShipType type)
 	{
 		this.size = size;
 		this.numHits = numHits;
