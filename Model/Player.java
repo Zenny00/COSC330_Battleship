@@ -80,4 +80,9 @@ public class Player
 	}
 
 	public bool validTarget(int x, int y){return ocean_board.getClickable(x, y);}
+
+        public void sendMessage(ostream os)
+        {
+              //Send message through the server
+        }
 }
