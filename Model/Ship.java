@@ -1,4 +1,4 @@
-public class Ship
+public abstract class Ship
 {
 	private int size;
 	private int numHits;
@@ -43,4 +43,7 @@ public class Ship
 		}
 		return placed = true;
 	}
+        
+        //Abstract display function to be overriden in inheriting subclasses
+        public abstract void display();
 }
