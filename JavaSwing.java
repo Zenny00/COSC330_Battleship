@@ -18,28 +18,24 @@ public class JavaSwing
 		frame.setLayout(new FlowLayout());
 		frame.setSize(200, 300);
 		JLabel lbl = new JLabel();
+		//JButton button = new JButton("Exit");
+
+
+		//JPanel frame = new JPanel();
+		button.setBounds(200, 100, 100, 40);
+		
+
+		frame.setSize(500, 500);
+		frame.setBackground(Color.BLUE);
+		JLabel label = new JLabel();
+		label.setIcon(icon);
+		frame.add(label);
+		this.getContentPane().add(frame);
+		frame.setLayout(null);
+		frame.add(button);
 		lbl.setIcon(icon);
 		frame.add(lbl);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
-	/*
-	public JavaSwing()
-	{
-		JPanel frame = new JPanel();
-		JButton button = new JButton("Exit");
-		button.setBounds(200, 100, 100, 40);
-		
-		frame.add(button);
-
-		frame.setSize(500, 500);
-		frame.setBackground(Color.BLUE);
-		ImageIcon icon = new ImageIcon		JLabel label = new JLabel();
-		label.setIcon(icon);
-		frame.add(label);
-		this.getContentPane().add(frame);
-		frame.setLayout(null);
-	}
-	*/
 }
