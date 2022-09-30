@@ -14,7 +14,7 @@ import java.awt.Image;
 
 public class ImagePanel extends JPanel
 {
-	ImageIcon image = new ImageIcon("/home/jcomfort1/COSC330/Project1/View/Graphics/Ships/Submarine.png");
+	ImageIcon image = new ImageIcon("./View/Graphics/Ships/Submarine.png");
 	
 	final int IMG_WIDTH = image.getIconWidth();
 	final int IMG_HEIGHT = image.getIconHeight();
@@ -51,7 +51,7 @@ public class ImagePanel extends JPanel
 
 	public class DragListener extends MouseMotionAdapter
 	{
-		public void mouseDrag(MouseEvent e)
+		public void mouseDragged(MouseEvent e)
 		{
 			Point currentPoint = e.getPoint();
 			

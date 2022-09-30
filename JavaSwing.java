@@ -13,12 +13,24 @@ public class JavaSwing
 	
 	public static void main(String[] args)
 	{
-		ImageIcon icon = new ImageIcon(new ImageIcon("/home/jcomfort1/COSC330/Project1/View/Graphics/Ships/Submarine.png").getImage().getScaledInstance(22, 87, Image.SCALE_DEFAULT));
+		ImageIcon sub_icon = new ImageIcon("/home/jcomfort1/COSC330/Project1/View/Graphics/Ships/Submarine.png");
+		ImageIcon destroyer_icon = new ImageIcon("/home/jcomfort1/COSC330/Project1/View/Graphics/Ships/Destroyer.png");
 		JFrame frame = new JFrame();
 		frame.setLayout(new FlowLayout());
 		frame.setSize(200, 300);
 		JLabel lbl = new JLabel();
+<<<<<<< HEAD
+		JLabel lbl2 = new JLabel();
+		lbl.setIcon(sub_icon);
+		lbl2.setIcon(destroyer_icon);
+		frame.add(lbl);
+		frame.add(lbl2);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+=======
 		//JButton button = new JButton("Exit");
+>>>>>>> b6bf551aee8d95b9501bc629d9bfe723d8cf95ca
 
 
 		//JPanel frame = new JPanel();
