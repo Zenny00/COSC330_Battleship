@@ -13,14 +13,14 @@ import javax.swing.JLabel;
 import java.awt.Image;
 
 public class ImagePanel extends JPanel
-{
+{	
 	ImageIcon image = new ImageIcon("./View/Graphics/Ships/Submarine.png");
-	
-	final int IMG_WIDTH = image.getIconWidth();
-	final int IMG_HEIGHT = image.getIconHeight();
-	
-	Point image_corner;
-	Point previousPoint;
+
+        final int IMG_WIDTH = image.getIconWidth();
+        final int IMG_HEIGHT = image.getIconHeight();
+
+        Point image_corner;
+        Point previousPoint;
 
 	ImagePanel()
 	{
@@ -36,7 +36,6 @@ public class ImagePanel extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-
 		image.paintIcon(this, g, (int)image_corner.getX(), (int)image_corner.getY());
 	}
 
@@ -44,7 +43,8 @@ public class ImagePanel extends JPanel
 	{
 		public void mousePressed(MouseEvent e)
 		{
-			previousPoint = e.getPoint();
+			if (((e.getPoint().getX() >= image_corner.getX()) && (e.getPoint().getX() <= image_corner.getX() + IMG_WIDTH)) && ((e.getPoint().getY() >= image_corner.getY()) && (e.getPoint().getY() <= image_corner.getY() + IMG_HEIGHT)))
+				previousPoint = e.getPoint();
 		}
 
 	}
@@ -53,15 +53,18 @@ public class ImagePanel extends JPanel
 	{
 		public void mouseDragged(MouseEvent e)
 		{
-			Point currentPoint = e.getPoint();
+			if (((e.getPoint().getX() >= image_corner.getX()) && (e.getPoint().getX() <= image_corner.getX() + IMG_WIDTH)) && ((e.getPoint().getY() >= image_corner.getY()) && (e.getPoint().getY() <= image_corner.getY() + IMG_HEIGHT)))
+			{
+				Point currentPoint = e.getPoint();
+				
+				image_corner.translate(
+						(int)(currentPoint.getX() - previousPoint.getX()), 
+						(int)(currentPoint.getY() - previousPoint.getY())
+						);
 			
-			image_corner.translate(
-					(int)(currentPoint.getX() - previousPoint.getX()), 
-					(int)(currentPoint.getY() - previousPoint.getY())
-					);
-		
-			previousPoint = currentPoint;
-			repaint();
+				previousPoint = currentPoint;
+				repaint();
+			}
 		}
 	}
 }
