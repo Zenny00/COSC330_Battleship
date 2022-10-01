@@ -14,36 +14,50 @@ import java.awt.Image;
 
 public class ImagePanel extends JPanel
 {	
-	ImageIcon image = new ImageIcon("./View/Graphics/Ships/Submarine.png");
+	//Private data members to hold the information assoicated with an icon object
+	//private ImageIcon image;
+	
+   	private ImageIcon image;
+	private int img_width;
+	private int img_height;
 
-        final int IMG_WIDTH = image.getIconWidth();
-        final int IMG_HEIGHT = image.getIconHeight();
+        private Point image_corner;
+        private Point previousPoint;
 
-        Point image_corner;
-        Point previousPoint;
-
-	ImagePanel()
+	ImagePanel(String source, int x, int y)
 	{
-		image_corner = new Point(0, 0);
+		image = new ImageIcon(source);
+		img_width = (int)image.getIconWidth();
+		img_height = (int)image.getIconHeight();
+		image_corner = new Point(x, y);
+
+		this.setBounds(x, y, x+img_width, y+img_height);
 
 		ClickListener click_listener = new ClickListener();
 		DragListener drag_listener = new DragListener();
 
 		this.addMouseListener(click_listener);
 		this.addMouseMotionListener(drag_listener);
+		setLayout(null);
+		this.setVisible(true);
 	}
 
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		image.paintIcon(this, g, (int)image_corner.getX(), (int)image_corner.getY());
+		this.setBounds(
+				((int)image_corner.getX()),
+			       	((int)image_corner.getY()),	
+				((int)image_corner.getX())+img_width,
+			       	((int)image_corner.getY())+img_height);
+		image.paintIcon(this, g, (int)image_corner.getX(), (int)image_corner.getY());	
 	}
 
 	private class ClickListener extends MouseAdapter
 	{
 		public void mousePressed(MouseEvent e)
 		{
-			if (((e.getPoint().getX() >= image_corner.getX()) && (e.getPoint().getX() <= image_corner.getX() + IMG_WIDTH)) && ((e.getPoint().getY() >= image_corner.getY()) && (e.getPoint().getY() <= image_corner.getY() + IMG_HEIGHT)))
+			if (((e.getPoint().getX() >= image_corner.getX()) && (e.getPoint().getX() <= image_corner.getX() + img_width)) && ((e.getPoint().getY() >= image_corner.getY()) && (e.getPoint().getY() <= image_corner.getY() + img_height)))
 				previousPoint = e.getPoint();
 		}
 
@@ -53,7 +67,7 @@ public class ImagePanel extends JPanel
 	{
 		public void mouseDragged(MouseEvent e)
 		{
-			if (((e.getPoint().getX() >= image_corner.getX()) && (e.getPoint().getX() <= image_corner.getX() + IMG_WIDTH)) && ((e.getPoint().getY() >= image_corner.getY()) && (e.getPoint().getY() <= image_corner.getY() + IMG_HEIGHT)))
+			if (((e.getPoint().getX() >= image_corner.getX()) && (e.getPoint().getX() <= image_corner.getX() + img_width)) && ((e.getPoint().getY() >= image_corner.getY()) && (e.getPoint().getY() <= image_corner.getY() + img_height)))
 			{
 				Point currentPoint = e.getPoint();
 				
