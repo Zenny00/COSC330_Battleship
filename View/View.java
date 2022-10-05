@@ -65,12 +65,14 @@ public class View extends JFrame
 			{
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
 				button.setPreferredSize(new Dimension(30, 30));
+				button.setEnabled(false);
 				shipButtonPanel.add(button);
 			}	
 
 		shipButtonPanel.setPreferredSize(new Dimension(300, 300));
 		shipContainerPanel.add(shipButtonPanel);
 
+		//Initialize 2D array of target board
 		for (JButton[] row: enemyBoard)
 			for (JButton button: row)
 			{
@@ -78,6 +80,9 @@ public class View extends JFrame
 				button.setPreferredSize(new Dimension(30, 30));
 				targetButtonPanel.add(button);
 			}
+
+		ships[0] = new ImageIcon("Graphics/Ships/Submarine.png");
+
 
 		targetButtonPanel.setPreferredSize(new Dimension(300, 300));
 		targetContainerPanel.add(targetButtonPanel);
@@ -89,8 +94,8 @@ public class View extends JFrame
 		this.setLocationRelativeTo(null);
 		//this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		this.getContentPane().add(shipContainerPanel);
 		this.getContentPane().add(targetContainerPanel);
+		this.getContentPane().add(shipContainerPanel);
 
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
