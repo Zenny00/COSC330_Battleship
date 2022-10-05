@@ -1,4 +1,4 @@
-//Name: Joshua Comfort
+//Name: Joshua Comfort & Justin Conklin
 //Date: 10/3/2022
 //Description: Test program, create a DragFrame object
 

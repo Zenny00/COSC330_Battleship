@@ -1,4 +1,4 @@
-//Name: Joshua Comfort
+//Name: Joshua Comfort & Justin Conklin
 //Date: 10/3/2022
 //Description: Allow user to drag from one location to a specified location on the screen
 
