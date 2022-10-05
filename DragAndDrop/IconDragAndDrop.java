@@ -9,13 +9,15 @@ public class IconDragAndDrop
 {
 	public static void main(String args[])
 	{
+		//Create a new JFrame
 		JFrame frame = new JFrame("Drag and Drop Demo");
 
+		//Create 
 		ImageIcon submarine = new ImageIcon("../View/Graphics/Ships/Submarine.png");
 		ImageIcon destroyer = new ImageIcon("../View/Graphics/Ships/Destroyer.png");
 		ImageIcon water = new ImageIcon("../View/Graphics/Ships/Water.png");
 
-		JButton button = new JButton(water);
+		JLabel button = new JLabel(water, JLabel.CENTER);
 
 		JLabel sub_label = new JLabel(submarine, JLabel.CENTER);
 		JLabel des_label = new JLabel(destroyer, JLabel.CENTER);

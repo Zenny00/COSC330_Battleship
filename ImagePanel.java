@@ -45,11 +45,11 @@ public class ImagePanel extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		this.setBounds(
+		/*this.setBounds(
 				((int)image_corner.getX()),
 			       	((int)image_corner.getY()),	
 				((int)image_corner.getX())+img_width,
-			       	((int)image_corner.getY())+img_height);
+			       	((int)image_corner.getY())+img_height);*/
 		image.paintIcon(this, g, (int)image_corner.getX(), (int)image_corner.getY());	
 	}
 
