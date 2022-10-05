@@ -7,15 +7,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-//import javax.swing.JButton;
 import java.awt.Graphics;
 import java.awt.Point;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseEvent;
-
-import java.awt.Image;
 
 public class View extends JFrame
 {
