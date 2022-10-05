@@ -1,7 +1,7 @@
 //Name(s): Joshua Comfort & Justin Conklin
 //Date: 10/5/2022
 //Description: Implementation of the view class for the Battleship game GUI
-//Water sprite based on: https://www.dreamstime.com/pixel-art-water-background-seamless-sea-texture-backdrop-vector-illustration-image223655049
+//Water sprite based on: https://www.deviantart.com/oni1ink/art/Tutorial-How-to-draw-Water-645199166
 
 //Import required libraries
 import javax.swing.*;
@@ -48,9 +48,54 @@ public class View extends JFrame
 	
 	public View()
 	{
+		JPanel shipButtonPanel = new JPanel();
+		JPanel shipContainerPanel = new JPanel();
+		JPanel targetButtonPanel = new JPanel();
+		JPanel targetContainerPanel = new JPanel();
+
+		shipButtonPanel.setLayout(new GridLayout(10,10));
+		targetButtonPanel.setLayout(new GridLayout(10,10));
+
 		ships = new ImageIcon[5];
 		playerBoard = new JButton[10][10];
 		enemyBoard = new JButton[10][10];
+
+		for (JButton[] row: playerBoard)
+			for (JButton button: row)
+			{
+				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
+				button.setPreferredSize(new Dimension(30, 30));
+				shipButtonPanel.add(button);
+			}	
+
+		shipButtonPanel.setPreferredSize(new Dimension(300, 300));
+		shipContainerPanel.add(shipButtonPanel);
+
+		for (JButton[] row: enemyBoard)
+			for (JButton button: row)
+			{
+				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
+				button.setPreferredSize(new Dimension(30, 30));
+				targetButtonPanel.add(button);
+			}
+
+		targetButtonPanel.setPreferredSize(new Dimension(300, 300));
+		targetContainerPanel.add(targetButtonPanel);
+
+		//Configure frame
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(800, 600);
+		this.setTitle("BATTLESHIP");
+		this.setLocationRelativeTo(null);
+		//this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+		this.getContentPane().add(shipContainerPanel);
+		this.getContentPane().add(targetContainerPanel);
+
+		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+		this.pack();
+		this.setVisible(true);
 	}
 
 	//Get user input from the JTextField
