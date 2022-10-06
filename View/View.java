@@ -145,7 +145,9 @@ public class View extends JFrame
 	{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-                		System.out.println(button.getText());
+				String coords[] = button.getText().split(" ");
+				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+                		System.out.println(point.getX() + " " + point.getY());
             		}
         	});
 	}
