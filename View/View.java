@@ -16,7 +16,11 @@ public class View extends JFrame
 	//|====================================================================================================|
 	
 	//This line is commented for now until view is placed in the same directory as model
-	//private dataModel Model;			
+	//private dataModel Model;
+	
+	//Constants for the number of ships and the size of each board
+	private final int BOARD_SIZE = 10;
+	private final int NUM_SHIPS = 5;
 	
 	//Holds the input and output text
 	private JTextField userInput; 
@@ -46,36 +50,63 @@ public class View extends JFrame
 		JPanel targetButtonPanel = new JPanel();
 		JPanel targetContainerPanel = new JPanel();
 
-		shipButtonPanel.setLayout(new GridLayout(10,10));
-		targetButtonPanel.setLayout(new GridLayout(10,10));
+		shipButtonPanel.setLayout(new GridLayout(BOARD_SIZE,BOARD_SIZE));
+		targetButtonPanel.setLayout(new GridLayout(BOARD_SIZE,BOARD_SIZE));
 
-		ships = new ImageIcon[5];
-		playerBoard = new JButton[10][10];
-		enemyBoard = new JButton[10][10];
+		ships = new ImageIcon[NUM_SHIPS];
+		playerBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
+		enemyBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
 
+		int i = 0, j = 0;
 		for (JButton[] row: playerBoard)
+		{
 			for (JButton button: row)
 			{
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
+				button.setText(String.valueOf(i) + " " + String.valueOf(j));
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setEnabled(false);
 				shipButtonPanel.add(button);
+				j++;
 			}	
+			j = 0;
+			i++;
+		}
+		/*
+		//Set the button text for the player board
+		for (int i = 0; i < BOARD_SIZE; i++)
+			for (int j = 0; j < BOARD_SIZE; i++)
+				playerBoard[i][j].setText(i + " " + j);
+		*/
 
 		shipButtonPanel.setPreferredSize(new Dimension(300, 300));
 		shipContainerPanel.add(shipButtonPanel);
 
 		//Initialize 2D array of target board
+		i = 0;
 		for (JButton[] row: enemyBoard)
+		{	
 			for (JButton button: row)
 			{
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
+				button.setText(String.valueOf(i) + " " + String.valueOf(j));
+				addTileListener(button);
 				button.setPreferredSize(new Dimension(30, 30));
 				targetButtonPanel.add(button);
+				j++;
 			}
+			j = 0;
+			i++;
+		}
+
+		/*
+		//Set the button text for the target board
+		for (int i = 0; i < BOARD_SIZE; i++)
+			for (int j = 0; j < BOARD_SIZE; i++)
+				enemyBoard[i][j].setText(i + " " + j);
+		*/
 
 		ships[0] = new ImageIcon("Graphics/Ships/Submarine.png");
-
 
 		targetButtonPanel.setPreferredSize(new Dimension(300, 300));
 		targetContainerPanel.add(targetButtonPanel);
@@ -110,9 +141,13 @@ public class View extends JFrame
 	}
 
 	//Add a tile listener to the tiles
-	public void addTileListener(ActionListener fire)
+	public void addTileListener(JButton button)
 	{
-		//TODO
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                		System.out.println(button.getText());
+            		}
+        	});
 	}
 
 	//Add an icon listener to the ships
