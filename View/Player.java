@@ -18,10 +18,10 @@ public class Player
 	public Player(View view)
 	{
 		b_view = view;
-		view.addFireListener(new FireListener());
+		view.addTileListener(new TileListener());
 	}
 
-	class FireListener implements ActionListener
+	class TileListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
@@ -29,8 +29,11 @@ public class Player
 			if (!(obj instanceof JButton))
 				return;
 
-			JButton source_button = (JButton)obj;
-			System.out.println("E");
+			JButton button = (JButton)obj;
+			String coords[] = button.getText().split(" ");
+			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+                	System.out.println(point.getX() + " " + point.getY());
 		}
-	} //Inner actionListener class	
+	} //Inner actionListener class
+
 }
