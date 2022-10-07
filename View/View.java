@@ -45,6 +45,7 @@ public class View extends JFrame
 	
 	public View()
 	{
+		//Setup panels and arrays
 		JPanel shipButtonPanel = new JPanel();
 		JPanel shipContainerPanel = new JPanel();
 		JPanel targetButtonPanel = new JPanel();
@@ -57,15 +58,21 @@ public class View extends JFrame
 		playerBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
 		enemyBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
 
+		//Initialize ship board
 		int i = 0, j = 0;
 		for (JButton[] row: playerBoard)
 		{
 			for (JButton button: row)
 			{
+				//Create new button with water icon
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
+				
+				//Set text to coordinates and scale
 				button.setText(String.valueOf(i) + " " + String.valueOf(j));
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setEnabled(false);
+				
+				//Add JButton to JPanel
 				shipButtonPanel.add(button);
 				j++;
 			}	
@@ -90,22 +97,16 @@ public class View extends JFrame
 			{
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
 				button.setText(String.valueOf(i) + " " + String.valueOf(j));
-				addTileListener(button);
+				//addTileListener(button);
 				button.setPreferredSize(new Dimension(30, 30));
 				targetButtonPanel.add(button);
 				j++;
 			}
 			j = 0;
 			i++;
-		}
+		}	
 
-		/*
-		//Set the button text for the target board
-		for (int i = 0; i < BOARD_SIZE; i++)
-			for (int j = 0; j < BOARD_SIZE; i++)
-				enemyBoard[i][j].setText(i + " " + j);
-		*/
-
+		//Create new ship image icon
 		ships[0] = new ImageIcon("Graphics/Ships/Submarine.png");
 
 		targetButtonPanel.setPreferredSize(new Dimension(300, 300));
@@ -116,13 +117,14 @@ public class View extends JFrame
 		this.setSize(800, 600);
 		this.setTitle("BATTLESHIP");
 		this.setLocationRelativeTo(null);
-		//this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
+	
+		//Add panels to content pane	
 		this.getContentPane().add(targetContainerPanel);
 		this.getContentPane().add(shipContainerPanel);
 
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+		//Pack and set visibility
 		this.pack();
 		this.setVisible(true);
 	}
@@ -141,6 +143,7 @@ public class View extends JFrame
 	}
 
 	//Add a tile listener to the tiles
+	/*
 	public void addTileListener(JButton button)
 	{
 		button.addActionListener(new ActionListener() {
@@ -151,6 +154,15 @@ public class View extends JFrame
             		}
         	});
 	}
+	*/
+
+	public void addFireListener(ActionListener fire)
+	{
+		//Iterate through the 2D array of tiles and add fire listener to each JButton
+		
+		enemyBoard[0][0].addActionListener(fire);
+	}
+
 
 	//Add an icon listener to the ships
 	public void addIconListener(ActionListener drag)

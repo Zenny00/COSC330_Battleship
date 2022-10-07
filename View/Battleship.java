@@ -16,7 +16,8 @@ public class Battleship
 	public static void main(String args[])
 	{
 		//Create a new object of DragFrame
-		View frame = new View();		
+		View frame = new View();	
+		Player player = new Player(frame);	
 	}
 }
 
