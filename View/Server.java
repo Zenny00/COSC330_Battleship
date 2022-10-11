@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class Server extends JFrame 
+public class Server extends JFrame implements Role 
 {
    private JTextField enterField; // inputs message from user
    private JTextArea displayArea; // display information to user
@@ -27,7 +27,7 @@ public class Server extends JFrame
    public Server()
    {
       super( "Server" );
-
+      this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
       enterField = new JTextField(); // create enterField
       enterField.setEditable( false );
       enterField.addActionListener(
@@ -148,8 +148,9 @@ public class Server extends JFrame
    } // end method closeConnection
 
    // send message to client
-   public void sendData( String message )
+   public void sendData( Object obj )
    {
+	String message = obj.toString();
       try // send object to client
       {
          output.writeObject( "SERVER>>> " + message );

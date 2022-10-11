@@ -13,16 +13,17 @@ import java.awt.Point;
 public class Player
 {
 	//View
-	private View b_view;
-	private	Server application = new Server(); // create server
+	private View view;
+	//private	Server application = new Server(); // create server
+	private Role role;
 
-	public Player(View view)
+	public Player(View view, Role role)
 	{
-		b_view = view;
+		this.view = view;
+		this.role = role;
 		view.addTileListener(new TileListener());
-      		application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-      		application.runServer(); // run server application
-
+      		//role.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+      		role.runServer(); // run server application
 	}
 
 	class TileListener implements ActionListener
@@ -37,7 +38,7 @@ public class Player
 			String coords[] = button.getText().split(" ");
 			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
                 	//System.out.println(point.getX() + " " + point.getY());
-			application.sendData(point.getX() + " " + point.getY());
+			role.sendData(point.getX() + " " + point.getY());
 		}
 	} //Inner actionListener class
 
