@@ -14,18 +14,17 @@ public class Player
 {
 	//View
 	private View b_view;
-	private	Server application = new Server(); // create server
 
 	public Player(View view)
 	{
 		b_view = view;
-		view.addTileListener(new TileListener());
+		view.addFireListener(new FireListener());
+		Server application = new Server(); // create server
       		application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
       		application.runServer(); // run server application
-
 	}
 
-	class TileListener implements ActionListener
+	class FireListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
@@ -33,12 +32,8 @@ public class Player
 			if (!(obj instanceof JButton))
 				return;
 
-			JButton button = (JButton)obj;
-			String coords[] = button.getText().split(" ");
-			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-                	//System.out.println(point.getX() + " " + point.getY());
-			application.sendData(point.getX() + " " + point.getY());
+			JButton source_button = (JButton)obj;
+			System.out.println("E");
 		}
-	} //Inner actionListener class
-
+	} //Inner actionListener class	
 }
