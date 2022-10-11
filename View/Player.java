@@ -13,15 +13,20 @@ import java.awt.Point;
 public class Player
 {
 	//View
-	private View b_view;
+	private View view;
+	//private	Server application = new Server(); // create server
+	private Role role;
 
-	public Player(View view)
+	public Player(View view, Role role)
 	{
-		b_view = view;
-		view.addFireListener(new FireListener());
+		this.view = view;
+		this.role = role;
+		view.addTileListener(new TileListener());
+      		//role.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+      		role.runServer(); // run server application
 	}
 
-	class FireListener implements ActionListener
+	class TileListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
@@ -29,8 +34,12 @@ public class Player
 			if (!(obj instanceof JButton))
 				return;
 
-			JButton source_button = (JButton)obj;
-			System.out.println("E");
+			JButton button = (JButton)obj;
+			String coords[] = button.getText().split(" ");
+			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+                	//System.out.println(point.getX() + " " + point.getY());
+			role.sendData(point.getX() + " " + point.getY());
 		}
-	} //Inner actionListener class	
+	} //Inner actionListener class
+
 }
