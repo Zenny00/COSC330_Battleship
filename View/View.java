@@ -180,11 +180,22 @@ public class View extends JFrame
 		this.getContentPane().add(targetContainerPanel);
 		this.getContentPane().add(shipContainerPanel);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-
-		//Pack and set visibility
-		this.pack();
-		this.setVisible(true);
 	}
+
+	//Adds JPanel to view
+	public void addJPanel(Role panel)
+	{
+		getContentPane().add(((JPanel)panel));		
+	}
+
+	//Setup frame by packing and setting visibility
+	public void setupView()
+	{
+		//Pack and set visibility
+		pack();
+		setVisible(true);
+	}
+
 
 	public void initJButtons()
 	{

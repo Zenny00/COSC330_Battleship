@@ -22,8 +22,10 @@ public class Player
 		this.view = view;
 		this.role = role;
 		view.addTileListener(new TileListener());
+		view.addJPanel(role);
+		view.setupView();
       		//role.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-      		role.runServer(); // run server application
+      		role.run(); // run server application
 	}
 
 	class TileListener implements ActionListener
@@ -37,7 +39,7 @@ public class Player
 			JButton button = (JButton)obj;
 			String coords[] = button.getText().split(" ");
 			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-                	//System.out.println(point.getX() + " " + point.getY());
+                	System.out.println(point.getX() + " " + point.getY());
 			role.sendData(point.getX() + " " + point.getY());
 		}
 	} //Inner actionListener class

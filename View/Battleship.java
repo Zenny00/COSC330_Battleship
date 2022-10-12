@@ -48,9 +48,8 @@ public class Battleship
 		System.out.printf("Please enter the IP address of the game host: ");
 		String ip = scanner.nextLine();
 
-		//application = new Client(ip); // use ip to connect
-		//application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		//application.runClient(); // run client application
+		View frame = new View();	
+		Player player = new Player(frame, new Client(ip));
 	}
 
 	//Run the server's code

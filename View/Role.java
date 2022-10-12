@@ -13,5 +13,5 @@ public interface Role
 	//Recieve data
 	//public Object receiveData();
 
-	public void runServer();
+	public void run();
 }

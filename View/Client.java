@@ -2,13 +2,12 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -21,22 +20,25 @@ import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Point;
 
-public class Server extends JPanel implements Role 
+public class Client extends JPanel implements Role
 {
-   private JTextField enterField; // inputs message from user
+   private JTextField enterField; // enters information from user
    private JTextArea displayArea; // display information to user
-   private ObjectOutputStream output; // output stream to client
-   private ObjectInputStream input; // input stream from client
-   private ServerSocket server; // server socket
-   private Socket connection; // connection to client
-   private int counter = 1; // counter of number of connections
+   private ObjectOutputStream output; // output stream to server
+   private ObjectInputStream input; // input stream from server
+   private String message = ""; // message from server
+   private String chatServer; // host server for this application
+   private Socket client; // socket to communicate with server
 
-   // set up GUI
-   public Server()
+   // initialize chatServer and set up GUI
+   public Client( String host )
    {
       super();
+
+      chatServer = host; // set server to which this client connects
+      
       enterField = new JTextField(); // create enterField
-      enterField.setPreferredSize(new Dimension(200, 10));
+      enterField.setPreferredSize(new Dimension(200, 25));
       enterField.setEditable( false );
       enterField.addActionListener(
          new ActionListener() 
@@ -53,79 +55,71 @@ public class Server extends JPanel implements Role
       add( enterField, BorderLayout.NORTH );
 
       displayArea = new JTextArea(); // create displayArea
-      displayArea.setPreferredSize(new Dimension(200, 100));
-      add( displayArea, BorderLayout.SOUTH );
+      displayArea.setPreferredSize(new Dimension(200, 250));
+      add( new JScrollPane( displayArea ), BorderLayout.CENTER );
 
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
       //setSize( 300, 150 ); // set size of window
       setPreferredSize(new Dimension(300, 300));
       setVisible( true ); // show window
-   } // end Server constructor
+   } // end Client constructor
 
-   // set up and run server 
-   public void run()
+   // connect to server and process messages from server
+   public void run() 
    {
-      try // set up server to receive connections; process connections
+      try // connect to server, get streams, process connection
       {
-         server = new ServerSocket( 12345, 100 ); // create ServerSocket
-
-         while ( true ) 
-         {
-            try 
-            {
-               waitForConnection(); // wait for a connection
-               getStreams(); // get input & output streams
-               processConnection(); // process connection
-            } // end try
-            catch ( EOFException eofException ) 
-            {
-               displayMessage( "\nServer terminated connection" );
-            } // end catch
-            finally 
-            {
-               closeConnection(); //  close connection
-               counter++;
-            } // end finally
-         } // end while
+         connectToServer(); // create a Socket to make connection
+         getStreams(); // get the input and output streams
+         processConnection(); // process connection
       } // end try
+      catch ( EOFException eofException ) 
+      {
+         displayMessage( "\nClient terminated connection" );
+      } // end catch
       catch ( IOException ioException ) 
       {
          ioException.printStackTrace();
       } // end catch
-   } // end method runServer
+      finally 
+      {
+         closeConnection(); // close connection
+      } // end finally
+   } // end method runClient
 
-   // wait for connection to arrive, then display connection info
-   private void waitForConnection() throws IOException
-   {
-      displayMessage( "Waiting for connection\n" );
-      connection = server.accept(); // allow server to accept connection            
-      displayMessage( "Connection " + counter + " received from: " +
-         connection.getInetAddress().getHostName() );
-   } // end method waitForConnection
+   // connect to server
+   private void connectToServer() throws IOException
+   {      
+      displayMessage( "Attempting connection\n" );
+
+      // create Socket to make connection to server
+      client = new Socket( InetAddress.getByName( chatServer ), 12345 );
+
+      // display connection information
+      displayMessage( "Connected to: " + 
+         client.getInetAddress().getHostName() );
+   } // end method connectToServer
 
    // get streams to send and receive data
    private void getStreams() throws IOException
    {
       // set up output stream for objects
-      output = new ObjectOutputStream( connection.getOutputStream() );
+      output = new ObjectOutputStream( client.getOutputStream() );      
       output.flush(); // flush output buffer to send header information
 
       // set up input stream for objects
-      input = new ObjectInputStream( connection.getInputStream() );
+      input = new ObjectInputStream( client.getInputStream() );
 
       displayMessage( "\nGot I/O streams\n" );
    } // end method getStreams
 
-   // process connection with client
+   // process connection with server
    private void processConnection() throws IOException
    {
-      String message = "Connection successful";
-      sendData( message ); // send connection successful message
-
-      // enable enterField so server user can send messages
+      // enable enterField so client user can send messages
       setTextFieldEditable( true );
 
-      do // process messages sent from client
+      do // process messages sent from server
       { 
          try // read message and display it
          {
@@ -137,20 +131,20 @@ public class Server extends JPanel implements Role
             displayMessage( "\nUnknown object type received" );
          } // end catch
 
-      } while ( !message.equals( "CLIENT>>> TERMINATE" ) );
+      } while ( !message.equals( "SERVER>>> TERMINATE" ) );
    } // end method processConnection
 
    // close streams and socket
    private void closeConnection() 
    {
-      displayMessage( "\nTerminating connection\n" );
+      displayMessage( "\nClosing connection" );
       setTextFieldEditable( false ); // disable enterField
 
       try 
       {
          output.close(); // close output stream
          input.close(); // close input stream
-         connection.close(); // close socket
+         client.close(); // close socket
       } // end try
       catch ( IOException ioException ) 
       {
@@ -158,17 +152,17 @@ public class Server extends JPanel implements Role
       } // end catch
    } // end method closeConnection
 
-   // send message to client
+   // send message to server
    public void sendData( Object obj )
    {
 	String message = obj.toString();
-      try // send object to client
+      try // send object to server
       {
-         output.writeObject( "SERVER>>> " + message );
-         output.flush(); // flush output to client
-         displayMessage( "\nSERVER>>> " + message );
+         output.writeObject( "CLIENT>>> " + message );
+         output.flush(); // flush data to output
+         displayMessage( "\nCLIENT>>> " + message );
       } // end try
-      catch ( IOException ioException ) 
+      catch ( IOException ioException )
       {
          displayArea.append( "\nError writing object" );
       } // end catch
@@ -178,13 +172,13 @@ public class Server extends JPanel implements Role
    private void displayMessage( final String messageToDisplay )
    {
       SwingUtilities.invokeLater(
-         new Runnable() 
+         new Runnable()
          {
             public void run() // updates displayArea
             {
-               displayArea.append( messageToDisplay ); // append message
+               displayArea.append( messageToDisplay );
             } // end method run
-         } // end anonymous inner class
+         }  // end anonymous inner class
       ); // end call to SwingUtilities.invokeLater
    } // end method displayMessage
 
@@ -192,16 +186,16 @@ public class Server extends JPanel implements Role
    private void setTextFieldEditable( final boolean editable )
    {
       SwingUtilities.invokeLater(
-         new Runnable()
+         new Runnable() 
          {
             public void run() // sets enterField's editability
             {
                enterField.setEditable( editable );
             } // end method run
-         }  // end inner class
+         } // end anonymous inner class
       ); // end call to SwingUtilities.invokeLater
    } // end method setTextFieldEditable
-} // end class Server
+} // end class Client
 
 /**************************************************************************
  * (C) Copyright 1992-2005 by Deitel & Associates, Inc. and               *
