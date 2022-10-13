@@ -14,7 +14,7 @@ public class Board
 		}
 	}
 
-	public bool getClickable(int x, int y){return tiles[x][y].isClickable();}
+	public boolean getClickable(int x, int y){return tiles[x][y].isClickable();}
 }
 
 //An exception if the player tries to access a tile that doesn't exist
