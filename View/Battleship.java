@@ -21,7 +21,7 @@ public class Battleship
 		if (args.length < 1)
 		{
 			System.out.println("Invalid number of command line arguments, please specify either 'Server' or 'Client'.");
-			System.exit(0);
+			System.exit(1);
 		}
 
 		switch(args[0])
@@ -34,6 +34,7 @@ public class Battleship
 				break;
 			default:
 				System.out.println("Invalid command line argument, please specify either 'Server' or 'Client'.");
+				System.exit(1);
 		}
 
 	}
@@ -48,16 +49,10 @@ public class Battleship
 		System.out.printf("Please enter the IP address of the game host: ");
 		String ip = scanner.nextLine();
 
-		View frame = new View();	
-		Player player = new Player(frame, new Client(ip));
+		Player player = new Player(new Client(ip));
 	}
 
 	//Run the server's code
-	static void runServer()
-	{
-		//Create a new object of DragFrame
-		View frame = new View();	
-		Player player = new Player(frame, new Server());
-	}
+	static void runServer(){Player player = new Player(new Server());}
 }
 

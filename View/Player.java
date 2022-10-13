@@ -16,10 +16,11 @@ public class Player
 	private View view;
 	//private	Server application = new Server(); // create server
 	private Role role;
+	// private Model model;
 
-	public Player(View view, Role role)
+	public Player(Role role)
 	{
-		this.view = view;
+		this.view = new View();
 		this.role = role;
 		view.addTileListener(new TileListener());
 		view.addJPanel(role);
