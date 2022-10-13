@@ -18,13 +18,13 @@ public class Player
 	public Player(View view)
 	{
 		b_view = view;
-		view.addFireListener(new FireListener());
+		view.addTileListener(new TileListener());
 		Server application = new Server(); // create server
       		application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
       		application.runServer(); // run server application
 	}
 
-	class FireListener implements ActionListener
+	class TileListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{

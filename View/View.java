@@ -31,13 +31,25 @@ public class View extends JFrame
 	private JButton enemyBoard[][] = new JButton[BOARD_SIZE][BOARD_SIZE];
 
 	//Array of image icons to hold ships
-	private ImageIcon ships[] = new ImageIcon[NUM_SHIPS];
+	private JPanel ships[] = new JPanel[NUM_SHIPS];
 
 	//Setup panels and arrays
 	private JPanel shipButtonPanel = new JPanel();
 	private JPanel shipContainerPanel = new JPanel();
 	private JPanel targetButtonPanel = new JPanel();
 	private JPanel targetContainerPanel = new JPanel();
+
+	private JPanel shipBox = new JPanel();
+
+	//Ships
+	private JLabel sub1 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile1.png"));
+	private JLabel sub2 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile2.png"));
+	private JLabel sub3 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile3.png"));
+	private JPanel submarine = new JPanel();
+
+	private JLabel des1 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/DestroyerTile1.png"));
+	private JLabel des2 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/DestroyerTile2.png"));
+	private JPanel destroyer = new JPanel();
 
 	//Init JButton | MUST BE DONE BEFORE CONSTRUCTOR!"
 	private JButton i0j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
@@ -153,15 +165,14 @@ public class View extends JFrame
 	public View()
 	{
 		//Setup for Jpanels
+		getContentPane().setLayout(new GridLayout(3, 3));
 		shipButtonPanel.setLayout(new GridLayout(BOARD_SIZE,BOARD_SIZE));
 		targetButtonPanel.setLayout(new GridLayout(BOARD_SIZE,BOARD_SIZE));	
 		shipButtonPanel.setPreferredSize(new Dimension(300, 300));
 		shipContainerPanel.add(shipButtonPanel);
 		targetButtonPanel.setPreferredSize(new Dimension(300, 300));
 		targetContainerPanel.add(targetButtonPanel);
-
-		i0j0.setHorizontalTextPosition(JButton.CENTER);
-		i0j0.setVerticalTextPosition(JButton.CENTER);
+	
 		//Setup enemy board
 		assignEnemyBoard();
 
@@ -169,8 +180,38 @@ public class View extends JFrame
 		initJButtons();
 		//addTileListener(new TileListener()); 
 
-		//Create new ship image icon
-		ships[0] = new ImageIcon("Graphics/Ships/Submarine.png");
+		//				--- CONFIGURE SHIPS ---
+		// |------------------------------------------------------------------------------------|
+		// | 1. Destroyer									|
+		// | 2. Submarine									|
+		// | 3. Cruiser										|
+		// | 4. Battleship									|
+		// | 5. Carrier										|
+		// |------------------------------------------------------------------------------------|
+
+		//Configure destroyer
+		destroyer.add(des1);
+		destroyer.add(des2);
+		destroyer.setLayout(new BoxLayout(destroyer, BoxLayout.Y_AXIS));
+
+		//Assign destroyer to the ship array
+		ships[0] = destroyer;
+		//Add destroyer to the content pane
+		shipBox.add(destroyer);
+
+		//Configure submarine
+		submarine.add(sub1);
+		submarine.add(sub2);
+		submarine.add(sub3);
+		submarine.setLayout(new BoxLayout(submarine, BoxLayout.Y_AXIS));
+
+		//Assign submarine to the ship array
+		ships[1] = submarine;
+		//Add submarine to the content pane
+		shipBox.add(submarine);
+
+		//Setup shipbox for holding ships
+		shipBox.setLayout(new GridLayout(3, 3));
 
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -181,7 +222,7 @@ public class View extends JFrame
 		//Add panels to content pane	
 		this.getContentPane().add(targetContainerPanel);
 		this.getContentPane().add(shipContainerPanel);
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		this.getContentPane().add(shipBox);
 	}
 
 	//Adds JPanel to view
