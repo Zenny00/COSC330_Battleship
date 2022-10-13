@@ -2,7 +2,13 @@ Github repository for COSC330 Battleship Project I
 by Joshua Comfort and Justin Conklin
 created Fall 2022
 
-Main Controller and Game Engine is handled via the Battleship.java file.
+Summary: This program allows users connected over a LAN network to play a game of battleship.
+Rules for the game can be found here: https://www.hasbro.com/common/instruct/battleship.pdf 
+
+
+To compile program:
+    ensure all files are included and in File List format given below
+    in terminal: javac Battleship.java
 
 To run program:
     As Server: java Battleship Server
@@ -32,3 +38,6 @@ File List:
     Ship.java
     ShipBoard.java
     Tile.java
+
+Dependencies:
+    Java JDK (17+)
