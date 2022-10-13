@@ -1,4 +1,4 @@
-public class ShipBoard
+public class ShipBoard extends Board
 {
 	public ShipBoard(){tiles = new Tile[10][10];}
 

@@ -1,20 +1,44 @@
-public abstract class Ship
+public class Ship
 {
+	public enum ShipType
+	{
+		SUBMARINE,
+		CRUSIER,
+		DESTROYER,
+		CARRIER,
+		BATTLESHIP
+	};
+
+	public enum Direction
+	{
+		EAST,
+		WEST,
+		NORTH,
+		SOUTH
+	};
+
 	private int size;
-	private int numHits;
+	private int numHits = 0;
 	private Direction direction;
 	private Tile origin;
 	private	ShipType type;
-	private bool placed;
+	private bool placed = false;
 
-	Ship(int size, int numHits, Direction direction, Tile origin, ShipType type)
+	Ship(ShipType type)
 	{
-		this.size = size;
-		this.numHits = numHits;
-		this.direction = direction;
-		this.origin = origin;
 		this.type = type;
-		placed = false;
+		switch (type) {
+			case (ShipType.SUBMARINE):size = 3;
+				break;
+			case (ShipType.CRUSIER):size = 3;
+				break;
+			case (ShipType.DESTROYER):size = 2;
+				break;
+			case (ShipType.CARRIER):size = 5;
+				break;
+			case (ShipType.BATTLESHIP):size = 4;
+				break;
+		}
 	}
 
 	public void incrementHits(){numHits++;}
@@ -43,7 +67,4 @@ public abstract class Ship
 		}
 		return placed = true;
 	}
-        
-        //Abstract display function to be overriden in inheriting subclasses
-        public abstract void display();
 }

@@ -1,18 +1,18 @@
-public class Player
+public class Model
 {
 	private Ship ship_list[];
 	private ShipBoard ocean_board;
 	private Board target_board;
 	private string ip_address;
 
-	Player()
+	Model()
 	{	
 		ship_list = new Ship[5];
-		ship_list[0] = new Submarine();
-		ship_list[1] = new Cruiser();
-		ship_list[2] = new Destroyer();
-		ship_list[3] = new AircraftCarrier();
-		ship_list[4] = new Battleship();
+		ship_list[0] = new Ship(ShipType.SUBMARINE);
+		ship_list[1] = new Ship(ShipType.CRUISER);
+		ship_list[2] = new Ship(ShipType.DESTOYER);
+		ship_list[3] = new Ship(ShipType.CARRIER);
+		ship_list[4] = new Ship(ShipType.BATTLESHIP);
 
 		ocean_board = new ShipBoard();
 		target_board = new Board();
