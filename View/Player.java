@@ -37,7 +37,9 @@ public class Player
 				return;
 
 			JButton button = (JButton)obj;
-			String coords[] = button.getText().split(" ");
+			button.setIcon(new ImageIcon("./WaterMiss.png"));
+			
+			String coords[] = button.getActionCommand().split(" ");
 			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
                 	System.out.println(point.getX() + " " + point.getY());
 			role.sendData(point.getX() + " " + point.getY());

@@ -160,6 +160,8 @@ public class View extends JFrame
 		targetButtonPanel.setPreferredSize(new Dimension(300, 300));
 		targetContainerPanel.add(targetButtonPanel);
 
+		i0j0.setHorizontalTextPosition(JButton.CENTER);
+		i0j0.setVerticalTextPosition(JButton.CENTER);
 		//Setup enemy board
 		assignEnemyBoard();
 
@@ -208,9 +210,10 @@ public class View extends JFrame
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
 				
 				//Set text to coordinates and scale
-				button.setText(String.valueOf(i) + " " + String.valueOf(j));
+				//button.setText(String.valueOf(i) + " " + String.valueOf(j));
+				button.setActionCommand(String.valueOf(i) + " " + String.valueOf(j));
 				button.setPreferredSize(new Dimension(30, 30));
-				button.setEnabled(false);
+				//button.setEnabled(false);
 				
 				//Add JButton to JPanel
 				shipButtonPanel.add(button);
@@ -226,7 +229,8 @@ public class View extends JFrame
 			for (JButton button: row)
 			{
 				//button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
-				button.setText(String.valueOf(i) + " " + String.valueOf(j));
+				//button.setText(String.valueOf(i) + " " + String.valueOf(j));
+				button.setActionCommand(String.valueOf(i) + " " + String.valueOf(j));
 				//addTileListener(button);
 				button.setPreferredSize(new Dimension(30, 30));
 				targetButtonPanel.add(button);
