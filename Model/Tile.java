@@ -8,8 +8,8 @@ public class Tile
         //Various constructors taking different numbers of parameters 
 	public Tile(){clickable = true; }
         public Tile(int x, int y) { this.x = x; this.y = y; type = SEA; }
-        public Tile(int x, int y, TileType type) { this,x = x; this.y = y; this.type = type; }
-        public Tile(int x, int y, TileType type, bool clickable) { this.x = x, this.y = y; this.type = type; this.clickable = clickable; }
+        public Tile(int x, int y, TileType type) { this.x = x; this.y = y; this.type = type; }
+        public Tile(int x, int y, TileType type, boolean clickable) { this.x = x; this.y = y; this.type = type; this.clickable = clickable; }
 
 	public bool isClickable(){return clickable;}
 	public int getX(){return x;}
