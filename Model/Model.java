@@ -1,8 +1,12 @@
+import java.lang.Math;
+import java.util.*;
+
 public class Model
 {
 	private Ship ship_list[];
 	private ShipBoard ocean_board;
 	private Board target_board;
+	private Random random = new Random();
 	//private String ip_address;
 
 	Model()
@@ -20,25 +24,33 @@ public class Model
 
 	//public void setIP(String ip_address){this.ip_address = ip_address;}
 
-	public void setBoard(boolean valid) {
+	// sets the board randomly
+	public void setBoard() {
 		ShipType selection = null;
-		int x = 0, y = 0;
+		int x = 0, y = 0, vCounter = 0;
 		Direction direction = null;
+		Bool success;
 
 		while (this.hasPlacementsRemaining()) {
-			// read in shiptype, direction, x, y
+			selection = ship_list[vCounter].getType();
+			x = random.nextInt(9);
+			y = random.nextInt(9);
+			direction = Direction.random();
+
 			switch(selection) {
-				case SUBMARINE: ship_list[0].placeShip(ocean_board, direction, x, y);
+				case SUBMARINE: success = ship_list[0].placeShip(ocean_board, direction, x, y);
 					break;
-				case CRUISER: ship_list[1].placeShip(ocean_board, direction, x, y);
+				case CRUISER: success = ship_list[1].placeShip(ocean_board, direction, x, y);
 					break;
-				case DESTROYER: ship_list[2].placeShip(ocean_board, direction, x, y);
+				case DESTROYER: success = ship_list[2].placeShip(ocean_board, direction, x, y);
 					break;
-				case CARRIER: ship_list[3].placeShip(ocean_board, direction, x, y);
+				case CARRIER: success = ship_list[3].placeShip(ocean_board, direction, x, y);
 					break;
-				case BATTLESHIP: ship_list[4].placeShip(ocean_board, direction, x, y);
+				case BATTLESHIP: success = ship_list[4].placeShip(ocean_board, direction, x, y);
 					break;
 			}
+			if (success)
+				vCounter++;
 		}
 	}
 
