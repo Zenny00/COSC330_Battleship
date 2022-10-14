@@ -43,6 +43,8 @@ public class Ship
 	public void incrementHits(){numHits++;}
 
 	public ShipType getType(){return type;}
+	public String[] getIcons() {return icons;}
+	public String getBaseIcon() {return baseIcon;}
 	public boolean isSunk(){return size == numHits;}
 	public boolean isPlaced(){return placed;}
 
