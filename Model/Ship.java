@@ -35,7 +35,7 @@ public class Ship
 	public boolean isSunk(){return size == numHits;}
 	public boolean isPlaced(){return placed;}
 
-	public boolean placeShip(Board input_board, Direction direction, int x, int y)
+	public boolean placeShip(ShipBoard input_board, Direction direction, int x, int y)
 	{
 		try {
 			this.direction = direction;
@@ -53,6 +53,6 @@ public class Ship
 		} catch(Exception nonTileException) { //Throws a nonTileException if the requested tile does not exist, returns false 
 			return false;
 		}
-		return placed = true;
+		return input_board.isValid();
 	}
 }
