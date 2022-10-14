@@ -1,42 +1,30 @@
 public class Ship
 {
-	public enum ShipType
-	{
-		SUBMARINE,
-		CRUSIER,
-		DESTROYER,
-		CARRIER,
-		BATTLESHIP
-	};
-
-	public enum Direction
-	{
-		EAST,
-		WEST,
-		NORTH,
-		SOUTH
-	};
-
 	private int size;
 	private int numHits = 0;
 	private Direction direction;
 	private Tile origin;
 	private	ShipType type;
-	private bool placed = false;
+	private boolean placed = false;
 
 	Ship(ShipType type)
 	{
 		this.type = type;
 		switch (type) {
-			case (ShipType.SUBMARINE):size = 3;
+			case SUBMARINE: 
+				size = 3;
 				break;
-			case (ShipType.CRUSIER):size = 3;
+			case CRUISER: 
+				size = 3;
 				break;
-			case (ShipType.DESTROYER):size = 2;
+			case DESTROYER:
+				size = 2;
 				break;
-			case (ShipType.CARRIER):size = 5;
+			case CARRIER:
+				size = 5;
 				break;
-			case (ShipType.BATTLESHIP):size = 4;
+			case BATTLESHIP:
+				size = 4;
 				break;
 		}
 	}
@@ -44,10 +32,10 @@ public class Ship
 	public void incrementHits(){numHits++;}
 
 	public ShipType getType(){return type;}
-	public bool isSunk(){return size == numHits;}
-	public bool isPlaced(){return placed;}
+	public boolean isSunk(){return size == numHits;}
+	public boolean isPlaced(){return placed;}
 
-	public bool placeShip(Board input_board, Direction direction, int x, int y)
+	public boolean placeShip(Board input_board, Direction direction, int x, int y)
 	{
 		try {
 			this.direction = direction;

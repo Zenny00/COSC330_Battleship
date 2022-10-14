@@ -34,13 +34,13 @@ public class IconDragAndDrop
 
 		//Setup TransferHandlers to move icons between the labels
 		sub_label.setTransferHandler(new TransferHandler("icon"));
-		button.setTransferHandler(new TransferHandler("icon"));
+		water_label.setTransferHandler(new TransferHandler("icon"));
 		des_label.setTransferHandler(new TransferHandler("icon"));
 
 		//Set the flow layout and add labels to the frame
 		frame.setLayout(new FlowLayout());
 		frame.add(sub_label);
-		frame.add(button);
+		frame.add(water_label);
 		frame.add(des_label);
 
 		//Pack the frame and configure closing operation

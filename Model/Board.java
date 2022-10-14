@@ -1,6 +1,6 @@
 public class Board
 {
-	private Tile tiles[][];
+	protected Tile tiles[][];
 
 	public Board(){tiles = new Tile[10][10];}
 

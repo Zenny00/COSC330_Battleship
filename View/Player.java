@@ -20,11 +20,11 @@ public class Player
 
 	public Player(Role role)
 	{
-		this.view = new View();
 		this.role = role;
+		this.view = new View(role);
 		view.addTileListener(new TileListener());
-		view.addJPanel(role);
-		view.setupView();
+		view.addClickListener(new DragListener());
+		view.addDragListener(new DragListener());
       		//role.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
       		role.run(); // run server application
 	}
@@ -47,4 +47,80 @@ public class Player
 		}
 	} //Inner actionListener class
 
+
+	class DragListener implements MouseListener, MouseMotionListener
+	{
+		private Point start_point;
+		
+		public void buttonActionPerformed(ActionEvent e)
+		{
+			Object obj = e.getSource();
+			JPanel panel = null;
+			if (obj instanceof JPanel)
+				panel = (JPanel)obj;
+			
+			panel.revalidate();
+			panel.repaint();
+		}
+
+		public void mousePressed(MouseEvent e)
+		{
+			Object obj = e.getSource();
+			JPanel panel = null;
+			if (obj instanceof JPanel)
+			{
+				System.out.println("HI");
+				panel = (JPanel)obj;
+			}
+
+			start_point = SwingUtilities.convertPoint(panel, e.getPoint(), panel.getParent());
+		}
+
+		public void mouseDragged(MouseEvent e)
+		{
+			Object obj = e.getSource();
+			JPanel panel = null;
+			if (obj instanceof JPanel)
+				panel = (JPanel)obj;
+
+			Point location = SwingUtilities.convertPoint(panel, e.getPoint(), panel.getParent());
+			
+			if (panel.getParent().getBounds().contains(location))
+			{
+				Point newLocation = panel.getLocation();
+				newLocation.translate(location.x-start_point.x, location.y-start_point.y);
+				newLocation.x = Math.max(newLocation.x, 0);
+				newLocation.y = Math.max(newLocation.y, 0);
+				newLocation.x = Math.min(newLocation.x, panel.getParent().getWidth() - panel.getWidth());
+				newLocation.y = Math.min(newLocation.y, panel.getParent().getHeight() - panel.getHeight());
+				panel.setLocation(newLocation);
+				start_point = location;
+			}
+		}	
+
+		public void mouseReleased(MouseEvent e)
+		{
+			start_point = null;
+		}	
+
+		public void mouseEntered(MouseEvent e)
+		{
+			//No action
+		}
+
+		public void mouseExited(MouseEvent e)
+		{
+			//No action
+		}
+
+		public void mouseClicked(MouseEvent e)
+		{
+			//No action
+		}
+
+		public void mouseMoved(MouseEvent e)
+		{
+			//No action
+		}
+	}
 }

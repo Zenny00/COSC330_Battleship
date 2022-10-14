@@ -50,7 +50,7 @@ public class View extends JFrame
 	private JLabel des1 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/DestroyerTile1.png"));
 	private JLabel des2 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/DestroyerTile2.png"));
 	private JPanel destroyer = new JPanel();
-
+	
 	//Init JButton | MUST BE DONE BEFORE CONSTRUCTOR!"
 	private JButton i0j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
 	private JButton i0j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
@@ -162,7 +162,7 @@ public class View extends JFrame
 
 
 	//Constructor 
-	public View()
+	public View(Role connect_panel)
 	{
 		//Setup for Jpanels
 		getContentPane().setLayout(new GridLayout(3, 3));
@@ -211,7 +211,7 @@ public class View extends JFrame
 		shipBox.add(submarine);
 
 		//Setup shipbox for holding ships
-		shipBox.setLayout(new GridLayout(3, 3));
+		shipBox.setLayout(new GridLayout(1, 5));
 
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -221,24 +221,14 @@ public class View extends JFrame
 	
 		//Add panels to content pane	
 		this.getContentPane().add(targetContainerPanel);
+		this.getContentPane().add(((JPanel)connect_panel));
 		this.getContentPane().add(shipContainerPanel);
 		this.getContentPane().add(shipBox);
-	}
-
-	//Adds JPanel to view
-	public void addJPanel(Role panel)
-	{
-		getContentPane().add(((JPanel)panel));		
-	}
-
-	//Setup frame by packing and setting visibility
-	public void setupView()
-	{
+		
 		//Pack and set visibility
 		pack();
 		setVisible(true);
 	}
-
 
 	public void initJButtons()
 	{
@@ -301,6 +291,16 @@ public class View extends JFrame
 		for (JButton[] row: enemyBoard)	
 			for (JButton button: row)
 				button.addActionListener(fire);
+	}
+
+	public void addClickListener(MouseListener listener)
+	{
+		submarine.addMouseListener(listener);
+	}
+
+	public void addDragListener(MouseMotionListener listener)
+	{
+		submarine.addMouseMotionListener(listener);
 	}
 
 	//Add an icon listener to the ships

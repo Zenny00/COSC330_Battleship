@@ -3,14 +3,14 @@ public class Model
 	private Ship ship_list[];
 	private ShipBoard ocean_board;
 	private Board target_board;
-	private string ip_address;
+	//private String ip_address;
 
 	Model()
 	{	
 		ship_list = new Ship[5];
 		ship_list[0] = new Ship(ShipType.SUBMARINE);
 		ship_list[1] = new Ship(ShipType.CRUISER);
-		ship_list[2] = new Ship(ShipType.DESTOYER);
+		ship_list[2] = new Ship(ShipType.DESTROYER);
 		ship_list[3] = new Ship(ShipType.CARRIER);
 		ship_list[4] = new Ship(ShipType.BATTLESHIP);
 
@@ -18,12 +18,12 @@ public class Model
 		target_board = new Board();
 	}
 
-	public void setIP(string ip_address){this.ip_address = ip_address;}
+	//public void setIP(String ip_address){this.ip_address = ip_address;}
 
-	public void setBoard(bool) {
-		ShipType selection;
-		int x, y;
-		Direction direction;
+	public void setBoard(boolean valid) {
+		ShipType selection = null;
+		int x = 0, y = 0;
+		Direction direction = null;
 
 		while (this.hasPlacementsRemaining()) {
 			// read in shiptype, direction, x, y
@@ -32,7 +32,7 @@ public class Model
 					break;
 				case CRUISER: ship_list[1].placeShip(ocean_board, direction, x, y);
 					break;
-				case DESTOYER: ship_list[2].placeShip(ocean_board, direction, x, y);
+				case DESTROYER: ship_list[2].placeShip(ocean_board, direction, x, y);
 					break;
 				case CARRIER: ship_list[3].placeShip(ocean_board, direction, x, y);
 					break;
@@ -44,7 +44,8 @@ public class Model
 
 	// For us in updated ocean_board since target_board 
 	// should be updated when fireShot() is called
-	public void updateBoard(int x, int y, TileType status){
+	public void updateBoard(int x, int y, TileType status) throws nonTileException
+	{
 		ocean_board.getTile(x, y).setType(status);
 	}
 
@@ -60,29 +61,32 @@ public class Model
 	}
 
 	// input_board should be the enemy sea board I think
-	public TileType fireShot(Board input_board, int x, int y) {
+	public TileType fireShot(Board input_board, int x, int y) throws nonTileException 
+	{
 		Tile target = input_board.getTile(x, y);
 		TileType status = target.addShot();
 		return status;
 	}
 
-	public bool hasLost() {
+	public boolean hasLost() {
 		for (Ship currentShip : ship_list)
 			if (!currentShip.isSunk())
 			       return false;
 		return true;	
 	}
-	public bool hasPlacementsRemaining() {
+	public boolean hasPlacementsRemaining() {
 		for (Ship currentShip : ship_list)
 			if (!currentShip.isPlaced())
 				return true;
 		return false;
 	}
 
-	public bool validTarget(int x, int y){return ocean_board.getClickable(x, y);}
-
+	public boolean validTarget(int x, int y){return ocean_board.getClickable(x, y);}
+	
+	/*
         public void sendMessage(ostream os)
         {
               //Send message through the server
         }
+	*/
 }
