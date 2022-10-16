@@ -13,17 +13,16 @@ import java.util.Scanner;
 
 public class Battleship
 {
-	//void runClient();
-	//void runServer();
-
 	public static void main(String args[])
 	{
-		if (args.length < 1)
+		//Check there is only one command line argument
+		if (args.length < 1 || args.length > 1)
 		{
 			System.out.println("Invalid number of command line arguments, please specify either 'Server' or 'Client'.");
 			System.exit(1);
 		}
 
+		//Check which command line argument was passed
 		switch(args[0])
 		{
 			case "Client":
@@ -55,4 +54,3 @@ public class Battleship
 	//Run the server's code
 	static void runServer(){Player player = new Player(new Server());}
 }
-

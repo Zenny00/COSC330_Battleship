@@ -12,25 +12,29 @@ import java.awt.Point;
 
 public class Player
 {
-	//View
+	// May want to use multithreading for the view and server
+	//Player has three members Model, View, and role (either client or server)
 	private View view;
-	//private	Server application = new Server(); // create server
 	private Role role;
-	// private Model model;
+	//private Model model;
 
+	//Player constructor
 	public Player(Role role)
 	{
-		this.role = role;
-		this.view = new View(role);
+		this.role = role; //assign role
+		this.view = new View(role); //Create a new view
+		
+		//Add action listeners to the view
 		view.addTileListener(new TileListener());
-		view.addClickListener(new DragListener());
-		view.addDragListener(new DragListener());
-      		//role.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-      		role.run(); // run server application
+		//view.addClickListener(new DragListener());
+		//view.addDragListener(new DragListener());
+      		
+		role.run(); // run client or server
 	}
 
 	class TileListener implements ActionListener
 	{
+		//When a tile is pressed grab the coordinates
 		public void actionPerformed(ActionEvent e)
 		{
 			Object obj = e.getSource();
@@ -47,18 +51,19 @@ public class Player
 		}
 	} //Inner actionListener class
 
-
+	//Inner class DragListener allows the player to drag ships to different locations on the ship board
 	class DragListener implements MouseListener, MouseMotionListener
 	{
 		private Point start_point;
 		
-		public void buttonActionPerformed(ActionEvent e)
+		public void ActionPerformed(ActionEvent e)
 		{
 			Object obj = e.getSource();
 			JPanel panel = null;
 			if (obj instanceof JPanel)
 				panel = (JPanel)obj;
 			
+			System.out.println("HELLO");
 			panel.revalidate();
 			panel.repaint();
 		}
@@ -69,7 +74,7 @@ public class Player
 			JPanel panel = null;
 			if (obj instanceof JPanel)
 			{
-				System.out.println("HI");
+				System.out.println("HI" + e.getPoint().toString());
 				panel = (JPanel)obj;
 			}
 
@@ -98,6 +103,8 @@ public class Player
 			}
 		}	
 
+		//Must be defined as we are implementing interfaces
+		
 		public void mouseReleased(MouseEvent e)
 		{
 			start_point = null;

@@ -21,7 +21,8 @@ public class View extends JFrame
 	//Constants for the number of ships and the size of each board
 	private final int BOARD_SIZE = 10;
 	private final int NUM_SHIPS = 5;
-	
+	private static double rot = 0.0;	
+
 	//Holds the input and output text
 	private JTextField userInput; 
 	private JTextArea consoleOut;
@@ -42,11 +43,19 @@ public class View extends JFrame
 	private JPanel shipBox = new JPanel();
 
 	//Ships
-	private JLabel sub1 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile1.png"));
-	private JLabel sub2 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile2.png"));
-	private JLabel sub3 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile3.png"));
-	private JPanel submarine = new JPanel();
+	private ImageIcon sub_icon = new ImageIcon("Graphics/Ships/Submarine.png");
+	private ImageIcon sub1_icon = new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile1.png");
+	private ImageIcon sub2_icon = new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile2.png");
+	private ImageIcon sub3_icon = new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile3.png");
 
+	private JLabel sub;
+	private JLabel sub1;
+	private JLabel sub2;
+	private JLabel sub3;
+
+	private JPanel submarine; 
+
+	//https://www.reddit.com/r/learnprogramming/comments/7dm4z2/java_how_to_rotate_an_imageicon_in_a_jlabel_with/
 	private JLabel des1 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/DestroyerTile1.png"));
 	private JLabel des2 = new JLabel(new ImageIcon("Graphics/Ships/ShipMod/DestroyerTile2.png"));
 	private JPanel destroyer = new JPanel();
@@ -199,10 +208,55 @@ public class View extends JFrame
 		//Add destroyer to the content pane
 		shipBox.add(destroyer);
 
+		sub = new JLabel(null, sub_icon, JLabel.CENTER) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+				g2.rotate(rot, sub_icon.getIconWidth() / 2, sub1_icon.getIconHeight() / 2);
+				g2.drawImage(sub_icon.getImage(), 0, 0, null);
+			}
+		};
+	
+		//Setup TransferHandlers to move icons between the labels
+		sub.setTransferHandler(new TransferHandler("icon"));
+
+		//https://stackoverflow.com/questions/22698435/listen-for-mouse-released-event-on-component-on-which-the-mouse-was-not-pressed
+		sub.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getModifiers() == MouseEvent.BUTTON3_MASK && e.getClickCount() == 1) {
+					rot += Math.PI / 2;
+					sub.repaint();
+				}
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if (e.getModifiers() == MouseEvent.BUTTON1_MASK && e.getClickCount() == 1) 
+				{
+					JComponent c = (JComponent)e.getSource();
+					TransferHandler handler = c.getTransferHandler();
+					handler.exportAsDrag(c, e, TransferHandler.COPY);
+				}	
+			}
+
+			public void mouseReleased(MouseEvent e)
+			{
+					JComponent c = (JComponent)e.getSource();
+					//if (c instanceof JButton)
+					//{
+						JButton start = (JButton)c;
+						System.out.println(start.getActionCommand());
+					//}
+			}
+		});
+
+		submarine = new JPanel();
+
 		//Configure submarine
-		submarine.add(sub1);
-		submarine.add(sub2);
-		submarine.add(sub3);
+		submarine.add(sub);
+		//submarine.add(sub2);
+		//submarine.add(sub3);
 		submarine.setLayout(new BoxLayout(submarine, BoxLayout.Y_AXIS));
 
 		//Assign submarine to the ship array
@@ -241,11 +295,10 @@ public class View extends JFrame
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
 				
 				//Set text to coordinates and scale
-				//button.setText(String.valueOf(i) + " " + String.valueOf(j));
 				button.setActionCommand(String.valueOf(i) + " " + String.valueOf(j));
 				button.setPreferredSize(new Dimension(30, 30));
-				//button.setEnabled(false);
 				
+				button.setTransferHandler(new TransferHandler("icon"));
 				//Add JButton to JPanel
 				shipButtonPanel.add(button);
 				j++;
@@ -325,8 +378,7 @@ public class View extends JFrame
 	public JButton getJButton(int x, int y)
 	{
 		//What board are we getting a tile from?
-		//TODO
-		return new JButton();
+		return enemyBoard[x][y];	
 	}
 
 	//Update a button at a specified location in the grid
@@ -449,4 +501,15 @@ public class View extends JFrame
 
 //						INNER CLASSES
 //|====================================================================================================|	
+//Define the transfer handler
+	class DragMouseAdapter extends MouseAdapter
+	{
+		//When the mouse is pressed get the source component and transfer the icon to the new location
+		public void mousePressed(MouseEvent e)
+		{
+			JComponent c = (JComponent)e.getSource();
+			TransferHandler handler = c.getTransferHandler();
+			handler.exportAsDrag(c, e, TransferHandler.COPY);	
+		}
+	}
 }

@@ -82,7 +82,7 @@ public class ImagePanel extends JPanel
 		//Check the mouse location and if it is inside the sprite, then allow the user to move the icon
 		public void mouseDragged(MouseEvent e)
 		{
-			Check the mouse location
+			//Check the mouse location
 			if (((e.getPoint().getX() >= image_corner.getX()) && (e.getPoint().getX() <= image_corner.getX() + img_width)) && ((e.getPoint().getY() >= image_corner.getY()) && (e.getPoint().getY() <= image_corner.getY() + img_height)))
 			{
 				//Get the point of the event
