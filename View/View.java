@@ -418,6 +418,9 @@ public class View extends JFrame
 		//TODO
 	}
 
+	public JPanel getTargetPanel() {return targetButtonPanel;}
+	public JPanel getShipPanel() {return shipButtonPanel;}
+
 	//Render the ship
 	public boolean drawShip(ImageIcon ship)
 	{

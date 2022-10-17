@@ -28,6 +28,34 @@ public class Player
       		role.runServer(); // run server application
 	}
 
+	// Enable/Disable for Target Button Panel
+	// True enables board and checks if each button is clickable
+	// False disables all tiles in the panel
+	public void setTaretBoardEnabled(boolean isEnabled) {
+		int x, y;
+		view.getTargetPanel().setEnabled(isEnabled);
+
+		Component[] tiles = panel.getComponenets();
+		for (Component tile : tiles) {
+			String coords[] = tile.getActionCommand().split(" ");
+			x = Integer.parseInt(coords[0]);
+			y = Integer.parseInt(coords[1]);
+			if (Model.getTargetBoard().getClickable(x, y) && isEnabled)
+				tile.setEnabled(isEnabled);
+			else
+				tile.setEnabled(false);
+		}
+	}
+
+	public void setOceanBoardEnabled(boolean isEnabled) {
+		int x, y;
+		view.getShipPanel().setEnabled(isEnabled);
+
+		Component[] tiles = panel.getComponents();
+		for (Component tile : tiles)
+			tile.setEnabled(isEnabled);
+	}
+
 	class TileListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
