@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.*;
+import javax.swing.TransferHandler.TransferSupport;
 
 public class View extends JFrame
 {
@@ -218,50 +219,16 @@ public class View extends JFrame
 		//Add destroyer to the content pane
 		shipBox.add(destroyer);
 
-		sub = new JLabel(sub_icon)
-		{
-			@Override
-			protected void paintComponent(Graphics g) {
-				Graphics2D g2 = (Graphics2D) g;
-				//g2.rotate(rot, sub_icon.getIconWidth() / 2, sub1_icon.getIconHeight() / 2);
-				//g2.drawImage(sub_icon.getImage(), 0, 0, null);
-				sub_icon.setDegrees(sub_icon.getDegrees() - 90);
-				sub_icon.paintIcon(this, g2, 0, 0);	
-			}
-		};
+		sub = new JLabel(sub_icon);	
 
-		sub.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getModifiers() == MouseEvent.BUTTON3_MASK) 
-				{
-					rot += Math.PI / 2;
-					sub.revalidate();
-					sub.repaint();
-				}
-			}			
+		sub.addMouseListener(new RotationHandler());	
 
-			public void mousePressed(MouseEvent e)
-			{
-				if (e.getModifiers() == MouseEvent.BUTTON1_MASK) 
-				{
-					JComponent c = (JComponent)e.getSource();
-					TransferHandler handler = c.getTransferHandler();
-					//handler.setDragImage(iconToImage(sub_icon.getIcon()));
-					handler.exportAsDrag(c, e, TransferHandler.COPY);
-					handler.setDragImage(sub_image);
-				}	
-			}
-		});
-		
 		//Setup TransferHandlers to move icons between the labels
 		sub.setTransferHandler(new TransferHandler("icon"));
 
 		//https://stackoverflow.com/questions/22698435/listen-for-mouse-released-event-on-component-on-which-the-mouse-was-not-pressed
 
-
 		//submarine = new JPanel();
-
 
 		//Configure submarine
 		//submarine.add(sub);
@@ -328,7 +295,6 @@ public class View extends JFrame
 				//Set text to coordinates and scale
 				button.setActionCommand(String.valueOf(i) + " " + String.valueOf(j));
 				button.setPreferredSize(new Dimension(30, 30));
-				
 				button.setTransferHandler(new TransferHandler("icon"));
 				//Add JButton to JPanel
 				shipButtonPanel.add(button);
@@ -544,6 +510,51 @@ public class View extends JFrame
 			JComponent c = (JComponent)e.getSource();
 			TransferHandler handler = c.getTransferHandler();
 			handler.exportAsDrag(c, e, TransferHandler.COPY);	
+		}
+
+		public void mouseReleased(MouseEvent e)
+		{
+			Object obj = e.getSource();
+			if (obj instanceof JButton)
+			{	
+				JButton button = (JButton)obj;
+				System.out.println(button.getActionCommand());
+			}
+			
+		}
+
+	}
+
+	class RotationHandler extends MouseAdapter 
+	{
+		@Override
+		public void mouseClicked(MouseEvent e) 
+		{
+			if (e.getModifiers() == MouseEvent.BUTTON3_MASK) 
+			{
+				Object obj = e.getSource();
+				if (obj instanceof JLabel)
+				{
+					JLabel ship = (JLabel)obj;
+					RotatedIcon icon = new RotatedIcon(ship.getIcon());
+					icon.setDegrees(icon.getDegrees() - 90);
+					ship.setIcon(icon);
+					ship.revalidate();
+					ship.repaint();
+				}
+			}
+		}			
+		
+		public void mousePressed(MouseEvent e)
+		{
+			if (e.getModifiers() == MouseEvent.BUTTON1_MASK) 
+			{
+				Component comp = (Component)e.getSource();
+				JComponent c = (JComponent)e.getSource();
+				TransferHandler handler = c.getTransferHandler();
+				handler.exportAsDrag(c, e, TransferHandler.COPY);
+				//handler.setDragImage(sub_image);
+			}	
 		}
 	}
 }
