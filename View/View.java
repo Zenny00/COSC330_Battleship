@@ -6,9 +6,12 @@
 //Import required libraries
 import javax.swing.*;
 import java.awt.*;
+import java.awt.dnd.*;
+import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.image.*;
 
 public class View extends JFrame
 {
@@ -43,7 +46,8 @@ public class View extends JFrame
 	private JPanel shipBox = new JPanel();
 
 	//Ships
-	private ImageIcon sub_icon = new ImageIcon("Graphics/Ships/Submarine.png");
+	private BufferedImage sub_image = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);//"Graphics/Ships/Submarine.png");
+	private RotatedIcon sub_icon = new RotatedIcon(new ImageIcon("Graphics/Ships/Submarine.png"), 0);
 	private ImageIcon sub1_icon = new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile1.png");
 	private ImageIcon sub2_icon = new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile2.png");
 	private ImageIcon sub3_icon = new ImageIcon("Graphics/Ships/ShipMod/SubmarineTile3.png");
@@ -161,7 +165,13 @@ public class View extends JFrame
 	private JButton i9j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
 	private JButton i9j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
 	private JButton i9j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));		
-	
+
+	private int img_width = (int)sub_icon.getIconHeight();
+	private int img_height = (int)sub_icon.getIconWidth();
+
+        private Point image_corner = new Point();
+        private Point previousPoint;
+
 	//|====================================================================================================|
 	
 
@@ -208,61 +218,62 @@ public class View extends JFrame
 		//Add destroyer to the content pane
 		shipBox.add(destroyer);
 
-		sub = new JLabel(null, sub_icon, JLabel.CENTER) {
+		sub = new JLabel(sub_icon)
+		{
 			@Override
 			protected void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
-				g2.rotate(rot, sub_icon.getIconWidth() / 2, sub1_icon.getIconHeight() / 2);
-				g2.drawImage(sub_icon.getImage(), 0, 0, null);
+				//g2.rotate(rot, sub_icon.getIconWidth() / 2, sub1_icon.getIconHeight() / 2);
+				//g2.drawImage(sub_icon.getImage(), 0, 0, null);
+				sub_icon.setDegrees(sub_icon.getDegrees() - 90);
+				sub_icon.paintIcon(this, g2, 0, 0);	
 			}
 		};
-	
+
+		sub.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getModifiers() == MouseEvent.BUTTON3_MASK) 
+				{
+					rot += Math.PI / 2;
+					sub.revalidate();
+					sub.repaint();
+				}
+			}			
+
+			public void mousePressed(MouseEvent e)
+			{
+				if (e.getModifiers() == MouseEvent.BUTTON1_MASK) 
+				{
+					JComponent c = (JComponent)e.getSource();
+					TransferHandler handler = c.getTransferHandler();
+					//handler.setDragImage(iconToImage(sub_icon.getIcon()));
+					handler.exportAsDrag(c, e, TransferHandler.COPY);
+					handler.setDragImage(sub_image);
+				}	
+			}
+		});
+		
 		//Setup TransferHandlers to move icons between the labels
 		sub.setTransferHandler(new TransferHandler("icon"));
 
 		//https://stackoverflow.com/questions/22698435/listen-for-mouse-released-event-on-component-on-which-the-mouse-was-not-pressed
-		sub.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getModifiers() == MouseEvent.BUTTON3_MASK && e.getClickCount() == 1) {
-					rot += Math.PI / 2;
-					sub.repaint();
-				}
-			}
-			
-			public void mousePressed(MouseEvent e)
-			{
-				if (e.getModifiers() == MouseEvent.BUTTON1_MASK && e.getClickCount() == 1) 
-				{
-					JComponent c = (JComponent)e.getSource();
-					TransferHandler handler = c.getTransferHandler();
-					handler.exportAsDrag(c, e, TransferHandler.COPY);
-				}	
-			}
 
-			public void mouseReleased(MouseEvent e)
-			{
-					JComponent c = (JComponent)e.getSource();
-					//if (c instanceof JButton)
-					//{
-						JButton start = (JButton)c;
-						System.out.println(start.getActionCommand());
-					//}
-			}
-		});
 
-		submarine = new JPanel();
+		//submarine = new JPanel();
+
 
 		//Configure submarine
-		submarine.add(sub);
+		//submarine.add(sub);
 		//submarine.add(sub2);
 		//submarine.add(sub3);
-		submarine.setLayout(new BoxLayout(submarine, BoxLayout.Y_AXIS));
+		//submarine.setLayout(new BoxLayout(submarine, BoxLayout.Y_AXIS));
 
 		//Assign submarine to the ship array
 		ships[1] = submarine;
 		//Add submarine to the content pane
-		shipBox.add(submarine);
+		shipBox.add(sub);
+		image_corner = new Point(sub.getX(), sub.getY());
 
 		//Setup shipbox for holding ships
 		shipBox.setLayout(new GridLayout(1, 5));
@@ -283,6 +294,26 @@ public class View extends JFrame
 		pack();
 		setVisible(true);
 	}
+
+	static Image iconToImage(Icon icon) 
+	{
+		if (icon instanceof ImageIcon)
+			return ((ImageIcon)icon).getImage();
+	   	else 
+		{
+			int w = icon.getIconWidth();
+	      		int h = icon.getIconHeight();
+	      		GraphicsEnvironment ge = 
+			GraphicsEnvironment.getLocalGraphicsEnvironment();
+		     	GraphicsDevice gd = ge.getDefaultScreenDevice();
+		      	GraphicsConfiguration gc = gd.getDefaultConfiguration();
+		      	BufferedImage image = gc.createCompatibleImage(w, h);
+		      	Graphics2D g = image.createGraphics();
+		     	icon.paintIcon(null, g, 0, 0);
+		      	g.dispose();
+		      	return image;
+		}	
+	}		
 
 	public void initJButtons()
 	{
