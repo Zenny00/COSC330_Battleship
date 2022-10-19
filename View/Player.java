@@ -42,7 +42,7 @@ public class Player
 				return;
 
 			JButton button = (JButton)obj;
-			button.setIcon(new ImageIcon("./WaterMiss.png"));
+			button.setIcon(new ImageIcon("./Graphics/Water/WaterMiss.png"));
 			
 			String coords[] = button.getActionCommand().split(" ");
 			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));

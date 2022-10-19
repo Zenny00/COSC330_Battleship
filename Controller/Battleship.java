@@ -5,8 +5,8 @@
 //Import required libraries
 package controller;
 
-import model.*;
-import view.*;
+import package.model.*;
+import package.view.*;
 
 import java.awt.BorderLayout;
 import javax.swing.*;

@@ -331,8 +331,12 @@ public class View extends JFrame
 
 		sub.addMouseListener(new RotationHandler());	
 
+		//Drag and drop
+		sub.addMouseListener(new ShipDrag());
+		sub.addMouseMotionListener(new ShipDrag());
+
 		//Setup TransferHandlers to move icons between the labels
-		sub.setTransferHandler(new TransferHandler("icon"));
+		//sub.setTransferHandler(new TransferHandler("icon"));
 
 		//https://stackoverflow.com/questions/22698435/listen-for-mouse-released-event-on-component-on-which-the-mouse-was-not-pressed
 
@@ -405,8 +409,6 @@ public class View extends JFrame
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setTransferHandler(new TransferHandler("icon"));
 				//Add JButton to JPanel
-				button.addMouseListener(new ShipDrag());
-				button.addMouseMotionListener(new ShipDrag());
 				shipButtonPanel.add(button);
 				j++;
 			}	
@@ -815,7 +817,8 @@ public class View extends JFrame
 				}
 			}
 		}			
-		
+	
+		/*	
 		public void mousePressed(MouseEvent e)
 		{
 			if (e.getModifiers() == MouseEvent.BUTTON1_MASK) 
@@ -827,5 +830,6 @@ public class View extends JFrame
 				//handler.setDragImage(sub_image);
 			}	
 		}
+		*/
 	}
 }
