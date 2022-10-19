@@ -783,10 +783,13 @@ public class View extends JFrame
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			System.out.println("Welcome to Java Programming!");
-			Object obj = e.getSource();
-			if (obj instanceof JButton)
+			//Component obj = getComponentAt(e.getSource());
+			
+			JComponent comp = (JComponent) e.getSource();
+         		Component childComp = comp.getComponentAt(e.getPoint());
+			if (childComp instanceof JButton)
 			{
-				JButton button = (JButton)obj;
+				JButton button = (JButton)childComp;
 				String coords[] = button.getActionCommand().split(" ");
 				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
 				int x = (int)point.getX();
@@ -816,20 +819,6 @@ public class View extends JFrame
 					ship.repaint();
 				}
 			}
-		}			
-	
-		/*	
-		public void mousePressed(MouseEvent e)
-		{
-			if (e.getModifiers() == MouseEvent.BUTTON1_MASK) 
-			{
-				Component comp = (Component)e.getSource();
-				JComponent c = (JComponent)e.getSource();
-				TransferHandler handler = c.getTransferHandler();
-				handler.exportAsDrag(c, e, TransferHandler.COPY);
-				//handler.setDragImage(sub_image);
-			}	
-		}
-		*/
+		}				
 	}
 }
