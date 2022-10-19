@@ -1,9 +1,17 @@
 public class Board
 {
+	protected final int BOARD_SIZE = 10;
 	protected Tile tiles[][];
 
-	public Board(){tiles = new Tile[10][10];}
-
+	public Board()
+	{
+		//Initialize all tiles to SEA with proper coordiantes
+		tiles = new Tile[BOARD_SIZE][BOARD_SIZE];
+		for (int i = 0; i < BOARD_SIZE; i++)
+			for (int j = 0; j < BOARD_SIZE; j++)
+				tiles[i][j] = new Tile(i, j);
+	}
+	
 	public Tile getTile(int x, int y) throws nonTileException
 	{
 		if (x <= 9 && y <= 9)

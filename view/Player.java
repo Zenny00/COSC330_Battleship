@@ -16,14 +16,15 @@ public class Player
 	//Player has three members Model, View, and role (either client or server)
 	private View view;
 	private Role role;
-	//private Model model;
+	private Model model;
 
 	//Player constructor
 	public Player(Role role)
 	{
 		this.role = role; //assign role
-		this.view = new View(role); //Create a new view
-		
+		this.model = new Model();
+		this.view = new View(model, role); //Create a new view
+
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
 		//view.addClickListener(new DragListener());

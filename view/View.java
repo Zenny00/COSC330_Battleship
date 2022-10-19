@@ -13,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.*;
 import javax.swing.border.*;
+import java.lang.Math;
 
 public class View extends JFrame
 {
@@ -275,6 +276,10 @@ public class View extends JFrame
         private Point image_corner = new Point();
         private Point previousPoint;
 
+	private Model model;
+	private int direction = 0;
+	private int length = 3;
+
 	//|====================================================================================================|
 	
 
@@ -284,8 +289,11 @@ public class View extends JFrame
 
 
 	//Constructor 
-	public View(Role connect_panel)
+	public View(Model model, Role connect_panel)
 	{
+		//Set the model
+		this.model = model;
+
 		//Setup for Jpanels
 		GridLayout contentLayout = new GridLayout(2, 2);
 		contentLayout.setVgap(10);
@@ -377,7 +385,7 @@ public class View extends JFrame
 
 	public void initJButtons(ShipDrag drag)
 	{
-		int i = 0, j = 0;
+		int x = 0, y = 0;
 		for (JButton[] row: playerBoard)
 		{
 			for (JButton button: row)
@@ -386,31 +394,31 @@ public class View extends JFrame
 				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
 				
 				//Set text to coordinates and scale
-				button.setActionCommand(String.valueOf(i) + " " + String.valueOf(j));
+				button.setActionCommand(String.valueOf(x) + " " + String.valueOf(y));
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setTransferHandler(new TransferHandler("icon"));
 				button.addMouseListener(drag);
-				button.setEnabled(false);
+				//button.setEnabled(false);
 				//Add JButton to JPanel
 				shipButtonPanel.add(button);
-				j++;
+				x++;
 			}	
-			j = 0;
-			i++;
+			x = 0;
+			y++;
 		}
 
-		i = 0;
+		x = 0;
 		for (JButton[] row: enemyBoard)
 		{	
 			for (JButton button: row)
 			{
-				button.setActionCommand(String.valueOf(i) + " " + String.valueOf(j));
+				button.setActionCommand(String.valueOf(x) + " " + String.valueOf(y));
 				button.setPreferredSize(new Dimension(30, 30));
 				targetButtonPanel.add(button);
-				j++;
+				x++;
 			}
-			j = 0;
-			i++;
+			x = 0;
+			y++;
 		}
 	}
 	//Get user input from the JTextField
@@ -713,7 +721,7 @@ public class View extends JFrame
 		{
 			Object obj = e.getSource();
 			if (obj instanceof JButton)
-			{	
+			\{	
 				JButton button = (JButton)obj;
 				System.out.println(button.getActionCommand());
 			}
@@ -789,7 +797,46 @@ public class View extends JFrame
 				int x = (int)point.getX();
 				int y = (int)point.getY();
                 		System.out.println(x + " " + y);
-				playerBoard[x][y].setIcon(sub1_icon);		
+				playerBoard[x][y].setIcon(sub1_icon);
+				
+				if (model.getShipBoard().canPlace(x, y, direction, length))
+				{
+					System.out.println("Can place!");
+					switch(direction)
+					{
+						case 0:	
+							//Place ship on the selected tiles
+							for (int i = y; i <= y + length ; i++)
+							{
+								playerBoard[x][i].setIcon(null);
+								playerBoard[x][i].setIcon(sub1_icon);
+							}
+							break;
+						case 1:		
+							for (int i = x; i <= x + length ; i++)
+							{
+								playerBoard[i][y].setIcon(null);
+								playerBoard[i][y].setIcon(sub1_icon);
+							}
+							break;
+						case 2:	
+							for (int i = y; i >= y - length; i--)
+							{
+								playerBoard[i][y].setIcon(null);
+								playerBoard[i][y].setIcon(sub1_icon);
+							}
+							break;
+						case 3:
+							for (int i = x; i >= x - length; i--)
+							{
+								playerBoard[x][i].setIcon(null);
+								playerBoard[x][i].setIcon(sub1_icon);
+							}
+							break;
+					}
+				}
+				else
+					System.out.println("Cannot place!");	
 			}
 		}
 	}
@@ -805,9 +852,15 @@ public class View extends JFrame
 				Object obj = e.getSource();
 				if (obj instanceof JLabel)
 				{
+					direction++;
+					if (direction > 3)
+						direction = 0;
+
 					JLabel ship = (JLabel)obj;
 					RotatedIcon icon = new RotatedIcon(ship.getIcon());
 					icon.setDegrees(icon.getDegrees() - 90);
+					//direction = Math.abs((int)icon.getDegrees());
+					System.out.println(direction);
 					ship.setIcon(icon);
 					ship.revalidate();
 					ship.repaint();

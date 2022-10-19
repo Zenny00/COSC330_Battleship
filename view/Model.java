@@ -35,7 +35,7 @@ public class Model
 			selection = ship_list[vCounter].getType();
 			x = random.nextInt(9);
 			y = random.nextInt(9);
-			direction = Direction.random();
+			direction = Direction.NORTH; //Direction.random();
 
 			switch(selection) {
 				case SUBMARINE: success = ship_list[0].placeShip(ocean_board, direction, x, y);
