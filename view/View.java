@@ -303,9 +303,7 @@ public class View extends JFrame
 		//Setup boards
 		assignEnemyBoard();
 		assignPlayerBoard();
-
-		//Initialize 2D array for boards
-		initJButtons();
+	
 		//addTileListener(new TileListener()); 
 
 		//				--- CONFIGURE SHIPS ---
@@ -332,8 +330,11 @@ public class View extends JFrame
 		sub.addMouseListener(new RotationHandler());	
 
 		//Drag and drop
-		sub.addMouseListener(new ShipDrag());
-		sub.addMouseMotionListener(new ShipDrag());
+		ShipDrag drag_ship = new ShipDrag();
+		//Initialize 2D array for boards
+		initJButtons(drag_ship);
+		sub.addMouseListener(drag_ship);
+		sub.addMouseMotionListener(drag_ship);
 
 		//Setup TransferHandlers to move icons between the labels
 		//sub.setTransferHandler(new TransferHandler("icon"));
@@ -368,33 +369,13 @@ public class View extends JFrame
 		this.getContentPane().add(((JPanel)connect_panel));
 		this.getContentPane().add(shipContainerPanel);
 		this.getContentPane().add(shipBox);
-		
+			
 		//Pack and set visibility
 		pack();
 		setVisible(true);
-	}
-
-	static Image iconToImage(Icon icon) 
-	{
-		if (icon instanceof ImageIcon)
-			return ((ImageIcon)icon).getImage();
-	   	else 
-		{
-			int w = icon.getIconWidth();
-	      		int h = icon.getIconHeight();
-	      		GraphicsEnvironment ge = 
-			GraphicsEnvironment.getLocalGraphicsEnvironment();
-		     	GraphicsDevice gd = ge.getDefaultScreenDevice();
-		      	GraphicsConfiguration gc = gd.getDefaultConfiguration();
-		      	BufferedImage image = gc.createCompatibleImage(w, h);
-		      	Graphics2D g = image.createGraphics();
-		     	icon.paintIcon(null, g, 0, 0);
-		      	g.dispose();
-		      	return image;
-		}	
 	}		
 
-	public void initJButtons()
+	public void initJButtons(ShipDrag drag)
 	{
 		int i = 0, j = 0;
 		for (JButton[] row: playerBoard)
@@ -408,6 +389,8 @@ public class View extends JFrame
 				button.setActionCommand(String.valueOf(i) + " " + String.valueOf(j));
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setTransferHandler(new TransferHandler("icon"));
+				button.addMouseListener(drag);
+				button.setEnabled(false);
 				//Add JButton to JPanel
 				shipButtonPanel.add(button);
 				j++;
@@ -744,6 +727,11 @@ public class View extends JFrame
 		
 	class ShipDrag extends MouseAdapter
 	{
+		//Keep track of where the mouse is
+		//Object firstEntered;
+		//Object lastEntered;
+		Component lastEntered;
+
 		@Override
 		public void mouseDragged(MouseEvent e)
 		{
@@ -757,6 +745,9 @@ public class View extends JFrame
 			*/
 			System.out.println("HI");
 			
+			//Set the first component to the object was pressed on
+			//firstEntered = e.getSource();
+			//System.out.println(firstEntered.getClass());	
 		}	
 
 		public void mouseMoved(MouseEvent e)
@@ -772,12 +763,15 @@ public class View extends JFrame
 
 		}
 
-		public void mouseEntered(MouseEvent arg0) {
-
+		public void mouseEntered(MouseEvent e)
+	       	{
+			//Set the last entered to the componet we are currently on
+			lastEntered = e.getComponent();
 		}
 
-		public void mousePressed(MouseEvent arg0) {
-
+		public void mousePressed(MouseEvent e) 
+		{
+			//TODO			
 		}
 		
 		@Override
@@ -785,11 +779,11 @@ public class View extends JFrame
 			System.out.println("Welcome to Java Programming!");
 			//Component obj = getComponentAt(e.getSource());
 			
-			JComponent comp = (JComponent) e.getSource();
-         		Component childComp = comp.getComponentAt(e.getPoint());
-			if (childComp instanceof JButton)
+			//JComponent comp = (JComponent) e.getSource();
+         		//Object obj = e.getSource();
+			if (lastEntered instanceof JButton)
 			{
-				JButton button = (JButton)childComp;
+				JButton button = (JButton)lastEntered;
 				String coords[] = button.getActionCommand().split(" ");
 				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
 				int x = (int)point.getX();
