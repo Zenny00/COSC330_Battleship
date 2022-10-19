@@ -1,7 +1,11 @@
 This folder houses the Controller components of our VMC design for Battleship.
 
 File Index:
-Battleship.java
-Player.java
-Role.java
-Server.java
+* Attack.java
+* Battleship.java
+* Defend.java
+* Initial.java
+* Player.java
+* Role.java
+* Server.java
+* State.java
