@@ -14,6 +14,9 @@ import java.awt.Point;
 import java.awt.image.*;
 import javax.swing.border.*;
 import java.lang.Math;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 
 public class View extends JFrame
 {
@@ -34,7 +37,7 @@ public class View extends JFrame
 
 	//Array of JButtons for the player's boards
 	private JButton playerBoard[][] = new JButton[BOARD_SIZE][BOARD_SIZE];
-	private JButton enemyBoard[][] = new JButton[BOARD_SIZE][BOARD_SIZE];
+	private JButton targetBoard[][] = new JButton[BOARD_SIZE][BOARD_SIZE];
 
 	//Array of image icons to hold ships
 	private JPanel ships[] = new JPanel[NUM_SHIPS];
@@ -67,209 +70,207 @@ public class View extends JFrame
 	private JPanel destroyer = new JPanel();
 	
 	//Init JButton | MUST BE DONE BEFORE CONSTRUCTOR!"
-	private JButton i0j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i0j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i1j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i2j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i3j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i4j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i5j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i6j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i7j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i8j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton i9j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));		
-
-	//Ship tiles
-	private JButton ship_i0j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i0j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i1j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i2j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i3j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i4j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i5j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i6j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i7j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i8j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j0= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j1= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j2= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j3= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j4= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j5= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j6= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j7= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j8= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-	private JButton ship_i9j9= new JButton(new ImageIcon("Graphics/Water/Water.png"));
-
+	private JButton ship_i0j0= new JButton();
+	private JButton ship_i0j1= new JButton();
+	private JButton ship_i0j2= new JButton();
+	private JButton ship_i0j3= new JButton();
+	private JButton ship_i0j4= new JButton();
+	private JButton ship_i0j5= new JButton();
+	private JButton ship_i0j6= new JButton();
+	private JButton ship_i0j7= new JButton();
+	private JButton ship_i0j8= new JButton();
+	private JButton ship_i0j9= new JButton();
+	private JButton ship_i1j0= new JButton();
+	private JButton ship_i1j1= new JButton();
+	private JButton ship_i1j2= new JButton();
+	private JButton ship_i1j3= new JButton();
+	private JButton ship_i1j4= new JButton();
+	private JButton ship_i1j5= new JButton();
+	private JButton ship_i1j6= new JButton();
+	private JButton ship_i1j7= new JButton();
+	private JButton ship_i1j8= new JButton();
+	private JButton ship_i1j9= new JButton();
+	private JButton ship_i2j0= new JButton();
+	private JButton ship_i2j1= new JButton();
+	private JButton ship_i2j2= new JButton();
+	private JButton ship_i2j3= new JButton();
+	private JButton ship_i2j4= new JButton();
+	private JButton ship_i2j5= new JButton();
+	private JButton ship_i2j6= new JButton();
+	private JButton ship_i2j7= new JButton();
+	private JButton ship_i2j8= new JButton();
+	private JButton ship_i2j9= new JButton();
+	private JButton ship_i3j0= new JButton();
+	private JButton ship_i3j1= new JButton();
+	private JButton ship_i3j2= new JButton();
+	private JButton ship_i3j3= new JButton();
+	private JButton ship_i3j4= new JButton();
+	private JButton ship_i3j5= new JButton();
+	private JButton ship_i3j6= new JButton();
+	private JButton ship_i3j7= new JButton();
+	private JButton ship_i3j8= new JButton();
+	private JButton ship_i3j9= new JButton();
+	private JButton ship_i4j0= new JButton();
+	private JButton ship_i4j1= new JButton();
+	private JButton ship_i4j2= new JButton();
+	private JButton ship_i4j3= new JButton();
+	private JButton ship_i4j4= new JButton();
+	private JButton ship_i4j5= new JButton();
+	private JButton ship_i4j6= new JButton();
+	private JButton ship_i4j7= new JButton();
+	private JButton ship_i4j8= new JButton();
+	private JButton ship_i4j9= new JButton();
+	private JButton ship_i5j0= new JButton();
+	private JButton ship_i5j1= new JButton();
+	private JButton ship_i5j2= new JButton();
+	private JButton ship_i5j3= new JButton();
+	private JButton ship_i5j4= new JButton();
+	private JButton ship_i5j5= new JButton();
+	private JButton ship_i5j6= new JButton();
+	private JButton ship_i5j7= new JButton();
+	private JButton ship_i5j8= new JButton();
+	private JButton ship_i5j9= new JButton();
+	private JButton ship_i6j0= new JButton();
+	private JButton ship_i6j1= new JButton();
+	private JButton ship_i6j2= new JButton();
+	private JButton ship_i6j3= new JButton();
+	private JButton ship_i6j4= new JButton();
+	private JButton ship_i6j5= new JButton();
+	private JButton ship_i6j6= new JButton();
+	private JButton ship_i6j7= new JButton();
+	private JButton ship_i6j8= new JButton();
+	private JButton ship_i6j9= new JButton();
+	private JButton ship_i7j0= new JButton();
+	private JButton ship_i7j1= new JButton();
+	private JButton ship_i7j2= new JButton();
+	private JButton ship_i7j3= new JButton();
+	private JButton ship_i7j4= new JButton();
+	private JButton ship_i7j5= new JButton();
+	private JButton ship_i7j6= new JButton();
+	private JButton ship_i7j7= new JButton();
+	private JButton ship_i7j8= new JButton();
+	private JButton ship_i7j9= new JButton();
+	private JButton ship_i8j0= new JButton();
+	private JButton ship_i8j1= new JButton();
+	private JButton ship_i8j2= new JButton();
+	private JButton ship_i8j3= new JButton();
+	private JButton ship_i8j4= new JButton();
+	private JButton ship_i8j5= new JButton();
+	private JButton ship_i8j6= new JButton();
+	private JButton ship_i8j7= new JButton();
+	private JButton ship_i8j8= new JButton();
+	private JButton ship_i8j9= new JButton();
+	private JButton ship_i9j0= new JButton();
+	private JButton ship_i9j1= new JButton();
+	private JButton ship_i9j2= new JButton();
+	private JButton ship_i9j3= new JButton();
+	private JButton ship_i9j4= new JButton();
+	private JButton ship_i9j5= new JButton();
+	private JButton ship_i9j6= new JButton();
+	private JButton ship_i9j7= new JButton();
+	private JButton ship_i9j8= new JButton();
+	private JButton ship_i9j9= new JButton();
+	private JButton target_i0j0= new JButton();
+	private JButton target_i0j1= new JButton();
+	private JButton target_i0j2= new JButton();
+	private JButton target_i0j3= new JButton();
+	private JButton target_i0j4= new JButton();
+	private JButton target_i0j5= new JButton();
+	private JButton target_i0j6= new JButton();
+	private JButton target_i0j7= new JButton();
+	private JButton target_i0j8= new JButton();
+	private JButton target_i0j9= new JButton();
+	private JButton target_i1j0= new JButton();
+	private JButton target_i1j1= new JButton();
+	private JButton target_i1j2= new JButton();
+	private JButton target_i1j3= new JButton();
+	private JButton target_i1j4= new JButton();
+	private JButton target_i1j5= new JButton();
+	private JButton target_i1j6= new JButton();
+	private JButton target_i1j7= new JButton();
+	private JButton target_i1j8= new JButton();
+	private JButton target_i1j9= new JButton();
+	private JButton target_i2j0= new JButton();
+	private JButton target_i2j1= new JButton();
+	private JButton target_i2j2= new JButton();
+	private JButton target_i2j3= new JButton();
+	private JButton target_i2j4= new JButton();
+	private JButton target_i2j5= new JButton();
+	private JButton target_i2j6= new JButton();
+	private JButton target_i2j7= new JButton();
+	private JButton target_i2j8= new JButton();
+	private JButton target_i2j9= new JButton();
+	private JButton target_i3j0= new JButton();
+	private JButton target_i3j1= new JButton();
+	private JButton target_i3j2= new JButton();
+	private JButton target_i3j3= new JButton();
+	private JButton target_i3j4= new JButton();
+	private JButton target_i3j5= new JButton();
+	private JButton target_i3j6= new JButton();
+	private JButton target_i3j7= new JButton();
+	private JButton target_i3j8= new JButton();
+	private JButton target_i3j9= new JButton();
+	private JButton target_i4j0= new JButton();
+	private JButton target_i4j1= new JButton();
+	private JButton target_i4j2= new JButton();
+	private JButton target_i4j3= new JButton();
+	private JButton target_i4j4= new JButton();
+	private JButton target_i4j5= new JButton();
+	private JButton target_i4j6= new JButton();
+	private JButton target_i4j7= new JButton();
+	private JButton target_i4j8= new JButton();
+	private JButton target_i4j9= new JButton();
+	private JButton target_i5j0= new JButton();
+	private JButton target_i5j1= new JButton();
+	private JButton target_i5j2= new JButton();
+	private JButton target_i5j3= new JButton();
+	private JButton target_i5j4= new JButton();
+	private JButton target_i5j5= new JButton();
+	private JButton target_i5j6= new JButton();
+	private JButton target_i5j7= new JButton();
+	private JButton target_i5j8= new JButton();
+	private JButton target_i5j9= new JButton();
+	private JButton target_i6j0= new JButton();
+	private JButton target_i6j1= new JButton();
+	private JButton target_i6j2= new JButton();
+	private JButton target_i6j3= new JButton();
+	private JButton target_i6j4= new JButton();
+	private JButton target_i6j5= new JButton();
+	private JButton target_i6j6= new JButton();
+	private JButton target_i6j7= new JButton();
+	private JButton target_i6j8= new JButton();
+	private JButton target_i6j9= new JButton();
+	private JButton target_i7j0= new JButton();
+	private JButton target_i7j1= new JButton();
+	private JButton target_i7j2= new JButton();
+	private JButton target_i7j3= new JButton();
+	private JButton target_i7j4= new JButton();
+	private JButton target_i7j5= new JButton();
+	private JButton target_i7j6= new JButton();
+	private JButton target_i7j7= new JButton();
+	private JButton target_i7j8= new JButton();
+	private JButton target_i7j9= new JButton();
+	private JButton target_i8j0= new JButton();
+	private JButton target_i8j1= new JButton();
+	private JButton target_i8j2= new JButton();
+	private JButton target_i8j3= new JButton();
+	private JButton target_i8j4= new JButton();
+	private JButton target_i8j5= new JButton();
+	private JButton target_i8j6= new JButton();
+	private JButton target_i8j7= new JButton();
+	private JButton target_i8j8= new JButton();
+	private JButton target_i8j9= new JButton();
+	private JButton target_i9j0= new JButton();
+	private JButton target_i9j1= new JButton();
+	private JButton target_i9j2= new JButton();
+	private JButton target_i9j3= new JButton();
+	private JButton target_i9j4= new JButton();
+	private JButton target_i9j5= new JButton();
+	private JButton target_i9j6= new JButton();
+	private JButton target_i9j7= new JButton();
+	private JButton target_i9j8= new JButton();
+	private JButton target_i9j9= new JButton();	
+	
 	private int img_width = (int)sub_icon.getIconHeight();
 	private int img_height = (int)sub_icon.getIconWidth();
 
@@ -340,7 +341,17 @@ public class View extends JFrame
 		//Drag and drop
 		ShipDrag drag_ship = new ShipDrag();
 		//Initialize 2D array for boards
-		initJButtons(drag_ship);
+		
+		//Try to initialize JButtons
+		try
+		{
+			initJButtons(drag_ship);
+		}
+		catch (IOException ex)
+		{
+			System.out.println(ex.toString());
+		}
+		
 		sub.addMouseListener(drag_ship);
 		sub.addMouseMotionListener(drag_ship);
 
@@ -383,21 +394,39 @@ public class View extends JFrame
 		setVisible(true);
 	}		
 
-	public void initJButtons(ShipDrag drag)
+	public void initJButtons(ShipDrag drag) throws IOException 
 	{
+		String water_resource = "Graphics/Water/Water.png";
+		URL water_url = getClass().getResource(water_resource);
+		BufferedImage water_img = null;
+		
+		try
+		{
+			water_img = ImageIO.read(water_url);
+		} 
+		catch (IOException ex)
+		{
+			System.out.println(ex.toString());
+		}
+
+		Icon water_icon = new ImageIcon(water_img);
+		
 		int x = 0, y = 0;
 		for (JButton[] row: playerBoard)
 		{
 			for (JButton button: row)
 			{
 				//Create new button with water icon
-				button = new JButton(new ImageIcon("Graphics/Water/Water.png"));
-				
+				//button = new JButton(new ImageIcon("Graphics/Water/Water.png"));	
 				//Set text to coordinates and scale
 				button.setActionCommand(String.valueOf(x) + " " + String.valueOf(y));
 				button.setPreferredSize(new Dimension(30, 30));
 				button.setTransferHandler(new TransferHandler("icon"));
 				button.addMouseListener(drag);
+				
+				//Set up the image icon
+				button.setIcon(water_icon);
+				
 				//button.setEnabled(false);
 				//Add JButton to JPanel
 				shipButtonPanel.add(button);
@@ -408,12 +437,16 @@ public class View extends JFrame
 		}
 
 		x = 0;
-		for (JButton[] row: enemyBoard)
+		for (JButton[] row: targetBoard)
 		{	
 			for (JButton button: row)
 			{
 				button.setActionCommand(String.valueOf(x) + " " + String.valueOf(y));
 				button.setPreferredSize(new Dimension(30, 30));
+				
+				//Set up the image icon
+				button.setIcon(water_icon);
+
 				targetButtonPanel.add(button);
 				x++;
 			}
@@ -438,7 +471,7 @@ public class View extends JFrame
 	public void addTileListener(ActionListener fire)
 	{
 		//Iterate through the 2D array of tiles and add a tile listener to each JButton
-		for (JButton[] row: enemyBoard)	
+		for (JButton[] row: targetBoard)	
 			for (JButton button: row)
 				button.addActionListener(fire);
 	}
@@ -475,7 +508,7 @@ public class View extends JFrame
 	public JButton getTargetButton(int x, int y)
 	{
 		//What board are we getting a tile from?
-		return enemyBoard[x][y];	
+		return targetBoard[x][y];	
 	}
 
 	//Return JButton at specified location within the grid
@@ -504,106 +537,106 @@ public class View extends JFrame
 	private void assignEnemyBoard()
 	{
 		//Setup enemyBoard with init JButtons
-		enemyBoard[0][0] = i0j0;
-		enemyBoard[0][1] = i0j1;
-		enemyBoard[0][2] = i0j2;
-		enemyBoard[0][3] = i0j3;
-		enemyBoard[0][4] = i0j4;
-		enemyBoard[0][5] = i0j5;
-		enemyBoard[0][6] = i0j6;
-		enemyBoard[0][7] = i0j7;
-		enemyBoard[0][8] = i0j8;
-		enemyBoard[0][9] = i0j9;
-		enemyBoard[1][0] = i1j0;
-		enemyBoard[1][1] = i1j1;
-		enemyBoard[1][2] = i1j2;
-		enemyBoard[1][3] = i1j3;
-		enemyBoard[1][4] = i1j4;
-		enemyBoard[1][5] = i1j5;
-		enemyBoard[1][6] = i1j6;
-		enemyBoard[1][7] = i1j7;
-		enemyBoard[1][8] = i1j8;
-		enemyBoard[1][9] = i1j9;
-		enemyBoard[2][0] = i2j0;
-		enemyBoard[2][1] = i2j1;
-		enemyBoard[2][2] = i2j2;
-		enemyBoard[2][3] = i2j3;
-		enemyBoard[2][4] = i2j4;
-		enemyBoard[2][5] = i2j5;
-		enemyBoard[2][6] = i2j6;
-		enemyBoard[2][7] = i2j7;
-		enemyBoard[2][8] = i2j8;
-		enemyBoard[2][9] = i2j9;
-		enemyBoard[3][0] = i3j0;
-		enemyBoard[3][1] = i3j1;
-		enemyBoard[3][2] = i3j2;
-		enemyBoard[3][3] = i3j3;
-		enemyBoard[3][4] = i3j4;
-		enemyBoard[3][5] = i3j5;
-		enemyBoard[3][6] = i3j6;
-		enemyBoard[3][7] = i3j7;
-		enemyBoard[3][8] = i3j8;
-		enemyBoard[3][9] = i3j9;
-		enemyBoard[4][0] = i4j0;
-		enemyBoard[4][1] = i4j1;
-		enemyBoard[4][2] = i4j2;
-		enemyBoard[4][3] = i4j3;
-		enemyBoard[4][4] = i4j4;
-		enemyBoard[4][5] = i4j5;
-		enemyBoard[4][6] = i4j6;
-		enemyBoard[4][7] = i4j7;
-		enemyBoard[4][8] = i4j8;
-		enemyBoard[4][9] = i4j9;
-		enemyBoard[5][0] = i5j0;
-		enemyBoard[5][1] = i5j1;
-		enemyBoard[5][2] = i5j2;
-		enemyBoard[5][3] = i5j3;
-		enemyBoard[5][4] = i5j4;
-		enemyBoard[5][5] = i5j5;
-		enemyBoard[5][6] = i5j6;
-		enemyBoard[5][7] = i5j7;
-		enemyBoard[5][8] = i5j8;
-		enemyBoard[5][9] = i5j9;
-		enemyBoard[6][0] = i6j0;
-		enemyBoard[6][1] = i6j1;
-		enemyBoard[6][2] = i6j2;
-		enemyBoard[6][3] = i6j3;
-		enemyBoard[6][4] = i6j4;
-		enemyBoard[6][5] = i6j5;
-		enemyBoard[6][6] = i6j6;
-		enemyBoard[6][7] = i6j7;
-		enemyBoard[6][8] = i6j8;
-		enemyBoard[6][9] = i6j9;
-		enemyBoard[7][0] = i7j0;
-		enemyBoard[7][1] = i7j1;
-		enemyBoard[7][2] = i7j2;
-		enemyBoard[7][3] = i7j3;
-		enemyBoard[7][4] = i7j4;
-		enemyBoard[7][5] = i7j5;
-		enemyBoard[7][6] = i7j6;
-		enemyBoard[7][7] = i7j7;
-		enemyBoard[7][8] = i7j8;
-		enemyBoard[7][9] = i7j9;
-		enemyBoard[8][0] = i8j0;
-		enemyBoard[8][1] = i8j1;
-		enemyBoard[8][2] = i8j2;
-		enemyBoard[8][3] = i8j3;
-		enemyBoard[8][4] = i8j4;
-		enemyBoard[8][5] = i8j5;
-		enemyBoard[8][6] = i8j6;
-		enemyBoard[8][7] = i8j7;
-		enemyBoard[8][8] = i8j8;
-		enemyBoard[8][9] = i8j9;
-		enemyBoard[9][0] = i9j0;
-		enemyBoard[9][1] = i9j1;
-		enemyBoard[9][2] = i9j2;
-		enemyBoard[9][3] = i9j3;
-		enemyBoard[9][4] = i9j4;
-		enemyBoard[9][5] = i9j5;
-		enemyBoard[9][6] = i9j6;
-		enemyBoard[9][7] = i9j7;
-		enemyBoard[9][8] = i9j8;
-		enemyBoard[9][9] = i9j9;
+		targetBoard[0][0] = target_i0j0;
+		targetBoard[0][1] = target_i0j1;
+		targetBoard[0][2] = target_i0j2;
+		targetBoard[0][3] = target_i0j3;
+		targetBoard[0][4] = target_i0j4;
+		targetBoard[0][5] = target_i0j5;
+		targetBoard[0][6] = target_i0j6;
+		targetBoard[0][7] = target_i0j7;
+		targetBoard[0][8] = target_i0j8;
+		targetBoard[0][9] = target_i0j9;
+		targetBoard[1][0] = target_i1j0;
+		targetBoard[1][1] = target_i1j1;
+		targetBoard[1][2] = target_i1j2;
+		targetBoard[1][3] = target_i1j3;
+		targetBoard[1][4] = target_i1j4;
+		targetBoard[1][5] = target_i1j5;
+		targetBoard[1][6] = target_i1j6;
+		targetBoard[1][7] = target_i1j7;
+		targetBoard[1][8] = target_i1j8;
+		targetBoard[1][9] = target_i1j9;
+		targetBoard[2][0] = target_i2j0;
+		targetBoard[2][1] = target_i2j1;
+		targetBoard[2][2] = target_i2j2;
+		targetBoard[2][3] = target_i2j3;
+		targetBoard[2][4] = target_i2j4;
+		targetBoard[2][5] = target_i2j5;
+		targetBoard[2][6] = target_i2j6;
+		targetBoard[2][7] = target_i2j7;
+		targetBoard[2][8] = target_i2j8;
+		targetBoard[2][9] = target_i2j9;
+		targetBoard[3][0] = target_i3j0;
+		targetBoard[3][1] = target_i3j1;
+		targetBoard[3][2] = target_i3j2;
+		targetBoard[3][3] = target_i3j3;
+		targetBoard[3][4] = target_i3j4;
+		targetBoard[3][5] = target_i3j5;
+		targetBoard[3][6] = target_i3j6;
+		targetBoard[3][7] = target_i3j7;
+		targetBoard[3][8] = target_i3j8;
+		targetBoard[3][9] = target_i3j9;
+		targetBoard[4][0] = target_i4j0;
+		targetBoard[4][1] = target_i4j1;
+		targetBoard[4][2] = target_i4j2;
+		targetBoard[4][3] = target_i4j3;
+		targetBoard[4][4] = target_i4j4;
+		targetBoard[4][5] = target_i4j5;
+		targetBoard[4][6] = target_i4j6;
+		targetBoard[4][7] = target_i4j7;
+		targetBoard[4][8] = target_i4j8;
+		targetBoard[4][9] = target_i4j9;
+		targetBoard[5][0] = target_i5j0;
+		targetBoard[5][1] = target_i5j1;
+		targetBoard[5][2] = target_i5j2;
+		targetBoard[5][3] = target_i5j3;
+		targetBoard[5][4] = target_i5j4;
+		targetBoard[5][5] = target_i5j5;
+		targetBoard[5][6] = target_i5j6;
+		targetBoard[5][7] = target_i5j7;
+		targetBoard[5][8] = target_i5j8;
+		targetBoard[5][9] = target_i5j9;
+		targetBoard[6][0] = target_i6j0;
+		targetBoard[6][1] = target_i6j1;
+		targetBoard[6][2] = target_i6j2;
+		targetBoard[6][3] = target_i6j3;
+		targetBoard[6][4] = target_i6j4;
+		targetBoard[6][5] = target_i6j5;
+		targetBoard[6][6] = target_i6j6;
+		targetBoard[6][7] = target_i6j7;
+		targetBoard[6][8] = target_i6j8;
+		targetBoard[6][9] = target_i6j9;
+		targetBoard[7][0] = target_i7j0;
+		targetBoard[7][1] = target_i7j1;
+		targetBoard[7][2] = target_i7j2;
+		targetBoard[7][3] = target_i7j3;
+		targetBoard[7][4] = target_i7j4;
+		targetBoard[7][5] = target_i7j5;
+		targetBoard[7][6] = target_i7j6;
+		targetBoard[7][7] = target_i7j7;
+		targetBoard[7][8] = target_i7j8;
+		targetBoard[7][9] = target_i7j9;
+		targetBoard[8][0] = target_i8j0;
+		targetBoard[8][1] = target_i8j1;
+		targetBoard[8][2] = target_i8j2;
+		targetBoard[8][3] = target_i8j3;
+		targetBoard[8][4] = target_i8j4;
+		targetBoard[8][5] = target_i8j5;
+		targetBoard[8][6] = target_i8j6;
+		targetBoard[8][7] = target_i8j7;
+		targetBoard[8][8] = target_i8j8;
+		targetBoard[8][9] = target_i8j9;
+		targetBoard[9][0] = target_i9j0;
+		targetBoard[9][1] = target_i9j1;
+		targetBoard[9][2] = target_i9j2;
+		targetBoard[9][3] = target_i9j3;
+		targetBoard[9][4] = target_i9j4;
+		targetBoard[9][5] = target_i9j5;
+		targetBoard[9][6] = target_i9j6;
+		targetBoard[9][7] = target_i9j7;
+		targetBoard[9][8] = target_i9j8;
+		targetBoard[9][9] = target_i9j9;	
 	}
 
 	private void assignPlayerBoard()
@@ -783,10 +816,26 @@ public class View extends JFrame
 		}
 		
 		@Override
-		public void mouseReleased(MouseEvent e) {
+		public void mouseReleased(MouseEvent e)
+		{
 			System.out.println("Welcome to Java Programming!");
 			//Component obj = getComponentAt(e.getSource());
-			
+		
+			String ship_resource = "Graphics/Ships/ShipMod/SubmarineTile1.png";
+			URL ship_url = getClass().getResource(ship_resource);
+			BufferedImage ship_img = null;
+		       	
+			try
+			{
+				ship_img = ImageIO.read(ship_url);
+			}
+			catch (IOException ex)
+			{
+				System.out.println(ex.toString());	
+			}
+
+			Icon ship_icon = new ImageIcon(ship_img);
+
 			//JComponent comp = (JComponent) e.getSource();
          		//Object obj = e.getSource();
 			if (lastEntered instanceof JButton)
@@ -797,7 +846,7 @@ public class View extends JFrame
 				int x = (int)point.getX();
 				int y = (int)point.getY();
                 		System.out.println(x + " " + y);
-				playerBoard[x][y].setIcon(sub1_icon);
+				//playerBoard[x][y].setIcon(sub1_icon);
 				
 				if (model.getShipBoard().canPlace(x, y, direction, length))
 				{
@@ -806,31 +855,27 @@ public class View extends JFrame
 					{
 						case 0:	
 							//Place ship on the selected tiles
-							for (int i = y; i <= y + length ; i++)
+							for (int i = y; i < y + length ; i++)
 							{
-								playerBoard[x][i].setIcon(null);
-								playerBoard[x][i].setIcon(sub1_icon);
+								playerBoard[i][x].setIcon(ship_icon);
 							}
 							break;
 						case 1:		
-							for (int i = x; i <= x + length ; i++)
+							for (int i = x; i < x + length ; i++)
 							{
-								playerBoard[i][y].setIcon(null);
-								playerBoard[i][y].setIcon(sub1_icon);
+								playerBoard[y][i].setIcon(ship_icon);
 							}
 							break;
 						case 2:	
-							for (int i = y; i >= y - length; i--)
+							for (int i = y; i > y - length; i--)
 							{
-								playerBoard[i][y].setIcon(null);
-								playerBoard[i][y].setIcon(sub1_icon);
+								playerBoard[i][y].setIcon(ship_icon);
 							}
 							break;
 						case 3:
-							for (int i = x; i >= x - length; i--)
+							for (int i = x; i > x - length; i--)
 							{
-								playerBoard[x][i].setIcon(null);
-								playerBoard[x][i].setIcon(sub1_icon);
+								playerBoard[x][i].setIcon(ship_icon);
 							}
 							break;
 					}
@@ -853,12 +898,15 @@ public class View extends JFrame
 				if (obj instanceof JLabel)
 				{
 					direction++;
-					if (direction > 3)
+					if (direction > 1)
 						direction = 0;
 
 					JLabel ship = (JLabel)obj;
 					RotatedIcon icon = new RotatedIcon(ship.getIcon());
-					icon.setDegrees(icon.getDegrees() - 90);
+					if (direction == 0)
+						icon.setDegrees(0);
+					else
+						icon.setDegrees(0);
 					//direction = Math.abs((int)icon.getDegrees());
 					System.out.println(direction);
 					ship.setIcon(icon);
