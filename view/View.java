@@ -351,13 +351,12 @@ public class View extends JFrame
 		{
 			System.out.println(ex.toString());
 		}
-		
+
 		sub.addMouseListener(drag_ship);
 		sub.addMouseMotionListener(drag_ship);
 
 		//Setup TransferHandlers to move icons between the labels
 		//sub.setTransferHandler(new TransferHandler("icon"));
-
 		//https://stackoverflow.com/questions/22698435/listen-for-mouse-released-event-on-component-on-which-the-mouse-was-not-pressed
 
 		//submarine = new JPanel();
@@ -403,7 +402,7 @@ public class View extends JFrame
 		try
 		{
 			water_img = ImageIO.read(water_url);
-		} 
+		}	
 		catch (IOException ex)
 		{
 			System.out.println(ex.toString());
@@ -446,7 +445,6 @@ public class View extends JFrame
 				
 				//Set up the image icon
 				button.setIcon(water_icon);
-
 				targetButtonPanel.add(button);
 				x++;
 			}
@@ -851,6 +849,7 @@ public class View extends JFrame
 				if (model.getShipBoard().canPlace(x, y, direction, length))
 				{
 					System.out.println("Can place!");
+					
 					switch(direction)
 					{
 						case 0:	
@@ -902,11 +901,13 @@ public class View extends JFrame
 						direction = 0;
 
 					JLabel ship = (JLabel)obj;
-					RotatedIcon icon = new RotatedIcon(ship.getIcon());
+					RotatedIcon icon = new RotatedIcon(ship.getIcon(), 0, true);
+;
 					if (direction == 0)
 						icon.setDegrees(0);
 					else
-						icon.setDegrees(0);
+						icon.setDegrees(-90);
+
 					//direction = Math.abs((int)icon.getDegrees());
 					System.out.println(direction);
 					ship.setIcon(icon);
