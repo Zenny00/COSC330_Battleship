@@ -1,3 +1,8 @@
+package controller;
+
+import model.*;
+import view.*;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;

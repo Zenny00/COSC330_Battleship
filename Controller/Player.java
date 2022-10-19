@@ -4,6 +4,11 @@
 //Water sprite based on: https://www.deviantart.com/oni1ink/art/Tutorial-How-to-draw-Water-645199166
 
 //Import required libraries
+package controller;
+
+import model.*;
+import view.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

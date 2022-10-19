@@ -1,6 +1,10 @@
 //Name: Joshua Comfort
 //Date: 10/10/2022
 //Description holds information regarding the server or client
+package controller;
+
+import model.*;
+import view.*;
 
 public interface Role
 {

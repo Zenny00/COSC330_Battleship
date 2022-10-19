@@ -1,3 +1,8 @@
+package controller;
+
+import model.*;
+import view.*;
+
 public class Defend implements State {
     Player player;
 

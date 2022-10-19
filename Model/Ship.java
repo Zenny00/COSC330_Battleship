@@ -1,3 +1,5 @@
+package model;
+
 public class Ship
 {
 	private int size;

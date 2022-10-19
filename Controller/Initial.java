@@ -1,3 +1,8 @@
+package controller;
+
+import model.*;
+import view.*;
+
 public class Initial implements State {
     Player player;
 

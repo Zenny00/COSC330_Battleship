@@ -3,6 +3,11 @@
 //Description: Battleship game
 
 //Import required libraries
+package controller;
+
+import model.*;
+import view.*;
+
 import java.awt.BorderLayout;
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +39,7 @@ public class Battleship
 				break;
 			default:
 				System.out.println("Invalid command line argument, please specify either 'Server' or 'Client'.");
+				exit(0);
 		}
 
 	}
