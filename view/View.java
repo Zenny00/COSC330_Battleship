@@ -59,7 +59,9 @@ public class View extends JFrame
 
 	private JLabel sub;
 	private JLabel des;
-
+	private JLabel car;
+	private JLabel bat;
+	
 	private JPanel submarine; 
 
 	//https://www.reddit.com/r/learnprogramming/comments/7dm4z2/java_how_to_rotate_an_imageicon_in_a_jlabel_with/
@@ -322,17 +324,24 @@ public class View extends JFrame
 
 		sub = new SubLabel(3, 0, "Graphics/Ships/Submarine.png", "Graphics/Ships/SubmarineLeft.png");	
 		des = new DesLabel(2, 0, "Graphics/Ships/Destroyer.png", "Graphics/Ships/DestroyerLeft.png");
+		car = new CarLabel(5, 0, "Graphics/Ships/Carrier.png", "Graphics/Ships/CarrierLeft.png");
+		bat = new BatLabel(4, 0, "Graphics/Ships/Battleship.png", "Graphics/Ships/BattleshipLeft.png");
 
 		//sub.setIcon(sub_up_icon);
 
 		DragShip drag_sub = new DragShip();
 		DragShip drag_des = new DragShip();
+		DragShip drag_car = new DragShip();
+		DragShip drag_bat = new DragShip();
 
 		sub.addMouseListener(drag_sub);
 		sub.addMouseMotionListener(drag_sub);
 		des.addMouseListener(drag_des);
 		des.addMouseMotionListener(drag_des);
-
+		car.addMouseListener(drag_car);
+		car.addMouseMotionListener(drag_car);
+		bat.addMouseListener(drag_bat);
+		bat.addMouseMotionListener(drag_bat);
 
 		//sub.addMouseListener(new RotationHandler());	
 
@@ -342,7 +351,7 @@ public class View extends JFrame
 		//Try to initialize JButtons
 		try
 		{
-			initJButtons(drag_sub, drag_des);
+			initJButtons(drag_sub, drag_des, drag_car, drag_bat);
 		}
 		catch (IOException ex)
 		{
@@ -354,7 +363,9 @@ public class View extends JFrame
 		//Add submarine to the content pane
 		shipBox.add(sub);
 		shipBox.add(des);
-
+		shipBox.add(car);
+		shipBox.add(bat);
+		
 		//Setup shipbox for holding ships
 		shipBox.setLayout(new GridLayout(1, 5));
 
@@ -395,7 +406,7 @@ public class View extends JFrame
 		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
 	}		
 
-	public void initJButtons(DragShip drag_sub, DragShip drag_des) throws IOException 
+	public void initJButtons(DragShip drag_sub, DragShip drag_des, DragShip drag_car, DragShip drag_bat) throws IOException 
 	{
 		String water_resource = "Graphics/Water/Water.png";
 		URL water_url = getClass().getResource(water_resource);
@@ -425,7 +436,9 @@ public class View extends JFrame
 				//button.setTransferHandler(new TransferHandler("icon"));
 				button.addMouseListener(drag_sub);
 				button.addMouseListener(drag_des);
-
+				button.addMouseListener(drag_car);
+				button.addMouseListener(drag_bat);
+			
 				//Set up the image icon
 				button.setIcon(water_icon);
 				
@@ -828,6 +841,60 @@ public class View extends JFrame
 
 			left_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/DestroyerLeftTile1.png");
 			left_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/DestroyerLeftTile2.png");
+		}	
+	}
+
+	//Battleship Class
+	class BatLabel extends ShipLabel
+	{
+		public BatLabel(int length, int direction, String up_resource, String left_resource)
+		{
+
+			//Call super class constructor
+			super(up_resource, left_resource);
+			this.length = length;
+			this.direction = direction;
+			
+			up_sprites = new Icon[4];
+			left_sprites = new Icon[4];
+
+			up_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/BattleshipTile1.png");	
+			up_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/BattleshipTile2.png");	
+			up_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/BattleshipTile3.png");	
+			up_sprites[3] = sourceIcon("Graphics/Ships/ShipMod/BattleshipTile4.png");	
+			
+			left_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/BattleshipLeftTile1.png");	
+			left_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/BattleshipLeftTile2.png");
+			left_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/BattleshipLeftTile3.png");
+			left_sprites[3] = sourceIcon("Graphics/Ships/ShipMod/BattleshipLeftTile4.png");
+		}
+	}
+
+	//Carrier Class
+	class CarLabel extends ShipLabel
+	{
+		public CarLabel(int length, int direction, String up_resource, String left_resource)
+		{
+
+			//Call super class constructor
+			super(up_resource, left_resource);
+			this.length = length;
+			this.direction = direction;
+			
+			up_sprites = new Icon[5];
+			left_sprites = new Icon[5];
+
+			up_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/CarrierTile1.png");	
+			up_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/CarrierTile2.png");	
+			up_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/CarrierTile3.png");	
+			up_sprites[3] = sourceIcon("Graphics/Ships/ShipMod/CarrierTile4.png");	
+			up_sprites[4] = sourceIcon("Graphics/Ships/ShipMod/CarrierTile5.png");	
+
+			left_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/CarrierLeftTile1.png");
+			left_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/CarrierLeftTile2.png");
+			left_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/CarrierLeftTile3.png");
+			left_sprites[3] = sourceIcon("Graphics/Ships/ShipMod/CarrierLeftTile4.png");
+			left_sprites[4] = sourceIcon("Graphics/Ships/ShipMod/CarrierLeftTile5.png");
 		}	
 	}	
 
