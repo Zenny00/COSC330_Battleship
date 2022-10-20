@@ -934,6 +934,7 @@ public class View extends JFrame
 							for (int i = y; i < y + length ; i++)
 							{
 								playerBoard[i][x].setIcon(submarine_up_sprites[index]);
+								model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
 								index++;
 							}
 							break;
@@ -941,6 +942,8 @@ public class View extends JFrame
 							for (int i = x; i < x + length ; i++)
 							{
 								playerBoard[y][i].setIcon(submarine_left_sprites[index]);
+
+								model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
 								index++;
 							}
 							break;

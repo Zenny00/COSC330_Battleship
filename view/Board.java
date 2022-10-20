@@ -12,14 +12,14 @@ public class Board
 				tiles[i][j] = new Tile(i, j);
 	}
 	
-	public Tile getTile(int x, int y) throws nonTileException
+	public Tile getTile(int x, int y) //throws nonTileException
 	{
 		if (x <= 9 && y <= 9)
 			return tiles[x][y];
 		else
-		{
-			throw new nonTileException("Tile does not exist");
-		}
+			return null;
+		
+		//throw new nonTileException("Tile does not exist");
 	}
 
 	public boolean getClickable(int x, int y){return tiles[x][y].isClickable();}

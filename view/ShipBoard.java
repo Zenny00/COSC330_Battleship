@@ -28,8 +28,8 @@ public class ShipBoard extends Board
 					return false;
 				
 				//Check if ship is already in wanted location
-				for (int i = y; i < y + length; i++)
-					if (tiles[x][i].getTileType() == TileType.SHIP)
+				for (int i = y; i < y + length ; i++)
+					if (tiles[i][x].getTileType() == TileType.SHIP)
 						canPlace = false;
 				break;
 			case 1:
@@ -39,27 +39,7 @@ public class ShipBoard extends Board
 				
 				//Check if ship is already in wanted location
 				for (int i = x; i < x + length; i++)
-					if (tiles[i][y].getTileType() == TileType.SHIP)
-						canPlace = false;
-				break;
-			case 2:
-				//Check bounds (Accounting for 0 based index)
-				if (y - length + 1 < 0)
-					return false;
-				
-				//Check if ship is already in wanted location
-				for (int i = y; i > y - length + 1; i--)
-					if (tiles[x][i].getTileType() == TileType.SHIP)
-						canPlace = false;
-				break;
-			case 3:
-				//Check bounds (Accounting for 0 based index)
-				if (x - length + 1 < 0)
-					return false;
-				
-				//Check if ship is already in wanted location
-				for (int i = x; i > x + length + 1; i--)
-					if (tiles[i][y].getTileType() == TileType.SHIP)
+					if (tiles[y][i].getTileType() == TileType.SHIP)
 						canPlace = false;
 				break;
 		}		
