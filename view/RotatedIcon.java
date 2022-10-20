@@ -50,6 +50,7 @@ public class RotatedIcon implements Icon
 	 *  @param icon	the Icon to rotate
 	 *  @param rotate  the direction of rotation
 	 */
+
 	public RotatedIcon(Icon icon, Rotate rotate)
 	{
 		this.icon = icon;
@@ -241,7 +242,7 @@ public class RotatedIcon implements Icon
 			g2.translate(x + cWidth, y + cHeight);
 			g2.rotate( Math.toRadians( 180 ) );
 			icon.paintIcon(c, g2, xAdjustment - cWidth, yAdjustment - cHeight);
-		}
+		}	
 		else if (rotate == Rotate.ABOUT_CENTER)
 		{
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

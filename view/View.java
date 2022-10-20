@@ -280,6 +280,12 @@ public class View extends JFrame
 	private Model model;
 	private int direction = 0;
 	private int length = 3;
+	private String sub_up_resource = "Graphics/Ships/Submarine.png";
+	private String sub_left_resource = "Graphics/Ships/SubmarineLeft.png";
+       	private Icon sub_up_icon = null;
+	private Icon sub_left_icon = null;	
+	private Icon submarine_up_sprites[] = null;
+	private Icon submarine_left_sprites[] = null;
 
 	//|====================================================================================================|
 	
@@ -292,6 +298,25 @@ public class View extends JFrame
 	//Constructor 
 	public View(Model model, Role connect_panel)
 	{
+		URL sub_up_url = getClass().getResource(sub_up_resource);
+		URL sub_left_url = getClass().getResource(sub_left_resource);
+		
+		BufferedImage sub_left_img = null;
+		BufferedImage sub_up_img = null;
+
+		try
+		{
+			sub_up_img = ImageIO.read(sub_up_url);
+			sub_left_img = ImageIO.read(sub_left_url);
+		}
+		catch (IOException ex)
+		{
+			System.out.println(ex.toString());	
+		}
+
+		sub_up_icon = scaleImage(new ImageIcon(sub_up_img), 30, 90);
+		sub_left_icon = scaleImage(new ImageIcon(sub_left_img), 90, 30);
+
 		//Set the model
 		this.model = model;
 
@@ -334,7 +359,8 @@ public class View extends JFrame
 		//Add destroyer to the content pane
 		shipBox.add(destroyer);
 
-		sub = new JLabel(sub_icon);	
+		sub = new JLabel();	
+		sub.setIcon(sub_up_icon);
 
 		sub.addMouseListener(new RotationHandler());	
 
@@ -391,6 +417,26 @@ public class View extends JFrame
 		//Pack and set visibility
 		pack();
 		setVisible(true);
+	}
+
+	public ImageIcon scaleImage(ImageIcon icon, int w, int h)
+	{
+		int nw = icon.getIconWidth();
+		int nh = icon.getIconHeight();
+
+		if(icon.getIconWidth() > w)
+		{
+			nw = w;
+			nh = (nw * icon.getIconHeight()) / icon.getIconWidth();
+		}
+
+		if(nh > h)
+		{
+			nh = h;
+			nw = (icon.getIconWidth() * nh) / icon.getIconHeight();
+		}
+
+		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
 	}		
 
 	public void initJButtons(ShipDrag drag) throws IOException 
@@ -742,6 +788,24 @@ public class View extends JFrame
                 playerBoard[9][9] = ship_i9j9;
 	}
 
+	public Icon sourceIcon(String str)
+	{
+		URL img_url = getClass().getResource(str);
+
+		BufferedImage buf_img = null;
+
+		try
+		{
+			buf_img = ImageIO.read(img_url);
+		}
+		catch (IOException ex)
+		{
+			System.out.println(ex.toString());	
+		}
+
+		return new ImageIcon(buf_img);
+	}
+
 //						INNER CLASSES
 //|====================================================================================================|	
 //Define the transfer handler
@@ -816,6 +880,18 @@ public class View extends JFrame
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{
+		
+			submarine_up_sprites = new Icon[3];
+			submarine_left_sprites = new Icon[3];
+
+			submarine_up_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile1.png");	
+			submarine_up_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile2.png");
+			submarine_up_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile3.png");
+
+			submarine_left_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile1.png");
+			submarine_left_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile2.png");
+			submarine_left_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile3.png");
+
 			System.out.println("Welcome to Java Programming!");
 			//Component obj = getComponentAt(e.getSource());
 		
@@ -850,34 +926,28 @@ public class View extends JFrame
 				{
 					System.out.println("Can place!");
 					
+					int index = 0;
 					switch(direction)
-					{
+					{	
 						case 0:	
 							//Place ship on the selected tiles
 							for (int i = y; i < y + length ; i++)
 							{
-								playerBoard[i][x].setIcon(ship_icon);
+								playerBoard[i][x].setIcon(submarine_up_sprites[index]);
+								index++;
 							}
 							break;
 						case 1:		
 							for (int i = x; i < x + length ; i++)
 							{
-								playerBoard[y][i].setIcon(ship_icon);
-							}
-							break;
-						case 2:	
-							for (int i = y; i > y - length; i--)
-							{
-								playerBoard[i][y].setIcon(ship_icon);
-							}
-							break;
-						case 3:
-							for (int i = x; i > x - length; i--)
-							{
-								playerBoard[x][i].setIcon(ship_icon);
+								playerBoard[y][i].setIcon(submarine_left_sprites[index]);
+								index++;
 							}
 							break;
 					}
+
+					sub.setIcon(null);
+					sub.revalidate();
 				}
 				else
 					System.out.println("Cannot place!");	
@@ -901,16 +971,13 @@ public class View extends JFrame
 						direction = 0;
 
 					JLabel ship = (JLabel)obj;
-					RotatedIcon icon = new RotatedIcon(ship.getIcon(), 0, true);
-;
+				
 					if (direction == 0)
-						icon.setDegrees(0);
+						ship.setIcon(sub_up_icon);	
 					else
-						icon.setDegrees(-90);
+						ship.setIcon(sub_left_icon);
 
-					//direction = Math.abs((int)icon.getDegrees());
 					System.out.println(direction);
-					ship.setIcon(icon);
 					ship.revalidate();
 					ship.repaint();
 				}
