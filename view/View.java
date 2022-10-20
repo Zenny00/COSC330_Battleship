@@ -805,12 +805,11 @@ public class View extends JFrame
 		{
 			//Keep track of where the mouse is
 			Component lastEntered;
-
+	
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
-				System.out.println("HI");
-				
+				System.out.println("HI");	
 			}	
 
 			public void mouseMoved(MouseEvent e)
@@ -839,7 +838,7 @@ public class View extends JFrame
 			
 			@Override
 			public void mouseReleased(MouseEvent e)
-			{	
+			{		
 				up_sprites = new Icon[3];
 				left_sprites = new Icon[3];
 
