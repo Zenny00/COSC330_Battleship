@@ -99,11 +99,11 @@ public class ShipLabel extends JLabel
                                 Object obj = e.getSource();
                                 if (obj instanceof JLabel)
                                 {
-					System.out.println(direction);
                                         direction++;
                                         if (direction > 1)
                                                 direction = 0;
 
+					System.out.println(direction);
                                         JLabel ship = (JLabel)obj;
 
                                         if (direction == 0)

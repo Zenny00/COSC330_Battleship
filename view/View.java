@@ -861,10 +861,10 @@ public class View extends JFrame
 					int y = (int)point.getY();
 					System.out.println(x + " " + y);
 					
-					if (model.getShipBoard().canPlace(x, y, direction, length))
+					if (model.getShipBoard().canPlace(y, x, direction, length))
 					{
 						System.out.println("Can place!");
-						
+					
 						int index = 0;
 						switch(direction)
 						{	
@@ -881,13 +881,12 @@ public class View extends JFrame
 								for (int i = x; i < x + length ; i++)
 								{
 									playerBoard[y][i].setIcon(left_sprites[index]);
-
 									model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
 									index++;
 								}
 								break;
-						}
-
+						}	
+			
 						//sub.setIcon(null);
 						//sub.revalidate();
 					}
