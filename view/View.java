@@ -278,15 +278,7 @@ public class View extends JFrame
         private Point previousPoint;
 
 	private Model model;
-	private int direction = 0;
-	private int length = 3;
-	private String sub_up_resource = "Graphics/Ships/Submarine.png";
-	private String sub_left_resource = "Graphics/Ships/SubmarineLeft.png";
-       	private Icon sub_up_icon = null;
-	private Icon sub_left_icon = null;	
-	private Icon submarine_up_sprites[] = null;
-	private Icon submarine_left_sprites[] = null;
-
+	
 	//|====================================================================================================|
 	
 
@@ -297,26 +289,7 @@ public class View extends JFrame
 
 	//Constructor 
 	public View(Model model, Role connect_panel)
-	{
-		URL sub_up_url = getClass().getResource(sub_up_resource);
-		URL sub_left_url = getClass().getResource(sub_left_resource);
-		
-		BufferedImage sub_left_img = null;
-		BufferedImage sub_up_img = null;
-
-		try
-		{
-			sub_up_img = ImageIO.read(sub_up_url);
-			sub_left_img = ImageIO.read(sub_left_url);
-		}
-		catch (IOException ex)
-		{
-			System.out.println(ex.toString());	
-		}
-
-		sub_up_icon = scaleImage(new ImageIcon(sub_up_img), 30, 90);
-		sub_left_icon = scaleImage(new ImageIcon(sub_left_img), 90, 30);
-
+	{	
 		//Set the model
 		this.model = model;
 
@@ -359,40 +332,24 @@ public class View extends JFrame
 		//Add destroyer to the content pane
 		shipBox.add(destroyer);
 
-		sub = new JLabel();	
-		sub.setIcon(sub_up_icon);
+		sub = new SubLabel(3, 0, "Graphics/Ships/Submarine.png", "Graphics/Ships/SubmarineLeft.png");	
+		//sub.setIcon(sub_up_icon);
 
-		sub.addMouseListener(new RotationHandler());	
+		//sub.addMouseListener(new RotationHandler());	
 
 		//Drag and drop
-		ShipDrag drag_ship = new ShipDrag();
 		//Initialize 2D array for boards
 		
 		//Try to initialize JButtons
 		try
 		{
-			initJButtons(drag_ship);
+			initJButtons();
 		}
 		catch (IOException ex)
 		{
 			System.out.println(ex.toString());
 		}
-
-		sub.addMouseListener(drag_ship);
-		sub.addMouseMotionListener(drag_ship);
-
-		//Setup TransferHandlers to move icons between the labels
-		//sub.setTransferHandler(new TransferHandler("icon"));
-		//https://stackoverflow.com/questions/22698435/listen-for-mouse-released-event-on-component-on-which-the-mouse-was-not-pressed
-
-		//submarine = new JPanel();
-
-		//Configure submarine
-		//submarine.add(sub);
-		//submarine.add(sub2);
-		//submarine.add(sub3);
-		//submarine.setLayout(new BoxLayout(submarine, BoxLayout.Y_AXIS));
-
+	
 		//Assign submarine to the ship array
 		ships[1] = submarine;
 		//Add submarine to the content pane
@@ -439,7 +396,7 @@ public class View extends JFrame
 		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
 	}		
 
-	public void initJButtons(ShipDrag drag) throws IOException 
+	public void initJButtons() throws IOException 
 	{
 		String water_resource = "Graphics/Water/Water.png";
 		URL water_url = getClass().getResource(water_resource);
@@ -466,8 +423,8 @@ public class View extends JFrame
 				//Set text to coordinates and scale
 				button.setActionCommand(String.valueOf(x) + " " + String.valueOf(y));
 				button.setPreferredSize(new Dimension(30, 30));
-				button.setTransferHandler(new TransferHandler("icon"));
-				button.addMouseListener(drag);
+				//button.setTransferHandler(new TransferHandler("icon"));
+				//button.addMouseListener(drag);
 				
 				//Set up the image icon
 				button.setIcon(water_icon);
@@ -788,6 +745,7 @@ public class View extends JFrame
                 playerBoard[9][9] = ship_i9j9;
 	}
 
+	//Rescale icon while keeping aspect ratio (https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon)
 	public Icon sourceIcon(String str)
 	{
 		URL img_url = getClass().getResource(str);
@@ -827,138 +785,122 @@ public class View extends JFrame
 	*/
 
 	//Try this way
-		
-	class ShipDrag extends MouseAdapter
-	{
-		//Keep track of where the mouse is
-		//Object firstEntered;
-		//Object lastEntered;
-		Component lastEntered;
-
-		@Override
-		public void mouseDragged(MouseEvent e)
-		{
-			/*
-			Object obj = e.getSource();
-			if (obj instanceof JButton)
-			{	
-				JButton button = (JButton)obj;
-				System.out.println(button.getActionCommand());
-			}
-			*/
-			System.out.println("HI");
-			
-			//Set the first component to the object was pressed on
-			//firstEntered = e.getSource();
-			//System.out.println(firstEntered.getClass());	
-		}	
-
-		public void mouseMoved(MouseEvent e)
-		{
-			//TODO
-		}
-		
-		public void mouseClicked(MouseEvent arg0) {
-
-		}
-
-		public void mouseExited(MouseEvent arg0) {
-
-		}
-
-		public void mouseEntered(MouseEvent e)
-	       	{
-			//Set the last entered to the componet we are currently on
-			lastEntered = e.getComponent();
-		}
-
-		public void mousePressed(MouseEvent e) 
-		{
-			//TODO			
-		}
-		
-		@Override
-		public void mouseReleased(MouseEvent e)
-		{
-		
-			submarine_up_sprites = new Icon[3];
-			submarine_left_sprites = new Icon[3];
-
-			submarine_up_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile1.png");	
-			submarine_up_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile2.png");
-			submarine_up_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile3.png");
-
-			submarine_left_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile1.png");
-			submarine_left_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile2.png");
-			submarine_left_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile3.png");
-
-			System.out.println("Welcome to Java Programming!");
-			//Component obj = getComponentAt(e.getSource());
-		
-			String ship_resource = "Graphics/Ships/ShipMod/SubmarineTile1.png";
-			URL ship_url = getClass().getResource(ship_resource);
-			BufferedImage ship_img = null;
-		       	
-			try
-			{
-				ship_img = ImageIO.read(ship_url);
-			}
-			catch (IOException ex)
-			{
-				System.out.println(ex.toString());	
-			}
-
-			Icon ship_icon = new ImageIcon(ship_img);
-
-			//JComponent comp = (JComponent) e.getSource();
-         		//Object obj = e.getSource();
-			if (lastEntered instanceof JButton)
-			{
-				JButton button = (JButton)lastEntered;
-				String coords[] = button.getActionCommand().split(" ");
-				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-				int x = (int)point.getX();
-				int y = (int)point.getY();
-                		System.out.println(x + " " + y);
-				//playerBoard[x][y].setIcon(sub1_icon);
-				
-				if (model.getShipBoard().canPlace(x, y, direction, length))
-				{
-					System.out.println("Can place!");
-					
-					int index = 0;
-					switch(direction)
-					{	
-						case 0:	
-							//Place ship on the selected tiles
-							for (int i = y; i < y + length ; i++)
-							{
-								playerBoard[i][x].setIcon(submarine_up_sprites[index]);
-								model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
-								index++;
-							}
-							break;
-						case 1:		
-							for (int i = x; i < x + length ; i++)
-							{
-								playerBoard[y][i].setIcon(submarine_left_sprites[index]);
-
-								model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
-								index++;
-							}
-							break;
-					}
-
-					sub.setIcon(null);
-					sub.revalidate();
-				}
-				else
-					System.out.println("Cannot place!");	
-			}
-		}
-	}
 	
+	class SubLabel extends ShipLabel
+	{
+		public SubLabel(int length, int direction, String up_resource, String left_resource)
+		{
+			//Call super class constructor
+			super(length, direction, up_resource, left_resource);
+			ShipDrag drag_ship = new ShipDrag();
+			addMouseListener(drag_ship);
+			addMouseMotionListener(drag_ship);
 
+			for (JButton[] row: playerBoard)
+				for (JButton button: row)
+					button.addMouseListener(drag_ship);
+		}
+
+		class ShipDrag extends MouseAdapter
+		{
+			//Keep track of where the mouse is
+			Component lastEntered;
+
+			@Override
+			public void mouseDragged(MouseEvent e)
+			{
+				System.out.println("HI");
+				
+			}	
+
+			public void mouseMoved(MouseEvent e)
+			{
+				//TODO
+			}
+			
+			public void mouseClicked(MouseEvent arg0) {
+
+			}
+
+			public void mouseExited(MouseEvent arg0) {
+
+			}
+
+			public void mouseEntered(MouseEvent e)
+			{
+				//Set the last entered to the componet we are currently on
+				lastEntered = e.getComponent();
+			}
+
+			public void mousePressed(MouseEvent e) 
+			{
+				//TODO			
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{	
+				up_sprites = new Icon[3];
+				left_sprites = new Icon[3];
+
+				up_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile1.png");	
+				up_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile2.png");
+				up_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/SubmarineTile3.png");
+
+				left_sprites[0] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile1.png");
+				left_sprites[1] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile2.png");
+				left_sprites[2] = sourceIcon("Graphics/Ships/ShipMod/SubmarineLeftTile3.png");
+
+				playerBoard[0][0].setIcon(left_sprites[1]);
+
+				if (lastEntered instanceof JButton)
+				{
+					JButton button = (JButton)lastEntered;
+					String coords[] = button.getActionCommand().split(" ");
+					Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+					int x = (int)point.getX();
+					int y = (int)point.getY();
+					System.out.println(x + " " + y);
+					
+					if (model.getShipBoard().canPlace(x, y, direction, length))
+					{
+						System.out.println("Can place!");
+						
+						int index = 0;
+						switch(direction)
+						{	
+							case 0:	
+								//Place ship on the selected tiles
+								for (int i = y; i < y + length ; i++)
+								{
+									playerBoard[i][x].setIcon(up_sprites[index]);
+									model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
+									index++;
+								}
+								break;
+							case 1:		
+								for (int i = x; i < x + length ; i++)
+								{
+									playerBoard[y][i].setIcon(left_sprites[index]);
+
+									model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
+									index++;
+								}
+								break;
+						}
+
+						//sub.setIcon(null);
+						//sub.revalidate();
+					}
+					else
+						System.out.println("Cannot place!");	
+				}
+			}
+		}
+
+	}	
+
+	/*
 	class RotationHandler extends MouseAdapter 
 	{
 		@Override
@@ -987,4 +929,5 @@ public class View extends JFrame
 			}
 		}				
 	}
+	*/
 }
