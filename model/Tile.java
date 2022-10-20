@@ -31,10 +31,19 @@ public class Tile
 		clickable = false;
 		return type;
 	}
-	public void addShip() {
-		if (type == TileType.SHIP || type == TileType.OVERLAP)
-			type = TileType.OVERLAP;
+	public void addShip() throws overlapException
+	{
+		if (type == TileType.SHIP)
+			throw new overlapException("This placement overlaps with another ship");
 		else
 			type = TileType.SHIP;
 	}	
+}
+
+class overlapException extends Exception 
+{
+	public overlapException(String s)
+	{
+		super(s);
+	}
 }

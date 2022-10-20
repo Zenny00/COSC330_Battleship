@@ -41,3 +41,7 @@ File List:
 
 Dependencies:
     Java JDK (17+)
+
+TODO: Refactoring
+    * reduce 4 directions to two, horizontal and vertical
+    * make imported Server.java and Client.java

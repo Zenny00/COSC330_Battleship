@@ -2,7 +2,6 @@
 //Date: 10/3/2022
 //Description: Battleship game
 
-//Import required libraries
 package controller;
 
 import model.*;
@@ -18,15 +17,12 @@ import java.util.Scanner;
 
 public class Battleship
 {
-	//void runClient();
-	//void runServer();
-
 	public static void main(String args[])
 	{
-		if (args.length < 1)
+		if (args.length != 1)
 		{
 			System.out.println("Invalid number of command line arguments, please specify either 'Server' or 'Client'.");
-			System.exit(0);
+			System.exit(1);
 		}
 
 		switch(args[0])
@@ -39,32 +35,21 @@ public class Battleship
 				break;
 			default:
 				System.out.println("Invalid command line argument, please specify either 'Server' or 'Client'.");
-				exit(0);
+				exit(1);
 		}
 
 	}
 
-	//Run the client's code
 	static void runClient()
 	{
-		//Get user input
 		Scanner scanner = new Scanner(System.in);
 		
-		//Print a prompt to get user input
 		System.out.printf("Please enter the IP address of the game host: ");
 		String ip = scanner.nextLine();
 
-		//application = new Client(ip); // use ip to connect
-		//application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		//application.runClient(); // run client application
+		Player player = new Player(new Client(ip));
 	}
 
-	//Run the server's code
-	static void runServer()
-	{
-		//Create a new object of DragFrame
-		View frame = new View();	
-		Player player = new Player(frame, new Server());
-	}
+	static void runServer(){Player player = new Player(new Server());}
 }
 
