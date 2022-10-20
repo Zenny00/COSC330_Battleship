@@ -20,14 +20,14 @@ public class ShipLabel extends JLabel
 	protected int direction;
         protected int length;
 
-	private String up_resource;
-        private String left_resource;
+	protected String up_resource;
+        protected String left_resource;
         protected Icon up_icon = null;
         protected Icon left_icon = null;
         protected Icon up_sprites[] = null;
         protected Icon left_sprites[] = null;	
 	
-	public ShipLabel(int length, int direction, String up_resource, String left_resource)
+	public ShipLabel(String up_resource, String left_resource)
 	{
                 up_icon = sourceIcon(up_resource);
 		left_icon = sourceIcon(left_resource);
@@ -45,6 +45,16 @@ public class ShipLabel extends JLabel
 	int getDirection()
 	{
 		return direction;
+	}
+
+	public Icon[] getUpSprites()
+	{
+		return up_sprites;
+	}
+
+	public Icon[] getLeftSprites()
+	{
+		return left_sprites;
 	}
 
 	//Get scaled icon from source
