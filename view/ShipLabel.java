@@ -19,6 +19,7 @@ public class ShipLabel extends JLabel
 	
 	protected int direction;
         protected int length;
+	protected ShipType type;
 
 	protected String up_resource;
         protected String left_resource;
@@ -55,6 +56,12 @@ public class ShipLabel extends JLabel
 	public Icon[] getLeftSprites()
 	{
 		return left_sprites;
+	}
+
+	//Get the ship type
+	public ShipType getType()
+	{
+		return type;
 	}
 
 	//Get scaled icon from source

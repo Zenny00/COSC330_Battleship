@@ -782,6 +782,7 @@ public class View extends JFrame
 		int length = 0;
 		Icon up_sprites[] = null;
 		Icon left_sprites[] = null;
+		ShipType type = ship.getType();
 
 		//Grab ship values
 		length = ship.getLength();
@@ -797,6 +798,7 @@ public class View extends JFrame
 
 		//Holds the index of the ship array
 		int index = 0;
+		int ship_array_index = type.getIndex();
 		//Place ship on the tiles
 		switch(direction)
 		{	
@@ -806,11 +808,12 @@ public class View extends JFrame
 				{
 					//Place each tile and update model
 					playerBoard[i][x].setIcon(up_sprites[index]);
-					model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
+					//model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
 					index++;
 				}
 
-				//model.getShip(
+				//Place the ship on the board
+				model.getShip(ship_array_index).placeShip(model.getShipBoard(), Direction.NORTH, y, x);
 				break;
 			case 1:		
 				//Horizontal case
@@ -818,12 +821,12 @@ public class View extends JFrame
 				{
 					//Place each tile and update model
 					playerBoard[y][i].setIcon(left_sprites[index]);
-					model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
+					//model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
 					index++;
 				}
 
-	//model.getShip(index);
-	//placeShip(ShipBoard input_board, Direction direction, int x, int y)private String ip_address;
+				//Place the ship on the board
+				model.getShip(ship_array_index).placeShip(model.getShipBoard(), Direction.NORTH, y, x);
 				break;
 		}	
 
@@ -848,8 +851,10 @@ public class View extends JFrame
 
 			//Call super class constructor
 			super(up_resource, left_resource);
+			
 			this.length = length;
 			this.direction = direction;
+			this.type = ShipType.DESTROYER;
 			
 			up_sprites = new Icon[2];
 			left_sprites = new Icon[2];
@@ -870,8 +875,10 @@ public class View extends JFrame
 
 			//Call super class constructor
 			super(up_resource, left_resource);
+			
 			this.length = length;
 			this.direction = direction;
+			this.type = ShipType.CRUISER;
 			
 			up_sprites = new Icon[3];
 			left_sprites = new Icon[3];
@@ -895,6 +902,7 @@ public class View extends JFrame
 			//Call super class constructor
 			this.length = length;
 			this.direction = direction;
+			this.type = ShipType.SUBMARINE;
 			
 			up_sprites = new Icon[3];
 			left_sprites = new Icon[3];
@@ -917,9 +925,11 @@ public class View extends JFrame
 
 			//Call super class constructor
 			super(up_resource, left_resource);
+			
 			this.length = length;
 			this.direction = direction;
-			
+			this.type = ShipType.BATTLESHIP;
+
 			up_sprites = new Icon[4];
 			left_sprites = new Icon[4];
 
@@ -943,9 +953,11 @@ public class View extends JFrame
 
 			//Call super class constructor
 			super(up_resource, left_resource);
+			
 			this.length = length;
 			this.direction = direction;
-			
+			this.type = ShipType.CARRIER;
+
 			up_sprites = new Icon[5];
 			left_sprites = new Icon[5];
 

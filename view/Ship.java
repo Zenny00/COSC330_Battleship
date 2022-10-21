@@ -55,10 +55,10 @@ public class Ship
 			switch(direction) 
 			{
 				case NORTH: 	
-					for(int i = y; i < y + size; i++) 
+					for(int i = y; i < y + size; i++)  
 					{
-						input_board.getTile(x, i).addShip();
-						shipTiles[index] = input_board.getTile(x, i);
+						input_board.getTile(i, x).addShip();
+						shipTiles[index] = input_board.getTile(i, x);
 						index++;
 					}
 
@@ -66,8 +66,8 @@ public class Ship
 				case WEST: 
 					for(int i = x; i < x + size; i++)
 					{
-						input_board.getTile(i, y).addShip();
-						shipTiles[index] = input_board.getTile(i, y);
+						input_board.getTile(y, i).addShip();
+						shipTiles[index] = input_board.getTile(y, i);
 						index++;
 					}
 						
