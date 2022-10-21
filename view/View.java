@@ -2,6 +2,7 @@
 //Date: 10/5/2022
 //Description: Implementation of the view class for the Battleship game GUI
 //Water sprite based on: https://www.deviantart.com/oni1ink/art/Tutorial-How-to-draw-Water-645199166
+//Ship sprites inspired by: Lowder2 - https://opengameart.org/content/sea-warfare-set-ships-and-more
 
 //Import required libraries
 import javax.swing.*;
@@ -17,6 +18,7 @@ import java.lang.Math;
 import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class View extends JFrame
 {
@@ -258,14 +260,15 @@ public class View extends JFrame
 	private JButton target_i9j7= new JButton();
 	private JButton target_i9j8= new JButton();
 	private JButton target_i9j9= new JButton();	
-	
-	//|====================================================================================================|
-	
 
+	//Setup new JButton to allow the user to randomize their ships
+	private JButton setup_random = new JButton();	
 
-	//						FUNCTIONS
-	//|====================================================================================================|
-
+	//|=====================================================================================================|
+	//|													|
+	//|						FUNCTIONS						|
+	//|													|
+	//|=====================================================================================================|
 
 	//Constructor 
 	public View(Model model, Role connect_panel)
@@ -342,16 +345,23 @@ public class View extends JFrame
 		{
 			System.out.println(ex.toString());
 		}
-	
+
+		//Setup randomize button
+
+		setup_random.setPreferredSize(new Dimension(60, 30));
+		setup_random.setText("Randomize");
+		setup_random.addActionListener(new RandomSetupListener());
+
 		//Add ships to the content pane
 		shipBox.add(des);
 		shipBox.add(sub);
 		shipBox.add(cru);
 		shipBox.add(bat);
 		shipBox.add(car);
+		shipBox.add(setup_random);
 		
 		//Setup shipbox for holding ships
-		shipBox.setLayout(new GridLayout(1, 5));
+		shipBox.setLayout(new GridLayout(1, 6));
 
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -713,28 +723,72 @@ public class View extends JFrame
 		return new ImageIcon(buf_img);
 	}
 
+	//Place the ships at random locations
+	public void placeRandom(JLabel label)
+	{
+		//Downcast to ship label
+		ShipLabel ship = (ShipLabel)label;
+		
+		//Get two random numbers (0-9)
+		int x = ThreadLocalRandom.current().nextInt(0, 9 + 1); 
+		int y = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+
+		//Get a direction, NORTH (0) or WEST (1)
+	       	int direction = ThreadLocalRandom.current().nextInt(0, 1 + 1);
+
+		//Used for ship values
+		int length = 0;
+		Icon up_sprites[] = null;
+		Icon left_sprites[] = null;
+
+		//Grab ship values
+		length = ship.getLength();
+		up_sprites = ship.getUpSprites();
+		left_sprites = ship.getLeftSprites();
+
+		//If we can't place, get a new value for x and y
+		while (! model.getShipBoard().canPlace(x, y, direction, length))
+		{
+			x = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+			y = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+		}
+
+		//Holds the index of the ship array
+		int index = 0;
+		//Place ship on the tiles
+		switch(direction)
+		{	
+			case 0:	
+				//Vertical case
+				for (int i = y; i < y + length ; i++)
+				{
+					//Place each tile and update model
+					playerBoard[i][x].setIcon(up_sprites[index]);
+					model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
+					index++;
+				}
+				break;
+			case 1:		
+				//Horizontal case
+				for (int i = x; i < x + length ; i++)
+				{
+					//Place each tile and update model
+					playerBoard[y][i].setIcon(left_sprites[index]);
+					model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
+					index++;
+				}
+				break;
+		}	
+
+		//Disable ship icons	
+		ship.setEnabled(false);
+		ship.setVisible(false);
+	}
+
 //						INNER CLASSES
 //|====================================================================================================|	
-//Define the transfer handler
-	/*
-	class MouseDragListener extends MouseMotionAdapter
-	{
-		public void mouseDragged(MouseEvent e)
-		{
-			Object obj = e.getSource();
-			if (obj instanceof JButton)
-			\{	
-				JButton button = (JButton)obj;
-				System.out.println(button.getActionCommand());
-			}
-			System.out.println("HI");
-			
-		}
-	}
-	*/
-
-	//Try this way
 	
+	//Try this way | This might be some of the weirdest code I've written but it works somehow ???	
 	//Destroyer Class
 	class DesLabel extends ShipLabel
 	{
@@ -856,7 +910,7 @@ public class View extends JFrame
 			left_sprites[3] = sourceIcon("Graphics/Ships/ShipMod/CarrierLeftTile4.png");
 			left_sprites[4] = sourceIcon("Graphics/Ships/ShipMod/CarrierLeftTile5.png");
 		}	
-	}	
+	}
 
 	class DragShip extends MouseAdapter
 	{
@@ -901,9 +955,15 @@ public class View extends JFrame
 				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
 				int x = (int)point.getX();
 				int y = (int)point.getY();
+
+				System.out.println("x and y: " + x + " " + y);
 	
 				if (model.getShipBoard().canPlace(x, y, direction, length))
 				{
+					//Disable the ability to place randomly
+					setup_random.setEnabled(false);
+
+
 					int index = 0;
 					switch(direction)
 					{	
@@ -931,8 +991,35 @@ public class View extends JFrame
 					ship.setVisible(false);
 				}	
 			}
-
+			
+			//If the user lets go of the ship, stop the drag action
 			is_ship = false;
 		}
 	}
+
+	//Action listener for the randomize button
+	class RandomSetupListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			//Get button so we can disable it
+			Object obj = e.getSource();
+			JButton button = null;
+
+			if (obj instanceof JButton)
+				button = (JButton)obj;
+			
+			//Call place random on each ship
+			placeRandom(des);
+			placeRandom(sub);
+			placeRandom(cru);
+			placeRandom(bat);
+			placeRandom(car);
+
+			//Disable the button
+			button.setEnabled(false);
+		}
+	}
+
 }
