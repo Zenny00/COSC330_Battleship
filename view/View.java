@@ -359,7 +359,18 @@ public class View extends JFrame
 		shipBox.add(bat);
 		shipBox.add(car);
 		shipBox.add(setup_random);
-		
+	
+		//Setup colors
+		shipBox.setBackground(new Color(0, 0, 80));
+		this.getContentPane().setBackground(new Color(0, 0, 0));
+		targetContainerPanel.setBackground(new Color(0, 0, 0));
+		shipContainerPanel.setBackground(new Color(0, 0, 0));
+
+		//Give button gold border and background to light blue
+		setup_random.setBorder(new LineBorder(new Color(232, 167, 17)));
+		setup_random.setBackground(new Color(51, 153, 255));
+		setup_random.setOpaque(true);
+
 		//Setup shipbox for holding ships
 		shipBox.setLayout(new GridLayout(1, 6));
 
@@ -1021,5 +1032,4 @@ public class View extends JFrame
 			button.setEnabled(false);
 		}
 	}
-
 }
