@@ -51,17 +51,13 @@ public class Ship
 			
 			//Used to index the ship array
 			
-			System.out.println("Ship: " + type);
 			int index = 0;
-			
 			switch(direction) 
 			{
 				case 0: 
-					System.out.println("CASE NORTH");	
 					for(int i = row; i < row + size; i++)  
 					{
 						
-						System.out.println("x: " + col + ", y: " + i);
 						input_board.getTile(i, col).addShip();
 						shipTiles[index] = input_board.getTile(i, col);
 						index++;
@@ -69,10 +65,8 @@ public class Ship
 
 					break;
 				case 1:
-					System.out.println("CASE WEST");	
 					for(int i = col; i < col + size; i++)
 					{
-						System.out.println("x: " + i + ", y: " + row);
 						input_board.getTile(row, i).addShip();
 						shipTiles[index] = input_board.getTile(row, i);
 						index++;

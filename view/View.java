@@ -382,7 +382,7 @@ public class View extends JFrame
 		shipContainerPanel.setBackground(new Color(0, 0, 0));
 
 		//Add white border to ship panel
-		shipBox.setBorder(new LineBorder(new Color(255, 255, 255), 3));
+		//shipBox.setBorder(new LineBorder(new Color(255, 255, 255), 3));
 		
 		//Add thinner white borders to the two boards
 		shipButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2));
@@ -783,6 +783,7 @@ public class View extends JFrame
 		{
 			row = ThreadLocalRandom.current().nextInt(0, 9 + 1);
 			col = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+			direction = ThreadLocalRandom.current().nextInt(0, 1 + 1);
 		}
 
 		//Holds the index of the ship array
@@ -845,7 +846,7 @@ public class View extends JFrame
 			this.length = length;
 			this.direction = direction;
 			this.type = ShipType.DESTROYER;
-			
+
 			up_sprites = new Icon[2];
 			left_sprites = new Icon[2];
 
@@ -869,7 +870,7 @@ public class View extends JFrame
 			this.length = length;
 			this.direction = direction;
 			this.type = ShipType.CRUISER;
-			
+
 			up_sprites = new Icon[3];
 			left_sprites = new Icon[3];
 
@@ -893,7 +894,7 @@ public class View extends JFrame
 			this.length = length;
 			this.direction = direction;
 			this.type = ShipType.SUBMARINE;
-			
+
 			up_sprites = new Icon[3];
 			left_sprites = new Icon[3];
 
@@ -967,6 +968,9 @@ public class View extends JFrame
 
 	class DragShip extends MouseAdapter
 	{
+		Point location;
+    		MouseEvent pressed;
+		
 		//Keep track of where the mouse is
 		Component lastEntered;
 		int direction = 0;
@@ -975,7 +979,14 @@ public class View extends JFrame
 		Icon left_sprites[] = null;
 		ShipLabel ship = null;
 
+		int ship_array_index = 0; 
 		boolean is_ship = false;
+
+		@Override
+		public void mousePressed(MouseEvent e)
+		{
+			pressed = e;	
+		}
 
 		@Override
 		public void mouseDragged(MouseEvent e)
@@ -988,7 +999,17 @@ public class View extends JFrame
 				length = ship.getLength();
 				up_sprites = ship.getUpSprites();
 				left_sprites = ship.getLeftSprites();
+				ship_array_index = ship.getType().getIndex();
 				is_ship = true;
+
+				Component component = e.getComponent();
+				location = component.getLocation(location);
+				int x = location.x - pressed.getX() + e.getX();
+				int y = location.y - pressed.getY() + e.getY();
+				component.setLocation(x, y);
+			
+				//setCursor(new Cursor(Cursor.HAND_CURSOR));
+				//Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("Graphics/Ships/Carrier.png").getImage(),new Point(0,0),"custom cursor"));
 			}
 		}	
 	
@@ -1009,8 +1030,6 @@ public class View extends JFrame
 				int row = (int)point.getY();
 				int col = (int)point.getX();
 
-				System.out.println("x and y: " + col + " " + row);
-	
 				if (model.getShipBoard().canPlace(row, col, direction, length))
 				{
 					//Disable the ability to place randomly
@@ -1024,20 +1043,21 @@ public class View extends JFrame
 							//Place ship on the selected tiles
 							for (int i = row; i < row + length ; i++)
 							{
-								System.out.println("X : " + col + " Y : " + i);
 								playerBoard[i][col].setIcon(up_sprites[index]);
-								model.getShipBoard().getTile(i, col).setType(TileType.SHIP);
 								index++;
 							}
+
+							model.getShip(ship_array_index).placeShip(model.getShipBoard(), 0, row, col);
 							break;
 						case 1:		
 							for (int i = col; i < col + length ; i++)
 							{
-								System.out.println("X : " + i + " Y : " + row);
-								playerBoard[row][i].setIcon(left_sprites[index]);
-								model.getShipBoard().getTile(row, i).setType(TileType.SHIP);
+								playerBoard[row][i].setIcon(left_sprites[index]);	
 								index++;
 							}
+
+
+							model.getShip(ship_array_index).placeShip(model.getShipBoard(), 1, row, col);
 							break;
 					}	
 		
