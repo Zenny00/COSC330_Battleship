@@ -26,6 +26,7 @@ public class Model
 	//public void setIP(String ip_address){this.ip_address = ip_address;}
 
 	// sets the board randomly
+	/*
 	public void setBoard() {
 		ShipType selection = null;
 		int x = 0, y = 0, vCounter = 0;
@@ -54,6 +55,7 @@ public class Model
 				vCounter++;
 		}
 	}
+	*/
 
 	// For us in updated ocean_board since target_board 
 	// should be updated when fireShot() is called

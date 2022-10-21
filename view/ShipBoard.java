@@ -16,7 +16,7 @@ public class ShipBoard extends Board
 	}	
 
 	//Check if the ship can be placed on the player's board
-	public boolean canPlace(int x, int y, int direction, int length)
+	public boolean canPlace(int row, int col, int direction, int length)
 	{
 		boolean canPlace = true;
 		System.out.println("Checking case " + direction);
@@ -24,23 +24,31 @@ public class ShipBoard extends Board
 		{
 			case 0:
 				//Check bounds
-				if (y + length > BOARD_SIZE)
+				if (row + length > BOARD_SIZE)
 					return false;
 				
 				//Check if ship is already in wanted location
-				for (int i = y; i < y + length ; i++)
-					if (tiles[i][x].getTileType() == TileType.SHIP)
+				for (int i = row; i < row + length ; i++)
+				{
+					System.out.println("x: " + col + " y: " + i);	
+				
+					if (tiles[i][col].getTileType() == TileType.SHIP)
 						canPlace = false;
+				}
 				break;
 			case 1:
 				//Check bounds
-				if (x + length > BOARD_SIZE)
+				if (col + length > BOARD_SIZE)
 					return false;
 				
 				//Check if ship is already in wanted location
-				for (int i = x; i < x + length; i++)
-					if (tiles[y][i].getTileType() == TileType.SHIP)
+				for (int i = col; i < col + length; i++)
+				{
+					System.out.println("x: " + i + " y: " + row);	
+				
+					if (tiles[row][i].getTileType() == TileType.SHIP)
 						canPlace = false;
+				}
 				break;
 		}		
 

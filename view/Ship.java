@@ -2,7 +2,7 @@ public class Ship
 {
 	private int size;
 	private int numHits = 0;
-	private Direction direction;
+	private int direction;
 	private Tile origin;
 	private	ShipType type;
 	private boolean placed = false;
@@ -43,31 +43,38 @@ public class Ship
 	public boolean isSunk(){return size == numHits;}
 	public boolean isPlaced(){return placed;}
 
-	public boolean placeShip(ShipBoard input_board, Direction direction, int x, int y)
+	public boolean placeShip(ShipBoard input_board, int direction, int row, int col)
 	{
 		try {
 			this.direction = direction;
-			this.origin = input_board.getTile(x, y);
+			this.origin = input_board.getTile(row, col);
 			
 			//Used to index the ship array
+			
+			System.out.println("Ship: " + type);
 			int index = 0;
 			
 			switch(direction) 
 			{
-				case NORTH: 	
-					for(int i = y; i < y + size; i++)  
+				case 0: 
+					System.out.println("CASE NORTH");	
+					for(int i = row; i < row + size; i++)  
 					{
-						input_board.getTile(i, x).addShip();
-						shipTiles[index] = input_board.getTile(i, x);
+						
+						System.out.println("x: " + col + ", y: " + i);
+						input_board.getTile(i, col).addShip();
+						shipTiles[index] = input_board.getTile(i, col);
 						index++;
 					}
 
 					break;
-				case WEST: 
-					for(int i = x; i < x + size; i++)
+				case 1:
+					System.out.println("CASE WEST");	
+					for(int i = col; i < col + size; i++)
 					{
-						input_board.getTile(y, i).addShip();
-						shipTiles[index] = input_board.getTile(y, i);
+						System.out.println("x: " + i + ", y: " + row);
+						input_board.getTile(row, i).addShip();
+						shipTiles[index] = input_board.getTile(row, i);
 						index++;
 					}
 						

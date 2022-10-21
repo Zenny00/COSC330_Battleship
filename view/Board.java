@@ -7,15 +7,15 @@ public class Board
 	{
 		//Initialize all tiles to SEA with proper coordiantes
 		tiles = new Tile[BOARD_SIZE][BOARD_SIZE];
-		for (int i = 0; i < BOARD_SIZE; i++)
-			for (int j = 0; j < BOARD_SIZE; j++)
-				tiles[i][j] = new Tile(i, j);
+		for (int row = 0; row < BOARD_SIZE; row++)
+			for (int column = 0; column < BOARD_SIZE; column++)
+				tiles[row][column] = new Tile(row, column);
 	}
 	
-	public Tile getTile(int x, int y) //throws nonTileException
+	public Tile getTile(int row, int column) //throws nonTileException
 	{
-		if (x <= 9 && y <= 9)
-			return tiles[x][y];
+		if (row < 10 && column < 10)
+			return tiles[row][column];
 		else
 			return null;
 		

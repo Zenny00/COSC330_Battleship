@@ -448,50 +448,39 @@ public class View extends JFrame
 		Icon water_icon = sourceIcon("Graphics/Water/Water.png");
 	
 		//Varibles to adding index to buttons	
-		int x = 0, y = 0;
-		for (JButton[] row: playerBoard)
-		{
-			for (JButton button: row)
-			{
+		for (int i = 0; i < BOARD_SIZE; i++)
+		       for (int j = 0; j < BOARD_SIZE; j++)	
+		       {
 				//Set command to coordinates and scale
-				button.setActionCommand(String.valueOf(x) + " " + String.valueOf(y));
-				button.setPreferredSize(new Dimension(30, 30));
+				playerBoard[i][j].setActionCommand(String.valueOf(j) + " " + String.valueOf(i));
+				playerBoard[i][j].setPreferredSize(new Dimension(30, 30));
 				
 				//Add proper action listeners to the tiles
-				button.addMouseListener(drag_des);
-				button.addMouseListener(drag_sub);
-				button.addMouseListener(drag_cru);
-				button.addMouseListener(drag_bat);
-				button.addMouseListener(drag_car);
+				playerBoard[i][j].addMouseListener(drag_des);
+				playerBoard[i][j].addMouseListener(drag_sub);
+				playerBoard[i][j].addMouseListener(drag_cru);
+				playerBoard[i][j].addMouseListener(drag_bat);
+				playerBoard[i][j].addMouseListener(drag_car);
 				
 				//Set up the image icon
-				button.setIcon(water_icon);
+				playerBoard[i][j].setIcon(water_icon);
 				
 				//Add JButton to JPanel
-				shipButtonPanel.add(button);
-				x++;
+				shipButtonPanel.add(playerBoard[i][j]);
 			}	
-			x = 0;
-			y++;
-		}
 
-		x = 0;
-		for (JButton[] row: targetBoard)
-		{	
-			for (JButton button: row)
-			{
-				button.setActionCommand(String.valueOf(x) + " " + String.valueOf(y));
-				button.setPreferredSize(new Dimension(30, 30));
+		for (int i = 0; i < BOARD_SIZE; i++)
+		       for (int j = 0; j < BOARD_SIZE; j++)	
+		       {
+				targetBoard[i][j].setActionCommand(String.valueOf(j) + " " + String.valueOf(i));
+				targetBoard[i][j].setPreferredSize(new Dimension(30, 30));
 				
 				//Set up the image icon
-				button.setIcon(water_icon);
-				targetButtonPanel.add(button);
-				x++;
+				targetBoard[i][j].setIcon(water_icon);
+				targetButtonPanel.add(targetBoard[i][j]);
 			}
-			x = 0;
-			y++;
-		}
 	}
+
 	//Get user input from the JTextField
 	public String getUserInput()
 	{
@@ -515,15 +504,15 @@ public class View extends JFrame
 	}
 	
 	//Return JButton at specified location within the grid
-	public JButton getTargetButton(int x, int y)
+	public JButton getTargetButton(int row, int col)
 	{
-		return targetBoard[x][y];	
+		return targetBoard[row][col];	
 	}
 
 	//Return JButton at specified location within the grid
-	public JButton getShipButton(int x, int y)
+	public JButton getShipButton(int row, int col)
 	{
-		return playerBoard[x][y];	
+		return playerBoard[row][col];	
 	}
 
 	//Update a button at a specified location in the grid
@@ -772,8 +761,8 @@ public class View extends JFrame
 		ShipLabel ship = (ShipLabel)label;
 		
 		//Get two random numbers (0-9)
-		int x = ThreadLocalRandom.current().nextInt(0, 9 + 1); 
-		int y = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+		int row = ThreadLocalRandom.current().nextInt(0, 9 + 1); 
+		int col = ThreadLocalRandom.current().nextInt(0, 9 + 1);
 
 		//Get a direction, NORTH (0) or WEST (1)
 	       	int direction = ThreadLocalRandom.current().nextInt(0, 1 + 1);
@@ -790,43 +779,44 @@ public class View extends JFrame
 		left_sprites = ship.getLeftSprites();
 
 		//If we can't place, get a new value for x and y
-		while (! model.getShipBoard().canPlace(x, y, direction, length))
+		while (! model.getShipBoard().canPlace(row, col, direction, length))
 		{
-			x = ThreadLocalRandom.current().nextInt(0, 9 + 1);
-			y = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+			row = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+			col = ThreadLocalRandom.current().nextInt(0, 9 + 1);
 		}
 
 		//Holds the index of the ship array
 		int index = 0;
 		int ship_array_index = type.getIndex();
+		System.out.println("Ship index " + ship_array_index);
 		//Place ship on the tiles
 		switch(direction)
 		{	
 			case 0:	
 				//Vertical case
-				for (int i = y; i < y + length ; i++)
+				for (int i = row; i < row + length ; i++)
 				{
 					//Place each tile and update model
-					playerBoard[i][x].setIcon(up_sprites[index]);
+					playerBoard[i][col].setIcon(up_sprites[index]);
 					//model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
 					index++;
 				}
 
 				//Place the ship on the board
-				model.getShip(ship_array_index).placeShip(model.getShipBoard(), Direction.NORTH, y, x);
+				model.getShip(ship_array_index).placeShip(model.getShipBoard(), 0, row, col);
 				break;
 			case 1:		
 				//Horizontal case
-				for (int i = x; i < x + length ; i++)
+				for (int i = col; i < col + length ; i++)
 				{
 					//Place each tile and update model
-					playerBoard[y][i].setIcon(left_sprites[index]);
+					playerBoard[row][i].setIcon(left_sprites[index]);
 					//model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
 					index++;
 				}
 
 				//Place the ship on the board
-				model.getShip(ship_array_index).placeShip(model.getShipBoard(), Direction.NORTH, y, x);
+				model.getShip(ship_array_index).placeShip(model.getShipBoard(), 1, row, col);
 				break;
 		}	
 
@@ -1016,12 +1006,12 @@ public class View extends JFrame
 				JButton button = (JButton)lastEntered;
 				String coords[] = button.getActionCommand().split(" ");
 				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-				int x = (int)point.getX();
-				int y = (int)point.getY();
+				int row = (int)point.getY();
+				int col = (int)point.getX();
 
-				System.out.println("x and y: " + x + " " + y);
+				System.out.println("x and y: " + col + " " + row);
 	
-				if (model.getShipBoard().canPlace(x, y, direction, length))
+				if (model.getShipBoard().canPlace(row, col, direction, length))
 				{
 					//Disable the ability to place randomly
 					setup_random.setEnabled(false);
@@ -1032,18 +1022,20 @@ public class View extends JFrame
 					{	
 						case 0:	
 							//Place ship on the selected tiles
-							for (int i = y; i < y + length ; i++)
+							for (int i = row; i < row + length ; i++)
 							{
-								playerBoard[i][x].setIcon(up_sprites[index]);
-								model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
+								System.out.println("X : " + col + " Y : " + i);
+								playerBoard[i][col].setIcon(up_sprites[index]);
+								model.getShipBoard().getTile(i, col).setType(TileType.SHIP);
 								index++;
 							}
 							break;
 						case 1:		
-							for (int i = x; i < x + length ; i++)
+							for (int i = col; i < col + length ; i++)
 							{
-								playerBoard[y][i].setIcon(left_sprites[index]);
-								model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
+								System.out.println("X : " + i + " Y : " + row);
+								playerBoard[row][i].setIcon(left_sprites[index]);
+								model.getShipBoard().getTile(row, i).setType(TileType.SHIP);
 								index++;
 							}
 							break;
