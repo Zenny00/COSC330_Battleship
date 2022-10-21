@@ -27,6 +27,7 @@ public class Player
 
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
+		view.addDoneListener(new DoneListener());	
 		//view.addClickListener(new DragListener());
 		//view.addDragListener(new DragListener());
       		
@@ -51,6 +52,31 @@ public class Player
 			role.sendData(point.getX() + " " + point.getY());
 		}
 	} //Inner actionListener class
+
+	class DoneListener implements ActionListener
+	{
+		//When a tile is pressed grab the coordinates
+		public void actionPerformed(ActionEvent e)
+		{
+			Object obj = e.getSource();
+			if (obj instanceof JButton)
+			{
+				JButton button = (JButton)obj;
+
+				button.setVisible(false);
+				button.setEnabled(false);
+
+				System.out.println("Player is done the setup phase");
+				for (int i = 0; i < 10; i++)
+				{
+					for (int j = 0; j < 10; j++)
+						System.out.printf("%s ", model.getShipBoard().getTile(i, j).getTileType());
+
+					System.out.printf("\n");
+				}
+			}
+		}
+	}
 
 	//Inner class DragListener allows the player to drag ships to different locations on the ship board
 	class DragListener implements MouseListener, MouseMotionListener

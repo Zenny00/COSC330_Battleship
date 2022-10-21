@@ -7,17 +7,18 @@ public class Model
 	private ShipBoard ocean_board;
 	private Board target_board;
 	private Random random = new Random();
-	//private String ip_address;
 
 	Model()
 	{	
 		ship_list = new Ship[5];
-		ship_list[0] = new Ship(ShipType.SUBMARINE);
-		ship_list[1] = new Ship(ShipType.CRUISER);
-		ship_list[2] = new Ship(ShipType.DESTROYER);
-		ship_list[3] = new Ship(ShipType.CARRIER);
-		ship_list[4] = new Ship(ShipType.BATTLESHIP);
-
+		
+		//Setup the ship array
+		ship_list[0] = new Ship(ShipType.DESTROYER);
+		ship_list[1] = new Ship(ShipType.SUBMARINE);
+		ship_list[2] = new Ship(ShipType.CRUISER);
+		ship_list[3] = new Ship(ShipType.BATTLESHIP);
+		ship_list[4] = new Ship(ShipType.CARRIER);
+		
 		ocean_board = new ShipBoard();
 		target_board = new Board();
 	}
@@ -94,11 +95,10 @@ public class Model
 	}
 
 	public boolean validTarget(int x, int y){return ocean_board.getClickable(x, y);}
-	
-	/*
-        public void sendMessage(ostream os)
-        {
-              //Send message through the server
-        }
-	*/
+
+	public Ship getShip(int index)
+	{
+		//Return the ship at the given index
+		return ship_list[index];
+	}	
 }

@@ -6,8 +6,7 @@ public class Ship
 	private Tile origin;
 	private	ShipType type;
 	private boolean placed = false;
-	private String[] icons; //Possible idea for handling icons, or we go back to subclasses
-	private String baseIcon;
+	private Tile shipTiles[];
 
 	Ship(ShipType type)
 	{
@@ -17,25 +16,23 @@ public class Ship
 		switch (type) {
 			case SUBMARINE: 
 				size = 3;
-				icons = new String[]{base + "SubmarineTile1.png",
-									 base + "SubmarineTile2.png",
-									 base + "SubmarineTile3.png"};
-				baseIcon = "../View/Graphics/Ships/Submarine.png";
+				shipTiles = new Tile[3];
 				break;
 			case CRUISER: 
-				size = 3;
+				size = 3;	
+				shipTiles = new Tile[3];
 				break;
 			case DESTROYER:
 				size = 2;
-				icons = new String[]{base + "DestroyerTile1.png",
-									 base + "DestroyerTIle2.png"};
-				baseIcon = "../View/Graphics/Ships/Destroyer.png";
+				shipTiles = new Tile[2];
 				break;
 			case CARRIER:
 				size = 5;
+				shipTiles = new Tile[5];
 				break;
 			case BATTLESHIP:
 				size = 4;
+				shipTiles = new Tile[4];
 				break;
 		}
 	}
@@ -43,8 +40,6 @@ public class Ship
 	public void incrementHits(){numHits++;}
 
 	public ShipType getType(){return type;}
-	public String[] getIcons() {return icons;}
-	public String getBaseIcon() {return baseIcon;}
 	public boolean isSunk(){return size == numHits;}
 	public boolean isPlaced(){return placed;}
 
@@ -53,15 +48,44 @@ public class Ship
 		try {
 			this.direction = direction;
 			this.origin = input_board.getTile(x, y);
-			switch(direction) {
-				case NORTH: for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
-						    break;
-				case SOUTH: for(int i = 0; i < size; i++) input_board.getTile(x, y - i).addShip();
-						    break;
-				case EAST:	for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
-							break;
-				case WEST:	for(int i = 0; i < size; i++) input_board.getTile(x, y - i).addShip();
-							break;
+			
+			//Used to index the ship array
+			int index = 0;
+			
+			switch(direction) 
+			{
+				case NORTH: 	
+					for(int i = y; i < y + size; i++) 
+					{
+						input_board.getTile(x, i).addShip();
+						shipTiles[index] = input_board.getTile(x, i);
+						index++;
+					}
+
+					break;
+				case WEST: 
+					for(int i = x; i < x + size; i++)
+					{
+						input_board.getTile(i, y).addShip();
+						shipTiles[index] = input_board.getTile(i, y);
+						index++;
+					}
+						
+					break;
+
+				//Not needed right now
+				/*
+				 case SOUTH: 
+					for(int i = 0; i < size; i++) 
+					{
+						input_board.getTile(x, y - i).addShip();
+					}
+					
+					break;
+				case EAST: 
+					for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
+						break;
+				*/
 			}
 		} catch(Exception nonTileException) { //Throws a nonTileException if the requested tile does not exist, returns false 
 			return false;

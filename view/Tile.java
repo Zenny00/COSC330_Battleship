@@ -29,10 +29,9 @@ public class Tile
 		clickable = false;
 		return type;
 	}
+
+	//Set tile type to ship
 	public void addShip() {
-		if (type == TileType.SHIP || type == TileType.OVERLAP)
-			type = TileType.OVERLAP;
-		else
-			type = TileType.SHIP;
+		type = TileType.SHIP;
 	}	
 }

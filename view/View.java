@@ -43,12 +43,11 @@ public class View extends JFrame
 	//Array of image icons to hold ships
 	private JPanel ships[] = new JPanel[NUM_SHIPS];
 
-	//Setup panels and arrays
+	//Setup panels to hold buttons and ships
 	private JPanel shipButtonPanel = new JPanel();
 	private JPanel shipContainerPanel = new JPanel();
 	private JPanel targetButtonPanel = new JPanel();
 	private JPanel targetContainerPanel = new JPanel();
-
 	private JPanel shipBox = new JPanel();
 
 	//Ships
@@ -264,6 +263,12 @@ public class View extends JFrame
 	//Setup new JButton to allow the user to randomize their ships
 	private JButton setup_random = new JButton();	
 
+	//JButton that will be pressed when player is done setting up their ships
+	private JButton setup_done = new JButton();	
+
+	//Int to keep track of the number of ships left to place
+	private int ships_placed;
+
 	//|=====================================================================================================|
 	//|													|
 	//|						FUNCTIONS						|
@@ -275,6 +280,7 @@ public class View extends JFrame
 	{	
 		//Set the model
 		this.model = model;
+
 
 		//Setup main grid
 		GridLayout contentLayout = new GridLayout(2, 2);
@@ -309,6 +315,9 @@ public class View extends JFrame
 		// | 5. Carrier										|
 		// |------------------------------------------------------------------------------------|
 	
+		//The player has not yet placed any ships, set ships_placed to none
+		ships_placed = 0;
+		
 		//Ship label objs to hold the ship icons and actions
 		des = new DesLabel(2, 0, "Graphics/Ships/Destroyer.png", "Graphics/Ships/DestroyerLeft.png");
 		sub = new SubLabel(3, 0, "Graphics/Ships/Submarine.png", "Graphics/Ships/SubmarineLeft.png");	
@@ -347,10 +356,15 @@ public class View extends JFrame
 		}
 
 		//Setup randomize button
-
 		setup_random.setPreferredSize(new Dimension(60, 30));
 		setup_random.setText("Randomize");
 		setup_random.addActionListener(new RandomSetupListener());
+
+		//Setup done button
+		setup_done.setPreferredSize(new Dimension(60, 30));
+		setup_done.setText("Ready");
+		setup_done.setEnabled(false);
+		setup_done.setVisible(false);
 
 		//Add ships to the content pane
 		shipBox.add(des);
@@ -359,6 +373,7 @@ public class View extends JFrame
 		shipBox.add(bat);
 		shipBox.add(car);
 		shipBox.add(setup_random);
+		shipBox.add(setup_done);
 	
 		//Setup colors
 		shipBox.setBackground(new Color(0, 0, 80));
@@ -372,7 +387,7 @@ public class View extends JFrame
 		setup_random.setOpaque(true);
 
 		//Setup shipbox for holding ships
-		shipBox.setLayout(new GridLayout(1, 6));
+		shipBox.setLayout(new GridLayout(1, 7));
 
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -409,7 +424,13 @@ public class View extends JFrame
 		}
 
 		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
-	}		
+	}	
+
+	public void addDoneListener(ActionListener action)
+	{
+		//Add done listener to the finish setup button
+		setup_done.addActionListener(action);
+	}	
 
 	public void initJButtons(DragShip drag_des, DragShip drag_sub, DragShip drag_cru, DragShip drag_bat, DragShip drag_car) throws IOException 
 	{
@@ -778,6 +799,8 @@ public class View extends JFrame
 					model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
 					index++;
 				}
+
+				//model.getShip(
 				break;
 			case 1:		
 				//Horizontal case
@@ -788,12 +811,18 @@ public class View extends JFrame
 					model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
 					index++;
 				}
+
+	//model.getShip(index);
+	//placeShip(ShipBoard input_board, Direction direction, int x, int y)private String ip_address;
 				break;
 		}	
 
 		//Disable ship icons	
 		ship.setEnabled(false);
 		ship.setVisible(false);
+
+		//Enable ready button
+		setup_done.setEnabled(true);
 	}
 
 //						INNER CLASSES
@@ -973,7 +1002,7 @@ public class View extends JFrame
 				{
 					//Disable the ability to place randomly
 					setup_random.setEnabled(false);
-
+					setup_random.setVisible(false);
 
 					int index = 0;
 					switch(direction)
@@ -997,9 +1026,19 @@ public class View extends JFrame
 							break;
 					}	
 		
+					//Add one to ships placed
+					ships_placed++;
+
 					//Disable ship icons	
 					ship.setEnabled(false);
 					ship.setVisible(false);
+				
+					//Check if player has placed all their ships, if so enable the done button
+					if (ships_placed == NUM_SHIPS)
+					{
+						setup_done.setEnabled(true);
+						setup_done.setVisible(true);
+					}
 				}	
 			}
 			
