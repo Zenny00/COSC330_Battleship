@@ -823,6 +823,7 @@ public class View extends JFrame
 
 		//Enable ready button
 		setup_done.setEnabled(true);
+		setup_done.setVisible(true);
 	}
 
 //						INNER CLASSES
@@ -1069,6 +1070,7 @@ public class View extends JFrame
 
 			//Disable the button
 			button.setEnabled(false);
+			button.setVisible(false);
 		}
 	}
 }
