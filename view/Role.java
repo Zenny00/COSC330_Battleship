@@ -2,6 +2,8 @@
 //Date: 10/10/2022
 //Description holds information regarding the server or client
 
+import java.awt.Point;
+
 public interface Role
 {
 	//Setup phase
@@ -12,6 +14,10 @@ public interface Role
 
 	//Recieve data
 	//public Object receiveData();
+
+	//Send and recieve coordinates
+   	public void sendCoordinates(Object obj);
+	public Point getCoordinates();
 
 	public void run();
 }
