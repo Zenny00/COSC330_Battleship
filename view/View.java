@@ -381,10 +381,20 @@ public class View extends JFrame
 		targetContainerPanel.setBackground(new Color(0, 0, 0));
 		shipContainerPanel.setBackground(new Color(0, 0, 0));
 
-		//Give button gold border and background to light blue
+		//Add white border to ship panel
+		shipBox.setBorder(new LineBorder(new Color(255, 255, 255), 3));
+		
+		//Add thinner white borders to the two boards
+		shipButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		targetButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		
+		//Give buttons gold border and set background to light blue
 		setup_random.setBorder(new LineBorder(new Color(232, 167, 17)));
 		setup_random.setBackground(new Color(51, 153, 255));
 		setup_random.setOpaque(true);
+		setup_done.setBorder(new LineBorder(new Color(232, 167, 17)));
+		setup_done.setBackground(new Color(51, 153, 255));
+		setup_done.setOpaque(true);
 
 		//Setup shipbox for holding ships
 		shipBox.setLayout(new GridLayout(1, 7));
