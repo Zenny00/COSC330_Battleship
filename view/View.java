@@ -336,7 +336,7 @@ public class View extends JFrame
 		//Try to initialize JButtons
 		try
 		{
-			initJButtons(drag_des, drag_sub, drag_cru drag_bat, drag_car);
+			initJButtons(drag_des, drag_sub, drag_cru, drag_bat, drag_car);
 		}
 		catch (IOException ex)
 		{
