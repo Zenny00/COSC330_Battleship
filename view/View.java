@@ -929,10 +929,10 @@ public class View extends JFrame
 					//Disable ship icons	
 					ship.setEnabled(false);
 					ship.setVisible(false);
-				}
-				
-				is_ship = false;
+				}	
 			}
+
+			is_ship = false;
 		}
 	}
 }
