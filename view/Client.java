@@ -152,8 +152,9 @@ public class Client extends JPanel implements Role
       } // end catch
    } // end method closeConnection
 
-   public void sendCoordinates( Object obj )
+   public void sendCoordinates( String str )
    {
+	/*
 	if (obj instanceof Point)
 	{
 		Point point = (Point)obj;
@@ -166,10 +167,12 @@ public class Client extends JPanel implements Role
          		displayArea.append( "\nError writing object" );
 		}
 	}
+	*/
    }
 
-   public Point getCoordinates()
+   public String getCoordinates()
    {
+	   /*
 	   Point point = null;
 	   Object obj = null;
 	   
@@ -188,6 +191,9 @@ public class Client extends JPanel implements Role
 
 	   //Return either null (no point) or the coordinates as a point
 	   return point;
+	   */
+
+	   return "";
    }
 
    // send message to server

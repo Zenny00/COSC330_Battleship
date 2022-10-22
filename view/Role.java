@@ -16,8 +16,8 @@ public interface Role
 	//public Object receiveData();
 
 	//Send and recieve coordinates
-   	public void sendCoordinates(Object obj);
-	public Point getCoordinates();
+   	public void sendCoordinates(String str);
+	public String getCoordinates();
 
 	public void run();
 }
