@@ -403,6 +403,7 @@ public class View extends JFrame
 		setup_done.setOpaque(true);
 
 		//Setup shipbox for holding ships
+<<<<<<< HEAD
 		shipBox.setLayout(new GridLayout(1, 7));
 
 		//Setup sound system
@@ -418,6 +419,9 @@ public class View extends JFrame
 		{
 			e.printStackTrace();
 		}
+=======
+		shipBox.setLayout(new GridLayout(1, 7));	
+>>>>>>> 3002a1871aca9f3560cfa8a98fb760a24e429321
 
 		water_clip.start();
 
@@ -843,9 +847,12 @@ public class View extends JFrame
 				break;
 		}	
 
+<<<<<<< HEAD
 		//Play water placement sound
 		//water_clip.start();
 
+=======
+>>>>>>> 3002a1871aca9f3560cfa8a98fb760a24e429321
 		//Disable ship icons	
 		ship.setEnabled(false);
 		ship.setVisible(false);
@@ -1060,7 +1067,24 @@ public class View extends JFrame
 
 				if (model.getShipBoard().canPlace(row, col, direction, length))
 				{
+<<<<<<< HEAD
 					
+=======
+					//Setup sound system
+					try
+					{
+						sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");	
+						audioStream = AudioSystem.getAudioInputStream(sound_url);
+						water_clip = AudioSystem.getClip();
+						water_clip.open(audioStream);
+						water_clip.start();
+					}
+					catch (Exception ex)
+					{
+						System.out.println("Could not open audio");
+					}
+
+>>>>>>> 3002a1871aca9f3560cfa8a98fb760a24e429321
 					//Disable the ability to place randomly
 					setup_random.setEnabled(false);
 					setup_random.setVisible(false);
@@ -1103,7 +1127,9 @@ public class View extends JFrame
 						setup_done.setEnabled(true);
 						setup_done.setVisible(true);
 					}
-				}	
+				}
+
+				water_clip.close();
 			}
 			
 			//If the user lets go of the ship, stop the drag action
@@ -1130,6 +1156,22 @@ public class View extends JFrame
 			placeRandom(cru);
 			placeRandom(bat);
 			placeRandom(car);
+			
+			//Setup sound system
+			try
+			{
+				sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");	
+				audioStream = AudioSystem.getAudioInputStream(sound_url);
+				water_clip = AudioSystem.getClip();
+				water_clip.open(audioStream);
+				water_clip.start();
+			}
+			catch (Exception ex)
+			{
+				System.out.println("Could not open audio");
+			}
+
+			water_clip.close();
 
 			//Disable the button
 			button.setEnabled(false);
