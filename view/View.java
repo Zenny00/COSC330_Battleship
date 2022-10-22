@@ -382,7 +382,7 @@ public class View extends JFrame
 		shipContainerPanel.setBackground(new Color(0, 0, 0));
 
 		//Add white border to ship panel
-		//shipBox.setBorder(new LineBorder(new Color(255, 255, 255), 3));
+		shipBox.setBorder(new LineBorder(new Color(255, 255, 255), 3));
 		
 		//Add thinner white borders to the two boards
 		shipButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2));
@@ -1002,13 +1002,15 @@ public class View extends JFrame
 				ship_array_index = ship.getType().getIndex();
 				is_ship = true;
 
+				/*
 				Component component = e.getComponent();
 				location = component.getLocation(location);
 				int x = location.x - pressed.getX() + e.getX();
 				int y = location.y - pressed.getY() + e.getY();
 				component.setLocation(x, y);
-			
-				//setCursor(new Cursor(Cursor.HAND_CURSOR));
+				*/
+
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
 				//Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("Graphics/Ships/Carrier.png").getImage(),new Point(0,0),"custom cursor"));
 			}
 		}	
@@ -1022,6 +1024,7 @@ public class View extends JFrame
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{		
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			if (lastEntered instanceof JButton && is_ship == true)
 			{
 				JButton button = (JButton)lastEntered;

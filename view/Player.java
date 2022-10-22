@@ -17,6 +17,7 @@ public class Player
 	private View view;
 	private Role role;
 	private Model model;
+	private boolean gameStart = false;
 
 	//Player constructor
 	public Player(Role role)

@@ -158,43 +158,34 @@ public class Server extends JPanel implements Role
       } // end catch
    } // end method closeConnection
 
-   public void sendCoordinates( Object obj )
+   public void sendCoordinates( String str )
    {
-	if (obj instanceof Point)
+	try
 	{
-		Point point = (Point)obj;
-		try
-		{
-			output.writeObject(point);
-		}
-      		catch ( IOException ioException )
-		{
-         		displayArea.append( "\nError writing object" );
-		}
+		output.writeObject(str);
+	}
+	catch ( IOException ioException )
+	{
+		displayArea.append( "\nError writing object" );
 	}
    }
 
-   public Point getCoordinates()
+   public String getCoordinates()
    {
-	   Point point = null;
 	   Object obj = null;
+	   String line = ""; 
 	   
 	   try
 	   { 
-		   obj = input.readObject(); // read new point
+		   line = input.readLine(); // read new point
 	   }
 	   //Bitwise operation to catch multiple exceptions
-	   catch ( IOException | ClassNotFoundException e ) 
+	   catch ( IOException e ) 
 	   {
 		   displayArea.append( "\nError writing object" );
 	   }
 
-	   //If we found a point convert to point obj
-	   if (obj instanceof Point)
-		point = (Point)obj;
-
-	   //Return either null (no point) or the coordinates as a point
-	   return point;
+	   return line;
    }
 
    // send message to client
