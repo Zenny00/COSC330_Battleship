@@ -272,9 +272,9 @@ public class View extends JFrame
 	//Int to keep track of the number of ships left to place
 	private int ships_placed;
 
-	private AudioInputStream audioStream;
-	private Clip water_clip;
-	private URL sound_url; 
+	private AudioInputStream audioStream = null;
+	private File water_sound = null;
+	private Clip water_clip = null;
 
 	//|=====================================================================================================|
 	//|													|
@@ -406,17 +406,20 @@ public class View extends JFrame
 		shipBox.setLayout(new GridLayout(1, 7));
 
 		//Setup sound system
+		water_sound = new File("Graphics/Sounds/WaterSplash.wav");
+
 		try
 		{
-			sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");	
-			audioStream = AudioSystem.getAudioInputStream(sound_url);
+			audioStream = AudioSystem.getAudioInputStream(water_sound);
 			water_clip = AudioSystem.getClip();
 			water_clip.open(audioStream);
 		}
 		catch (Exception e)
 		{
-			System.out.println("Could not open audio");
+			e.printStackTrace();
 		}
+
+		water_clip.start();
 
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -841,7 +844,7 @@ public class View extends JFrame
 		}	
 
 		//Play water placement sound
-		water_clip.start();
+		//water_clip.start();
 
 		//Disable ship icons	
 		ship.setEnabled(false);
@@ -1057,8 +1060,7 @@ public class View extends JFrame
 
 				if (model.getShipBoard().canPlace(row, col, direction, length))
 				{
-					water_clip.start();
-
+					
 					//Disable the ability to place randomly
 					setup_random.setEnabled(false);
 					setup_random.setVisible(false);
