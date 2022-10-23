@@ -39,9 +39,10 @@ public class Player
 		// run client or server
 		role.run();
 
-		state = new Initial(this);
+		//state = new Initial(model, view);
 		String message = role.readMessage();
-
+		System.out.println(gameStart + " " + role.readMessage());
+		
 		while((!gameStart) && (!message.equals("ready")));
 		{	
 			System.out.println(gameStart + " " + role.readMessage());
@@ -49,7 +50,7 @@ public class Player
 		}
 		
 		System.out.println("Game has begun");
-		state = new Attack(this);
+		//state = new Attack(model, view);
 
 		role.closeConnection();
 	}

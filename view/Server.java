@@ -68,7 +68,10 @@ public class Server extends JPanel implements Role
       try // set up server to receive connections; process connections
       {
          server = new ServerSocket( 12345, 100 ); // create ServerSocket
-
+	 waitForConnection();
+	 getStreams();
+	 
+	 /*
          while ( true ) 
          {
             try 
@@ -87,6 +90,7 @@ public class Server extends JPanel implements Role
             //   counter++;
             //} // end finally
          } // end while
+	 */
       } // end try
       catch ( IOException ioException ) 
       {
@@ -95,7 +99,7 @@ public class Server extends JPanel implements Role
    } // end method runServer
 
    // wait for connection to arrive, then display connection info
-   private void waitForConnection() throws IOException
+   public void waitForConnection() throws IOException
    {
       displayMessage( "Waiting for connection\n" );
       connection = server.accept(); // allow server to accept connection            
@@ -104,7 +108,7 @@ public class Server extends JPanel implements Role
    } // end method waitForConnection
 
    // get streams to send and receive data
-   private void getStreams() throws IOException
+   public void getStreams() throws IOException
    {
       // set up output stream for objects
       output = new ObjectOutputStream( connection.getOutputStream() );
@@ -117,7 +121,7 @@ public class Server extends JPanel implements Role
    } // end method getStreams
 
    // process connection with client
-   private void processConnection() throws IOException
+   public void processConnection() throws IOException
    {
       String message = "Connection successful";
       sendData( message ); // send connection successful message

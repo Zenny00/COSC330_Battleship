@@ -2,6 +2,7 @@
 //Date: 10/10/2022
 //Description holds information regarding the server or client
 
+import java.io.IOException;
 import java.awt.Point;
 
 public interface Role
@@ -14,7 +15,10 @@ public interface Role
 
 	//Recieve data
 	//public Object receiveData();
-	
+
+	//Setup server
+   	public void getStreams() throws IOException;
+
 	//Close connection
    	public void closeConnection();
 

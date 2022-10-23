@@ -67,6 +67,17 @@ public class Client extends JPanel implements Role
    // connect to server and process messages from server
    public void run() 
    {
+	try // connect to server, get streams, process connection
+	{
+		connectToServer();
+		getStreams();
+	}
+	catch (IOException e)
+	{
+		e.printStackTrace();
+	}
+
+	/*
       try // connect to server, get streams, process connection
       {
          connectToServer(); // create a Socket to make connection
@@ -82,6 +93,7 @@ public class Client extends JPanel implements Role
          ioException.printStackTrace();
       } // end catch
          //closeConnection(); // close connection
+      */
    } // end method runClient
 
    // connect to server
@@ -111,7 +123,7 @@ public class Client extends JPanel implements Role
    } // end method getStreams
 
    // process connection with server
-   private void processConnection() throws IOException
+   public void processConnection() throws IOException
    {
       // enable enterField so client user can send messages
       setTextFieldEditable( true );
@@ -137,7 +149,7 @@ public class Client extends JPanel implements Role
    public void closeConnection() 
    {
       displayMessage( "\nClosing connection" );
-      setTextFieldEditable( false ); // disable enterField
+      //setTextFieldEditable( false ); // disable enterField
 
       try 
       {
