@@ -11,7 +11,7 @@ public interface Role
 	//public void setup();
 
 	//Send data
-	public void sendData(Object obj);
+	//public void sendData(Object obj);
 
 	//Recieve data
 	//public Object receiveData();
@@ -28,4 +28,6 @@ public interface Role
 	
 	//Run the server or client
 	public void run();
+
+	public String getRole();
 }

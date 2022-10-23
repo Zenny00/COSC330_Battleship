@@ -20,6 +20,9 @@ public class Player
 	private State state;
 	private boolean gameStart = false;
 
+	private final String SERVER = "SERVER";
+	private final String CLIENT = "CLIENT";
+
 	//Player constructor
 	public Player(Role role)
 	{
@@ -30,28 +33,36 @@ public class Player
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
 		view.addDoneListener(new DoneListener());	
-      	
-		playGame();	
+
+		state = new Initial(this);
+		role.run();
 	}
 
-	public void playGame()
+	public void startGame()
 	{
+		System.out.println("Start game called");
 		// run client or server
-		role.run();
-
-		//state = new Initial(model, view);
-		String message = role.readMessage();
-		System.out.println(gameStart + " " + role.readMessage());
 		
-		while((!gameStart) && (!message.equals("ready")));
-		{	
-			System.out.println(gameStart + " " + role.readMessage());
-			message = role.readMessage();
-		}
+		String message = "";
 		
-		System.out.println("Game has begun");
+		message = role.readMessage();
+		System.out.println(message);
+		
+		if (message.equals("ready"))
+			System.out.println("Game has begun");
+		else
+			System.out.println("Game has not begun");
+		
 		//state = new Attack(model, view);
 
+		// NOTE: Bad way to do this but it'll work for now
+		if (role.getRole() == CLIENT)
+			System.out.println("CODE FOR CLIENT");
+			//RUN CLIENT CODE
+		else
+			System.out.println("CODE FOR SERVER");
+			//RUN SERVER CODE
+		
 		role.closeConnection();
 	}
 
@@ -60,6 +71,7 @@ public class Player
 	// False disables all tiles in the panel
 	public void setTargetBoardEnabled(boolean isEnabled) {
 		int row, column;	
+		System.out.println("Set board called");
 		JPanel panel = null;
 
 		view.getTargetPanel().setEnabled(isEnabled);
@@ -105,7 +117,7 @@ public class Player
 			String coords[] = button.getActionCommand().split(" ");
 			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
                 	System.out.println(point.getX() + " " + point.getY());
-			role.sendData(point.getX() + " " + point.getY());
+			role.sendMessage(point.getX() + " " + point.getY());
 		}
 	} //Inner actionListener class
 
@@ -131,8 +143,9 @@ public class Player
 					System.out.printf("\n");
 				}
 
-				role.sendMessage("ready");
 				gameStart = true;
+				role.sendMessage("ready");
+				startGame();
 			}
 		}
 	}

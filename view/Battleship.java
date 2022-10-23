@@ -52,5 +52,8 @@ public class Battleship
 	}
 
 	//Run the server's code
-	static void runServer(){Player player = new Player(new Server());}
+	static void runServer()
+	{
+		Player player = new Player(new Server());
+	}
 }

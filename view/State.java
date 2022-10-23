@@ -1,4 +1,4 @@
 public interface State 
 {
-    public void setScreen();
+	//No methods currently needed
 }

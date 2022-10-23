@@ -20,15 +20,20 @@ import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import java.io.*;
+
 public class Client extends JPanel implements Role
 {
    private JTextField enterField; // enters information from user
    private JTextArea displayArea; // display information to user
-   private ObjectOutputStream output; // output stream to server
-   private ObjectInputStream input; // input stream from server
+   //private ObjectOutputStream output; // output stream to server
+   //private ObjectInputStream input; // input stream from server
+   private BufferedReader br;
+   private PrintWriter pw;
    private String message = ""; // message from server
    private String chatServer; // host server for this application
    private Socket client; // socket to communicate with server
+   private final String ROLE = "CLIENT";
 
    // initialize chatServer and set up GUI
    public Client( String host )
@@ -46,7 +51,7 @@ public class Client extends JPanel implements Role
             // send message to client
             public void actionPerformed( ActionEvent event )
             {
-               sendData( event.getActionCommand() );
+               //sendData( event.getActionCommand() );
                enterField.setText( "" );
             } // end method actionPerformed
          } // end anonymous inner class
@@ -112,6 +117,9 @@ public class Client extends JPanel implements Role
    // get streams to send and receive data
    public void getStreams() throws IOException
    {
+	   pw = new PrintWriter(client.getOutputStream(), true);
+	   br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+	   /*
       // set up output stream for objects
       output = new ObjectOutputStream( client.getOutputStream() );      
       output.flush(); // flush output buffer to send header information
@@ -120,6 +128,8 @@ public class Client extends JPanel implements Role
       input = new ObjectInputStream( client.getInputStream() );
 
       displayMessage( "\nGot I/O streams\n" );
+      */
+
    } // end method getStreams
 
    // process connection with server
@@ -148,13 +158,14 @@ public class Client extends JPanel implements Role
    // close streams and socket
    public void closeConnection() 
    {
+	System.out.println("CLOSED");
       displayMessage( "\nClosing connection" );
       //setTextFieldEditable( false ); // disable enterField
 
       try 
       {
-         output.close(); // close output stream
-         input.close(); // close input stream
+         pw.close(); // close output stream
+         br.close(); // close input stream
          client.close(); // close socket
       } // end try
       catch ( IOException ioException ) 
@@ -165,14 +176,17 @@ public class Client extends JPanel implements Role
 
    public void sendMessage( String str )
    {
+	pw.println(str);
+	pw.flush();	
+	/*
 	try
 	{
-		output.writeBytes(str);
 	}
 	catch ( IOException ioException )
 	{
 		displayArea.append( "\nError writing object" );
 	}
+	*/
    }
 
    public String readMessage()
@@ -181,7 +195,7 @@ public class Client extends JPanel implements Role
 	   
 	   try
 	   { 
-		   line = input.readLine(); // read new point
+		   line = br.readLine();  
 	   }
 	   //Bitwise operation to catch multiple exceptions
 	   catch ( IOException e ) 
@@ -192,6 +206,12 @@ public class Client extends JPanel implements Role
 	   return line;
    }
 
+   public String getRole()
+   {
+	   return ROLE;
+   }
+
+   /*
    // send message to server
    public void sendData( Object obj )
    {
@@ -207,7 +227,7 @@ public class Client extends JPanel implements Role
          displayArea.append( "\nError writing object" );
       } // end catch
    } // end method sendData
-
+	*/
    // manipulates displayArea in the event-dispatch thread
    private void displayMessage( final String messageToDisplay )
    {

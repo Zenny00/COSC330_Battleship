@@ -21,16 +21,21 @@ import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import java.io.*;
+
 public class Server extends JPanel implements Role 
 {
    private JTextField enterField; // inputs message from user
    private JTextArea displayArea; // display information to user
-   private ObjectOutputStream output; // output stream to client
-   private ObjectInputStream input; // input stream from client
+   //private ObjectOutputStream output; // output stream to client
+   //private ObjectInputStream input; // input stream from client
+   private BufferedReader br;
+   private PrintWriter pw;
    private ServerSocket server; // server socket
    private Socket connection; // connection to client
    private int counter = 1; // counter of number of connections
-
+   private final String ROLE = "SERVER";
+   
    // set up GUI
    public Server()
    {
@@ -44,7 +49,7 @@ public class Server extends JPanel implements Role
             // send message to client
             public void actionPerformed( ActionEvent event )
             {
-               sendData( event.getActionCommand() );
+               //sendData( event.getActionCommand() );
                enterField.setText( "" );
             } // end method actionPerformed
          } // end anonymous inner class
@@ -110,7 +115,10 @@ public class Server extends JPanel implements Role
    // get streams to send and receive data
    public void getStreams() throws IOException
    {
-      // set up output stream for objects
+	   pw = new PrintWriter(connection.getOutputStream(), true);
+	   br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	/*
+     	   // set up output stream for objects
       output = new ObjectOutputStream( connection.getOutputStream() );
       output.flush(); // flush output buffer to send header information
 
@@ -118,13 +126,14 @@ public class Server extends JPanel implements Role
       input = new ObjectInputStream( connection.getInputStream() );
 
       displayMessage( "\nGot I/O streams\n" );
+      */
    } // end method getStreams
 
    // process connection with client
    public void processConnection() throws IOException
    {
       String message = "Connection successful";
-      sendData( message ); // send connection successful message
+      //sendData( message ); // send connection successful message
 
       // enable enterField so server user can send messages
       setTextFieldEditable( true );
@@ -149,13 +158,14 @@ public class Server extends JPanel implements Role
    // close streams and socket
    public void closeConnection() 
    {
+	System.out.println("CLOSED");
       displayMessage( "\nTerminating connection\n" );
       setTextFieldEditable( false ); // disable enterField
 
       try 
       {
-         output.close(); // close output stream
-         input.close(); // close input stream
+         pw.close(); // close output stream
+         br.close(); // close input stream
          connection.close(); // close socket
       } // end try
       catch ( IOException ioException ) 
@@ -166,33 +176,41 @@ public class Server extends JPanel implements Role
 
    public void sendMessage( String str )
    {
+	System.out.println(str);
+	pw.println(str);
+	pw.flush();
+	/*
 	try
 	{
-		output.writeBytes(str);
 	}
 	catch ( IOException ioException )
 	{
 		displayArea.append( "\nError writing object" );
 	}
+	*/
    }
 
    public String readMessage()
    {
 	   String line = ""; 
-	   
-	   try
-	   { 
-		   line = input.readLine(); // read new point
-	   }
-	   //Bitwise operation to catch multiple exceptions
-	   catch ( IOException e ) 
-	   {
-		   displayArea.append( "\nError writing object" );
-	   }
-
+		try
+		{
+			line = br.readLine();  
+		}
+		catch ( IOException ioException )
+		{
+			displayArea.append( "\nError writing object" );
+		}  
 	   return line;
    }
+   
+   public String getRole()
+   {
+	   return ROLE;
+   }
 
+
+   /*
    // send message to client
    public void sendData( Object obj )
    {
@@ -208,7 +226,7 @@ public class Server extends JPanel implements Role
          displayArea.append( "\nError writing object" );
       } // end catch
    } // end method sendData
-
+*/
    // manipulates displayArea in the event-dispatch thread
    private void displayMessage( final String messageToDisplay )
    {

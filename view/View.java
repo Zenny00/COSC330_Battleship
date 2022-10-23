@@ -828,6 +828,8 @@ public class View extends JFrame
 				break;
 		}	
 
+		//playSplash();
+
 		//Disable ship icons	
 		ship.setEnabled(false);
 		ship.setVisible(false);
@@ -846,8 +848,7 @@ public class View extends JFrame
 			audioStream = AudioSystem.getAudioInputStream(sound_url);
 			water_clip = AudioSystem.getClip();
 			water_clip.open(audioStream);
-			
-			
+					
 			water_clip.start();
 			water_clip.close();
 		}
@@ -1062,19 +1063,7 @@ public class View extends JFrame
 
 				if (model.getShipBoard().canPlace(row, col, direction, length))
 				{
-					//Setup sound system
-					try
-					{
-						sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");	
-						audioStream = AudioSystem.getAudioInputStream(sound_url);
-						water_clip = AudioSystem.getClip();
-						water_clip.open(audioStream);
-						water_clip.start();
-					}
-					catch (Exception ex)
-					{
-						System.out.println("Could not open audio");
-					}
+					//playSplash();	
 
 					//Disable the ability to place randomly
 					setup_random.setEnabled(false);
