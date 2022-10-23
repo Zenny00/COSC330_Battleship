@@ -22,7 +22,7 @@ public class Board
 		//throw new nonTileException("Tile does not exist");
 	}
 
-	public boolean getClickable(int x, int y){return tiles[x][y].isClickable();}
+	public boolean getClickable(int row, int column){return tiles[row][column].isClickable();}
 }
 
 //An exception if the player tries to access a tile that doesn't exist

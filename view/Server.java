@@ -81,11 +81,11 @@ public class Server extends JPanel implements Role
             {
                displayMessage( "\nServer terminated connection" );
             } // end catch
-            finally 
-            {
-               closeConnection(); //  close connection
-               counter++;
-            } // end finally
+            //finally 
+            //{
+            //   closeConnection(); //  close connection
+            //   counter++;
+            //} // end finally
          } // end while
       } // end try
       catch ( IOException ioException ) 
@@ -125,8 +125,9 @@ public class Server extends JPanel implements Role
       // enable enterField so server user can send messages
       setTextFieldEditable( true );
 
+      /*
       do // process messages sent from client
-      { 
+      {
          try // read message and display it
          {
             message = ( String ) input.readObject(); // read new message
@@ -136,12 +137,13 @@ public class Server extends JPanel implements Role
          {
             displayMessage( "\nUnknown object type received" );
          } // end catch
-
-      } while ( !message.equals( "CLIENT>>> TERMINATE" ) );
+	 
+      	} while ( !message.equals( "CLIENT>>> TERMINATE" ) );
+	*/
    } // end method processConnection
 
    // close streams and socket
-   private void closeConnection() 
+   public void closeConnection() 
    {
       displayMessage( "\nTerminating connection\n" );
       setTextFieldEditable( false ); // disable enterField
@@ -158,11 +160,11 @@ public class Server extends JPanel implements Role
       } // end catch
    } // end method closeConnection
 
-   public void sendCoordinates( String str )
+   public void sendMessage( String str )
    {
 	try
 	{
-		output.writeObject(str);
+		output.writeBytes(str);
 	}
 	catch ( IOException ioException )
 	{
@@ -170,9 +172,8 @@ public class Server extends JPanel implements Role
 	}
    }
 
-   public String getCoordinates()
+   public String readMessage()
    {
-	   Object obj = null;
 	   String line = ""; 
 	   
 	   try

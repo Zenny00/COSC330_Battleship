@@ -17,22 +17,76 @@ public class Player
 	private View view;
 	private Role role;
 	private Model model;
+	private State state;
 	private boolean gameStart = false;
 
 	//Player constructor
 	public Player(Role role)
 	{
 		this.role = role; //assign role
-		this.model = new Model();
+		this.model = new Model(); //Setup new model
 		this.view = new View(model, role); //Create a new view
 
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
 		view.addDoneListener(new DoneListener());	
-		//view.addClickListener(new DragListener());
-		//view.addDragListener(new DragListener());
-      		
-		role.run(); // run client or server
+      	
+		playGame();	
+	}
+
+	public void playGame()
+	{
+		// run client or server
+		role.run();
+
+		state = new Initial(this);
+		String message = role.readMessage();
+
+		while((!gameStart) && (!message.equals("ready")));
+		{	
+			System.out.println(gameStart + " " + role.readMessage());
+			message = role.readMessage();
+		}
+		
+		System.out.println("Game has begun");
+		state = new Attack(this);
+
+		role.closeConnection();
+	}
+
+	// Enable/Disable for Target Button Panel
+	// True enables board and checks if each button is clickable
+	// False disables all tiles in the panel
+	public void setTargetBoardEnabled(boolean isEnabled) {
+		int row, column;	
+		JPanel panel = null;
+
+		view.getTargetPanel().setEnabled(isEnabled);
+		
+		//Get JPanel from the view
+		Component[] tiles = view.getTargetPanel().getComponents();
+		for (Component tile : tiles) {
+			if (tile instanceof JButton)
+			{
+				JButton button = (JButton)tile;	
+				String coords[] = button.getActionCommand().split(" ");
+				row = Integer.parseInt(coords[0]);
+				column = Integer.parseInt(coords[1]);
+				if (model.getTargetBoard().getClickable(row, column) && isEnabled)
+					tile.setEnabled(isEnabled);
+				else
+					tile.setEnabled(false);
+			}
+		}
+	}
+
+	public void setOceanBoardEnabled(boolean isEnabled) {
+		int row, column;
+		view.getShipPanel().setEnabled(isEnabled);
+
+		Component[] tiles = view.getShipPanel().getComponents();
+		for (Component tile : tiles)
+			tile.setEnabled(isEnabled);
 	}
 
 	class TileListener implements ActionListener
@@ -75,6 +129,9 @@ public class Player
 
 					System.out.printf("\n");
 				}
+
+				role.sendMessage("ready");
+				gameStart = true;
 			}
 		}
 	}

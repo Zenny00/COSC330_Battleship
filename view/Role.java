@@ -14,10 +14,14 @@ public interface Role
 
 	//Recieve data
 	//public Object receiveData();
+	
+	//Close connection
+   	public void closeConnection();
 
 	//Send and recieve coordinates
-   	public void sendCoordinates(String str);
-	public String getCoordinates();
-
+   	public void sendMessage(String str);
+	public String readMessage();
+	
+	//Run the server or client
 	public void run();
 }

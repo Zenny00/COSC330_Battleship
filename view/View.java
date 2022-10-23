@@ -273,6 +273,7 @@ public class View extends JFrame
 	private int ships_placed;
 
 	private AudioInputStream audioStream = null;
+	private URL sound_url = null;
 	private File water_sound = null;
 	private Clip water_clip = null;
 
@@ -403,28 +404,8 @@ public class View extends JFrame
 		setup_done.setOpaque(true);
 
 		//Setup shipbox for holding ships
-<<<<<<< HEAD
 		shipBox.setLayout(new GridLayout(1, 7));
-
-		//Setup sound system
-		water_sound = new File("Graphics/Sounds/WaterSplash.wav");
-
-		try
-		{
-			audioStream = AudioSystem.getAudioInputStream(water_sound);
-			water_clip = AudioSystem.getClip();
-			water_clip.open(audioStream);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-=======
-		shipBox.setLayout(new GridLayout(1, 7));	
->>>>>>> 3002a1871aca9f3560cfa8a98fb760a24e429321
-
-		water_clip.start();
-
+	
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 600);
@@ -847,12 +828,6 @@ public class View extends JFrame
 				break;
 		}	
 
-<<<<<<< HEAD
-		//Play water placement sound
-		//water_clip.start();
-
-=======
->>>>>>> 3002a1871aca9f3560cfa8a98fb760a24e429321
 		//Disable ship icons	
 		ship.setEnabled(false);
 		ship.setVisible(false);
@@ -860,6 +835,26 @@ public class View extends JFrame
 		//Enable ready button
 		setup_done.setEnabled(true);
 		setup_done.setVisible(true);
+	}
+
+	public void playSplash()
+	{
+		//Setup sound system
+		try
+		{
+			sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");	
+			audioStream = AudioSystem.getAudioInputStream(sound_url);
+			water_clip = AudioSystem.getClip();
+			water_clip.open(audioStream);
+			
+			
+			water_clip.start();
+			water_clip.close();
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 
 //						INNER CLASSES
@@ -1067,9 +1062,6 @@ public class View extends JFrame
 
 				if (model.getShipBoard().canPlace(row, col, direction, length))
 				{
-<<<<<<< HEAD
-					
-=======
 					//Setup sound system
 					try
 					{
@@ -1084,7 +1076,6 @@ public class View extends JFrame
 						System.out.println("Could not open audio");
 					}
 
->>>>>>> 3002a1871aca9f3560cfa8a98fb760a24e429321
 					//Disable the ability to place randomly
 					setup_random.setEnabled(false);
 					setup_random.setVisible(false);
@@ -1129,7 +1120,7 @@ public class View extends JFrame
 					}
 				}
 
-				water_clip.close();
+				//playSplash();
 			}
 			
 			//If the user lets go of the ship, stop the drag action
@@ -1156,22 +1147,8 @@ public class View extends JFrame
 			placeRandom(cru);
 			placeRandom(bat);
 			placeRandom(car);
-			
-			//Setup sound system
-			try
-			{
-				sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");	
-				audioStream = AudioSystem.getAudioInputStream(sound_url);
-				water_clip = AudioSystem.getClip();
-				water_clip.open(audioStream);
-				water_clip.start();
-			}
-			catch (Exception ex)
-			{
-				System.out.println("Could not open audio");
-			}
 
-			water_clip.close();
+			//playSplash();	
 
 			//Disable the button
 			button.setEnabled(false);

@@ -81,14 +81,11 @@ public class Client extends JPanel implements Role
       {
          ioException.printStackTrace();
       } // end catch
-      finally 
-      {
-         closeConnection(); // close connection
-      } // end finally
+         //closeConnection(); // close connection
    } // end method runClient
 
    // connect to server
-   private void connectToServer() throws IOException
+   public void connectToServer() throws IOException
    {      
       displayMessage( "Attempting connection\n" );
 
@@ -101,7 +98,7 @@ public class Client extends JPanel implements Role
    } // end method connectToServer
 
    // get streams to send and receive data
-   private void getStreams() throws IOException
+   public void getStreams() throws IOException
    {
       // set up output stream for objects
       output = new ObjectOutputStream( client.getOutputStream() );      
@@ -118,9 +115,10 @@ public class Client extends JPanel implements Role
    {
       // enable enterField so client user can send messages
       setTextFieldEditable( true );
-
+     
+     /* 
       do // process messages sent from server
-      { 
+      {
          try // read message and display it
          {
             message = ( String ) input.readObject(); // read new message
@@ -132,10 +130,11 @@ public class Client extends JPanel implements Role
          } // end catch
 
       } while ( !message.equals( "SERVER>>> TERMINATE" ) );
+      */
    } // end method processConnection
 
    // close streams and socket
-   private void closeConnection() 
+   public void closeConnection() 
    {
       displayMessage( "\nClosing connection" );
       setTextFieldEditable( false ); // disable enterField
@@ -152,48 +151,33 @@ public class Client extends JPanel implements Role
       } // end catch
    } // end method closeConnection
 
-   public void sendCoordinates( String str )
+   public void sendMessage( String str )
    {
-	/*
-	if (obj instanceof Point)
+	try
 	{
-		Point point = (Point)obj;
-		try
-		{
-			output.writeObject(point);
-		}
-      		catch ( IOException ioException )
-		{
-         		displayArea.append( "\nError writing object" );
-		}
+		output.writeBytes(str);
 	}
-	*/
+	catch ( IOException ioException )
+	{
+		displayArea.append( "\nError writing object" );
+	}
    }
 
-   public String getCoordinates()
+   public String readMessage()
    {
-	   /*
-	   Point point = null;
-	   Object obj = null;
+	   String line = ""; 
 	   
 	   try
 	   { 
-		   obj = input.readObject(); // read new point
+		   line = input.readLine(); // read new point
 	   }
-	   catch ( IOException | ClassNotFoundException e ) 
+	   //Bitwise operation to catch multiple exceptions
+	   catch ( IOException e ) 
 	   {
 		   displayArea.append( "\nError writing object" );
 	   }
 
-	   //If we found a point convert to point obj
-	   if (obj instanceof Point)
-		point = (Point)obj;
-
-	   //Return either null (no point) or the coordinates as a point
-	   return point;
-	   */
-
-	   return "";
+	   return line;
    }
 
    // send message to server
