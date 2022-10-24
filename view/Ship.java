@@ -40,7 +40,7 @@ public class Ship
 	public void incrementHits(){numHits++;}
 
 	public ShipType getType(){return type;}
-	public boolean isSunk(){return size == numHits;}
+	public boolean isSunk(){return (size-1) == numHits;}
 	public boolean isPlaced(){return placed;}
 
 	public boolean checkTiles(int row, int column)

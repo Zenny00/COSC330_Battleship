@@ -10,6 +10,12 @@ import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import java.awt.image.*;
+import java.io.*;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+
 public class Player
 {
 	// May want to use multithreading for the view and server
@@ -36,11 +42,13 @@ public class Player
 
 		state = new Initial(this);
 		
+		/*
 		Runnable runnable = role;
       		Thread thread = new Thread(runnable);
       		thread.start();
 	   	System.out.println(thread.isAlive());
-		//role.run();
+		*/
+		role.run();
 	}
 
 	public void clientAction()
@@ -68,15 +76,13 @@ public class Player
 		System.out.println(row + " " + column);
 		//Check all the ships for a hit
 		ShipType hit_ship = model.checkShips(row, column); 
+		
 		if (hit_ship != null)
-		{
 			role.sendMessage("1");
-			System.out.println(hit_ship);
-		}
 		else
 			role.sendMessage("0");
 
-		state = new Attack(this);
+		state = new Attack(this);	
 	}
 
 	public void serverAction()
@@ -89,15 +95,30 @@ public class Player
 			//EXIT STUFF
 		}
 
-		//Read shot status from client
-		String shot_status = role.readMessage();
+		state = new Defend(Player.this);
 
-		if (shot_status.equals("1"))
-			System.out.println("HIT");
+		String shot = role.readMessage();
+
+		//Convert to point
+		String coords[] = shot.split(" ");
+		Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+		//Get row and column for the shot
+		int row = (int)point.getX();
+		int column = (int)point.getY();
+
+		System.out.println(row + " " + column);
+		//Check all the ships for a hit
+		ShipType hit_ship = model.checkShips(row, column); 
+		
+		if (hit_ship != null)
+		{
+			role.sendMessage("1");
+			System.out.println(hit_ship);
+		}
 		else
-			System.out.println("MISS");
+			role.sendMessage("0");
 
-		state = new Defend(this);
+		state = new Attack(Player.this);
 	}
 
 	public void startGame()
@@ -114,12 +135,30 @@ public class Player
 			System.out.println("Game has begun");
 		else
 			System.out.println("Game has not begun");
-	
-	
+		
 		if (role.getRole() == CLIENT)
 			clientAction();
 		else
 			state = new Attack(this);
+	}
+
+	//Get icon
+	public Icon sourceIcon(String str)
+	{
+		URL img_url = getClass().getResource(str);
+
+		BufferedImage buf_img = null;
+
+		try
+		{
+			buf_img = ImageIO.read(img_url);
+		}
+		catch (IOException ex)
+		{
+			System.out.println(ex.toString());	
+		}
+
+		return new ImageIcon(buf_img);
 	}
 
 	/*	NOTE: NVM IT WONT WORK CAUSE OF THE LOOPS, CAN NEVER PRESS THE BUTTONS
@@ -208,18 +247,38 @@ public class Player
 				return;
 
 			JButton button = (JButton)obj;
-			button.setIcon(new ImageIcon("./Graphics/Water/WaterMiss.png"));
 			
 			String coords[] = button.getActionCommand().split(" ");
 			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
                 	System.out.println(point.getY() + " " + point.getX());
 			role.sendMessage((int)point.getY() + " " + (int)point.getX());
-		
+
+			String shot_status = role.readMessage();
+
+			System.out.println("SHOT READ");
+
+			//Check if shot was a hit or a miss
+			if (shot_status.equals("1"))
+			{
+				view.getTargetButton((int)point.getY(), (int)point.getX())  .setIcon(sourceIcon("./Graphics/Water/WaterHit.png"));
+				view.getTargetButton((int)point.getY(), (int)point.getX()).repaint();
+				System.out.println("HIT");
+			}
+			else
+			{
+				view.getTargetButton((int)point.getY(), (int)point.getX()).setIcon(sourceIcon("./Graphics/Water/WaterMiss.png"));
+				view.getTargetButton((int)point.getY(), (int)point.getX()).repaint();
+				System.out.println("MISS");
+			}
+
+			System.out.println("Moving states");
+			
+			/*
 			if (role.getRole() == CLIENT)
 				clientAction();
-			else
-				serverAction();
-		
+			else	
+				serverAction();				
+			*/
 		}
 	} //Inner actionListener class
 

@@ -493,6 +493,11 @@ public class View extends JFrame
 			}
 	}
 
+	public void reset()
+	{
+		invalidate();	
+	}
+
 	//Get user input from the JTextField
 	public String getUserInput()
 	{
