@@ -70,6 +70,7 @@ public class Server extends JPanel implements Role
    // set up and run server 
    public void run()
    {
+
       try // set up server to receive connections; process connections
       {
          server = new ServerSocket( 12345, 100 ); // create ServerSocket

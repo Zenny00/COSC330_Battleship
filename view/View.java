@@ -423,6 +423,11 @@ public class View extends JFrame
 		setVisible(true);
 	}
 
+	public void run()
+	{
+		while(true);
+	}
+
 	public ImageIcon scaleImage(ImageIcon icon, int w, int h)
 	{
 		int nw = icon.getIconWidth();

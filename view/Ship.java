@@ -43,6 +43,24 @@ public class Ship
 	public boolean isSunk(){return size == numHits;}
 	public boolean isPlaced(){return placed;}
 
+	public boolean checkTiles(int row, int column)
+	{
+		//Check each of the ship's tiles to see if they match the input coordinates
+		for (int i = 0; i < size; i++)
+		{
+			System.out.println(type.toString() + " Row: " + shipTiles[i].getX() + " Column: " + shipTiles[i].getY());
+			//If one of the tiles matches, return true
+			if ((shipTiles[i].getY() == column) && (shipTiles[i].getX() == row))
+			{
+				incrementHits();
+				return true;
+			}
+		}
+
+		//If none of the tiles match, return false
+		return false;
+	}
+
 	public boolean placeShip(ShipBoard input_board, int direction, int row, int col)
 	{
 		try {

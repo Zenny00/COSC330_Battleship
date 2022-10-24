@@ -3,6 +3,7 @@ import java.util.*;
 
 public class Model
 {
+	private final int NUM_SHIPS = 5;
 	private Ship ship_list[];
 	private ShipBoard ocean_board;
 	private Board target_board;
@@ -10,7 +11,7 @@ public class Model
 
 	Model()
 	{	
-		ship_list = new Ship[5];
+		ship_list = new Ship[NUM_SHIPS];
 		
 		//Setup the ship array
 		ship_list[0] = new Ship(ShipType.DESTROYER);
@@ -73,6 +74,16 @@ public class Model
 			if (!currentShip.isSunk())
 				ship_count++;
 		return ship_count;
+	}
+
+	public ShipType checkShips(int row, int column)
+	{
+		//Check each ship for possible hit, return the type of ship found, needed to display game status
+		for (Ship currentShip : ship_list)
+			if (currentShip.checkTiles(row, column))
+				return currentShip.getType(); 
+
+		return null;
 	}
 
 	// input_board should be the enemy sea board I think

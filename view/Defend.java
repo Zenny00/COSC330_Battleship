@@ -3,6 +3,7 @@ public class Defend implements State {
 
     Defend(Player player)
     {
+	    System.out.println("Defend constructor called");
 	    this.player = player;
 	    // disable ship board
 	    player.setOceanBoardEnabled(false);

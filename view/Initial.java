@@ -10,7 +10,6 @@ public class Initial implements State
 		player.setOceanBoardEnabled(true);
 		// disable target board
 		player.setTargetBoardEnabled(false);
-
 	}
 
 	public void setScreen() 
