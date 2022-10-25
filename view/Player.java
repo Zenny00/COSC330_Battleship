@@ -95,7 +95,7 @@ public class Player
 			//EXIT STUFF
 		}
 
-		state = new Defend(Player.this);
+		state = new Defend(this);
 
 		String shot = role.readMessage();
 
@@ -118,7 +118,7 @@ public class Player
 		else
 			role.sendMessage("0");
 
-		state = new Attack(Player.this);
+		state = new Attack(this);
 	}
 
 	public void startGame()
@@ -273,12 +273,12 @@ public class Player
 
 			System.out.println("Moving states");
 			
-			/*
+			
 			if (role.getRole() == CLIENT)
 				clientAction();
 			else	
 				serverAction();				
-			*/
+			
 		}
 	} //Inner actionListener class
 

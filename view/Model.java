@@ -96,8 +96,12 @@ public class Model
 
 	public boolean hasLost() {
 		for (Ship currentShip : ship_list)
-			if (!currentShip.isSunk())
+		{
+			boolean sunk = currentShip.isSunk();
+			System.out.println(sunk);
+			if (!sunk)
 			       return false;
+		}
 		return true;	
 	}
 	public boolean hasPlacementsRemaining() {
