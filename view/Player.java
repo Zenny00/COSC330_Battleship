@@ -36,6 +36,11 @@ public class Player
 		this.model = new Model(); //Setup new model
 		this.view = new View(model, role); //Create a new view
 
+		Runnable runnable = view;
+      		Thread thread = new Thread(runnable);
+      		thread.start();
+	   	System.out.println(thread.isAlive());
+		
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
 		view.addDoneListener(new DoneListener());	
@@ -60,8 +65,6 @@ public class Player
 			role.closeConnection();
 			//EXIT STUFF
 		}
-
-		state = new Defend(this);
 		
 		//read coordinates of shots fired from the server
 		String shot = role.readMessage();
@@ -94,8 +97,6 @@ public class Player
 			role.closeConnection();
 			//EXIT STUFF
 		}
-
-		state = new Defend(this);
 
 		String shot = role.readMessage();
 
@@ -137,7 +138,10 @@ public class Player
 			System.out.println("Game has not begun");
 		
 		if (role.getRole() == CLIENT)
+		{
+			state = new Defend(this);
 			clientAction();
+		}
 		else
 			state = new Attack(this);
 	}
@@ -252,6 +256,8 @@ public class Player
 			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
                 	System.out.println(point.getY() + " " + point.getX());
 			role.sendMessage((int)point.getY() + " " + (int)point.getX());
+
+			state = new Defend(Player.this);
 
 			String shot_status = role.readMessage();
 

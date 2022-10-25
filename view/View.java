@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.*;
 import javax.sound.sampled.*;
 
-public class View extends JFrame
+public class View extends JFrame implements Runnable
 {
 	//					PRIVATE DATA MEMEBERS
 	//|====================================================================================================|
@@ -282,7 +282,7 @@ public class View extends JFrame
 	//|						FUNCTIONS						|
 	//|													|
 	//|=====================================================================================================|
-
+	
 	//Constructor 
 	public View(Model model, Role connect_panel)
 	{	
