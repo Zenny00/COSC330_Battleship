@@ -26,6 +26,8 @@ public class ShipLabel extends JLabel
         protected Icon up_icon = null;
         protected Icon left_icon = null;
         protected Icon up_sprites[] = null;
+        protected Icon up_error = null;
+        protected Icon left_error = null;
         protected Icon left_sprites[] = null;	
 	
 	public ShipLabel(String up_resource, String left_resource)
@@ -35,6 +37,38 @@ public class ShipLabel extends JLabel
 		
 		addMouseListener(new RotationHandler());
 		setIcon(up_icon);
+	}
+
+	public ShipLabel(String up_resource, String left_resource, String up_error_resource, String left_error_resource)
+	{
+                up_icon = sourceIcon(up_resource);
+		left_icon = sourceIcon(left_resource);
+		up_error = sourceIcon(up_error_resource);
+		left_error = sourceIcon(left_error_resource);
+		
+		addMouseListener(new RotationHandler());
+		setIcon(up_icon);
+	}
+
+	//Getters for each icon
+	public Icon getUpIcon()
+	{
+		return up_icon;
+	}
+
+	public Icon getLeftIcon()
+	{
+		return left_icon;
+	}
+
+	public Icon getUpErrorIcon()
+	{
+		return up_error;
+	}
+
+	public Icon getLeftErrorIcon()
+	{
+		return left_error;
 	}
 
 	//Getters for length and direction

@@ -22,6 +22,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.io.File;
 import java.io.*;
 import javax.sound.sampled.*;
+import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class View extends JFrame
 {
@@ -61,207 +64,209 @@ public class View extends JFrame
 	private JLabel bat;
 	private JLabel car;
 		
-	//Init JButton | MUST BE DONE BEFORE CONSTRUCTOR!"
-	private JButton ship_i0j0= new JButton();
-	private JButton ship_i0j1= new JButton();
-	private JButton ship_i0j2= new JButton();
-	private JButton ship_i0j3= new JButton();
-	private JButton ship_i0j4= new JButton();
-	private JButton ship_i0j5= new JButton();
-	private JButton ship_i0j6= new JButton();
-	private JButton ship_i0j7= new JButton();
-	private JButton ship_i0j8= new JButton();
-	private JButton ship_i0j9= new JButton();
-	private JButton ship_i1j0= new JButton();
-	private JButton ship_i1j1= new JButton();
-	private JButton ship_i1j2= new JButton();
-	private JButton ship_i1j3= new JButton();
-	private JButton ship_i1j4= new JButton();
-	private JButton ship_i1j5= new JButton();
-	private JButton ship_i1j6= new JButton();
-	private JButton ship_i1j7= new JButton();
-	private JButton ship_i1j8= new JButton();
-	private JButton ship_i1j9= new JButton();
-	private JButton ship_i2j0= new JButton();
-	private JButton ship_i2j1= new JButton();
-	private JButton ship_i2j2= new JButton();
-	private JButton ship_i2j3= new JButton();
-	private JButton ship_i2j4= new JButton();
-	private JButton ship_i2j5= new JButton();
-	private JButton ship_i2j6= new JButton();
-	private JButton ship_i2j7= new JButton();
-	private JButton ship_i2j8= new JButton();
-	private JButton ship_i2j9= new JButton();
-	private JButton ship_i3j0= new JButton();
-	private JButton ship_i3j1= new JButton();
-	private JButton ship_i3j2= new JButton();
-	private JButton ship_i3j3= new JButton();
-	private JButton ship_i3j4= new JButton();
-	private JButton ship_i3j5= new JButton();
-	private JButton ship_i3j6= new JButton();
-	private JButton ship_i3j7= new JButton();
-	private JButton ship_i3j8= new JButton();
-	private JButton ship_i3j9= new JButton();
-	private JButton ship_i4j0= new JButton();
-	private JButton ship_i4j1= new JButton();
-	private JButton ship_i4j2= new JButton();
-	private JButton ship_i4j3= new JButton();
-	private JButton ship_i4j4= new JButton();
-	private JButton ship_i4j5= new JButton();
-	private JButton ship_i4j6= new JButton();
-	private JButton ship_i4j7= new JButton();
-	private JButton ship_i4j8= new JButton();
-	private JButton ship_i4j9= new JButton();
-	private JButton ship_i5j0= new JButton();
-	private JButton ship_i5j1= new JButton();
-	private JButton ship_i5j2= new JButton();
-	private JButton ship_i5j3= new JButton();
-	private JButton ship_i5j4= new JButton();
-	private JButton ship_i5j5= new JButton();
-	private JButton ship_i5j6= new JButton();
-	private JButton ship_i5j7= new JButton();
-	private JButton ship_i5j8= new JButton();
-	private JButton ship_i5j9= new JButton();
-	private JButton ship_i6j0= new JButton();
-	private JButton ship_i6j1= new JButton();
-	private JButton ship_i6j2= new JButton();
-	private JButton ship_i6j3= new JButton();
-	private JButton ship_i6j4= new JButton();
-	private JButton ship_i6j5= new JButton();
-	private JButton ship_i6j6= new JButton();
-	private JButton ship_i6j7= new JButton();
-	private JButton ship_i6j8= new JButton();
-	private JButton ship_i6j9= new JButton();
-	private JButton ship_i7j0= new JButton();
-	private JButton ship_i7j1= new JButton();
-	private JButton ship_i7j2= new JButton();
-	private JButton ship_i7j3= new JButton();
-	private JButton ship_i7j4= new JButton();
-	private JButton ship_i7j5= new JButton();
-	private JButton ship_i7j6= new JButton();
-	private JButton ship_i7j7= new JButton();
-	private JButton ship_i7j8= new JButton();
-	private JButton ship_i7j9= new JButton();
-	private JButton ship_i8j0= new JButton();
-	private JButton ship_i8j1= new JButton();
-	private JButton ship_i8j2= new JButton();
-	private JButton ship_i8j3= new JButton();
-	private JButton ship_i8j4= new JButton();
-	private JButton ship_i8j5= new JButton();
-	private JButton ship_i8j6= new JButton();
-	private JButton ship_i8j7= new JButton();
-	private JButton ship_i8j8= new JButton();
-	private JButton ship_i8j9= new JButton();
-	private JButton ship_i9j0= new JButton();
-	private JButton ship_i9j1= new JButton();
-	private JButton ship_i9j2= new JButton();
-	private JButton ship_i9j3= new JButton();
-	private JButton ship_i9j4= new JButton();
-	private JButton ship_i9j5= new JButton();
-	private JButton ship_i9j6= new JButton();
-	private JButton ship_i9j7= new JButton();
-	private JButton ship_i9j8= new JButton();
-	private JButton ship_i9j9= new JButton();
-	private JButton target_i0j0= new JButton();
-	private JButton target_i0j1= new JButton();
-	private JButton target_i0j2= new JButton();
-	private JButton target_i0j3= new JButton();
-	private JButton target_i0j4= new JButton();
-	private JButton target_i0j5= new JButton();
-	private JButton target_i0j6= new JButton();
-	private JButton target_i0j7= new JButton();
-	private JButton target_i0j8= new JButton();
-	private JButton target_i0j9= new JButton();
-	private JButton target_i1j0= new JButton();
-	private JButton target_i1j1= new JButton();
-	private JButton target_i1j2= new JButton();
-	private JButton target_i1j3= new JButton();
-	private JButton target_i1j4= new JButton();
-	private JButton target_i1j5= new JButton();
-	private JButton target_i1j6= new JButton();
-	private JButton target_i1j7= new JButton();
-	private JButton target_i1j8= new JButton();
-	private JButton target_i1j9= new JButton();
-	private JButton target_i2j0= new JButton();
-	private JButton target_i2j1= new JButton();
-	private JButton target_i2j2= new JButton();
-	private JButton target_i2j3= new JButton();
-	private JButton target_i2j4= new JButton();
-	private JButton target_i2j5= new JButton();
-	private JButton target_i2j6= new JButton();
-	private JButton target_i2j7= new JButton();
-	private JButton target_i2j8= new JButton();
-	private JButton target_i2j9= new JButton();
-	private JButton target_i3j0= new JButton();
-	private JButton target_i3j1= new JButton();
-	private JButton target_i3j2= new JButton();
-	private JButton target_i3j3= new JButton();
-	private JButton target_i3j4= new JButton();
-	private JButton target_i3j5= new JButton();
-	private JButton target_i3j6= new JButton();
-	private JButton target_i3j7= new JButton();
-	private JButton target_i3j8= new JButton();
-	private JButton target_i3j9= new JButton();
-	private JButton target_i4j0= new JButton();
-	private JButton target_i4j1= new JButton();
-	private JButton target_i4j2= new JButton();
-	private JButton target_i4j3= new JButton();
-	private JButton target_i4j4= new JButton();
-	private JButton target_i4j5= new JButton();
-	private JButton target_i4j6= new JButton();
-	private JButton target_i4j7= new JButton();
-	private JButton target_i4j8= new JButton();
-	private JButton target_i4j9= new JButton();
-	private JButton target_i5j0= new JButton();
-	private JButton target_i5j1= new JButton();
-	private JButton target_i5j2= new JButton();
-	private JButton target_i5j3= new JButton();
-	private JButton target_i5j4= new JButton();
-	private JButton target_i5j5= new JButton();
-	private JButton target_i5j6= new JButton();
-	private JButton target_i5j7= new JButton();
-	private JButton target_i5j8= new JButton();
-	private JButton target_i5j9= new JButton();
-	private JButton target_i6j0= new JButton();
-	private JButton target_i6j1= new JButton();
-	private JButton target_i6j2= new JButton();
-	private JButton target_i6j3= new JButton();
-	private JButton target_i6j4= new JButton();
-	private JButton target_i6j5= new JButton();
-	private JButton target_i6j6= new JButton();
-	private JButton target_i6j7= new JButton();
-	private JButton target_i6j8= new JButton();
-	private JButton target_i6j9= new JButton();
-	private JButton target_i7j0= new JButton();
-	private JButton target_i7j1= new JButton();
-	private JButton target_i7j2= new JButton();
-	private JButton target_i7j3= new JButton();
-	private JButton target_i7j4= new JButton();
-	private JButton target_i7j5= new JButton();
-	private JButton target_i7j6= new JButton();
-	private JButton target_i7j7= new JButton();
-	private JButton target_i7j8= new JButton();
-	private JButton target_i7j9= new JButton();
-	private JButton target_i8j0= new JButton();
-	private JButton target_i8j1= new JButton();
-	private JButton target_i8j2= new JButton();
-	private JButton target_i8j3= new JButton();
-	private JButton target_i8j4= new JButton();
-	private JButton target_i8j5= new JButton();
-	private JButton target_i8j6= new JButton();
-	private JButton target_i8j7= new JButton();
-	private JButton target_i8j8= new JButton();
-	private JButton target_i8j9= new JButton();
-	private JButton target_i9j0= new JButton();
-	private JButton target_i9j1= new JButton();
-	private JButton target_i9j2= new JButton();
-	private JButton target_i9j3= new JButton();
-	private JButton target_i9j4= new JButton();
-	private JButton target_i9j5= new JButton();
-	private JButton target_i9j6= new JButton();
-	private JButton target_i9j7= new JButton();
-	private JButton target_i9j8= new JButton();
-	private JButton target_i9j9= new JButton();	
+	//Init Ship JButton | MUST BE DONE BEFORE CONSTRUCTOR!"
+	private JButton ship_i0j0 = new JButton();
+	private JButton ship_i0j1 = new JButton();
+	private JButton ship_i0j2 = new JButton();
+	private JButton ship_i0j3 = new JButton();
+	private JButton ship_i0j4 = new JButton();
+	private JButton ship_i0j5 = new JButton();
+	private JButton ship_i0j6 = new JButton();
+	private JButton ship_i0j7 = new JButton();
+	private JButton ship_i0j8 = new JButton();
+	private JButton ship_i0j9 = new JButton();
+	private JButton ship_i1j0 = new JButton();
+	private JButton ship_i1j1 = new JButton();
+	private JButton ship_i1j2 = new JButton();
+	private JButton ship_i1j3 = new JButton();
+	private JButton ship_i1j4 = new JButton();
+	private JButton ship_i1j5 = new JButton();
+	private JButton ship_i1j6 = new JButton();
+	private JButton ship_i1j7 = new JButton();
+	private JButton ship_i1j8 = new JButton();
+	private JButton ship_i1j9 = new JButton();
+	private JButton ship_i2j0 = new JButton();
+	private JButton ship_i2j1 = new JButton();
+	private JButton ship_i2j2 = new JButton();
+	private JButton ship_i2j3 = new JButton();
+	private JButton ship_i2j4 = new JButton();
+	private JButton ship_i2j5 = new JButton();
+	private JButton ship_i2j6 = new JButton();
+	private JButton ship_i2j7 = new JButton();
+	private JButton ship_i2j8 = new JButton();
+	private JButton ship_i2j9 = new JButton();
+	private JButton ship_i3j0 = new JButton();
+	private JButton ship_i3j1 = new JButton();
+	private JButton ship_i3j2 = new JButton();
+	private JButton ship_i3j3 = new JButton();
+	private JButton ship_i3j4 = new JButton();
+	private JButton ship_i3j5 = new JButton();
+	private JButton ship_i3j6 = new JButton();
+	private JButton ship_i3j7 = new JButton();
+	private JButton ship_i3j8 = new JButton();
+	private JButton ship_i3j9 = new JButton();
+	private JButton ship_i4j0 = new JButton();
+	private JButton ship_i4j1 = new JButton();
+	private JButton ship_i4j2 = new JButton();
+	private JButton ship_i4j3 = new JButton();
+	private JButton ship_i4j4 = new JButton();
+	private JButton ship_i4j5 = new JButton();
+	private JButton ship_i4j6 = new JButton();
+	private JButton ship_i4j7 = new JButton();
+	private JButton ship_i4j8 = new JButton();
+	private JButton ship_i4j9 = new JButton();
+	private JButton ship_i5j0 = new JButton();
+	private JButton ship_i5j1 = new JButton();
+	private JButton ship_i5j2 = new JButton();
+	private JButton ship_i5j3 = new JButton();
+	private JButton ship_i5j4 = new JButton();
+	private JButton ship_i5j5 = new JButton();
+	private JButton ship_i5j6 = new JButton();
+	private JButton ship_i5j7 = new JButton();
+	private JButton ship_i5j8 = new JButton();
+	private JButton ship_i5j9 = new JButton();
+	private JButton ship_i6j0 = new JButton();
+	private JButton ship_i6j1 = new JButton();
+	private JButton ship_i6j2 = new JButton();
+	private JButton ship_i6j3 = new JButton();
+	private JButton ship_i6j4 = new JButton();
+	private JButton ship_i6j5 = new JButton();
+	private JButton ship_i6j6 = new JButton();
+	private JButton ship_i6j7 = new JButton();
+	private JButton ship_i6j8 = new JButton();
+	private JButton ship_i6j9 = new JButton();
+	private JButton ship_i7j0 = new JButton();
+	private JButton ship_i7j1 = new JButton();
+	private JButton ship_i7j2 = new JButton();
+	private JButton ship_i7j3 = new JButton();
+	private JButton ship_i7j4 = new JButton();
+	private JButton ship_i7j5 = new JButton();
+	private JButton ship_i7j6 = new JButton();
+	private JButton ship_i7j7 = new JButton();
+	private JButton ship_i7j8 = new JButton();
+	private JButton ship_i7j9 = new JButton();
+	private JButton ship_i8j0 = new JButton();
+	private JButton ship_i8j1 = new JButton();
+	private JButton ship_i8j2 = new JButton();
+	private JButton ship_i8j3 = new JButton();
+	private JButton ship_i8j4 = new JButton();
+	private JButton ship_i8j5 = new JButton();
+	private JButton ship_i8j6 = new JButton();
+	private JButton ship_i8j7 = new JButton();
+	private JButton ship_i8j8 = new JButton();
+	private JButton ship_i8j9 = new JButton();
+	private JButton ship_i9j0 = new JButton();
+	private JButton ship_i9j1 = new JButton();
+	private JButton ship_i9j2 = new JButton();
+	private JButton ship_i9j3 = new JButton();
+	private JButton ship_i9j4 = new JButton();
+	private JButton ship_i9j5 = new JButton();
+	private JButton ship_i9j6 = new JButton();
+	private JButton ship_i9j7 = new JButton();
+	private JButton ship_i9j8 = new JButton();
+	private JButton ship_i9j9 = new JButton();
+
+	//Init Target JButton | MUST BE DONE BEFORE CONSTRUCTOR!"
+	private JButton target_i0j0 = new JButton();
+	private JButton target_i0j1 = new JButton();
+	private JButton target_i0j2 = new JButton();
+	private JButton target_i0j3 = new JButton();
+	private JButton target_i0j4 = new JButton();
+	private JButton target_i0j5 = new JButton();
+	private JButton target_i0j6 = new JButton();
+	private JButton target_i0j7 = new JButton();
+	private JButton target_i0j8 = new JButton();
+	private JButton target_i0j9 = new JButton();
+	private JButton target_i1j0 = new JButton();
+	private JButton target_i1j1 = new JButton();
+	private JButton target_i1j2 = new JButton();
+	private JButton target_i1j3 = new JButton();
+	private JButton target_i1j4 = new JButton();
+	private JButton target_i1j5 = new JButton();
+	private JButton target_i1j6 = new JButton();
+	private JButton target_i1j7 = new JButton();
+	private JButton target_i1j8 = new JButton();
+	private JButton target_i1j9 = new JButton();
+	private JButton target_i2j0 = new JButton();
+	private JButton target_i2j1 = new JButton();
+	private JButton target_i2j2 = new JButton();
+	private JButton target_i2j3 = new JButton();
+	private JButton target_i2j4 = new JButton();
+	private JButton target_i2j5 = new JButton();
+	private JButton target_i2j6 = new JButton();
+	private JButton target_i2j7 = new JButton();
+	private JButton target_i2j8 = new JButton();
+	private JButton target_i2j9 = new JButton();
+	private JButton target_i3j0 = new JButton();
+	private JButton target_i3j1 = new JButton();
+	private JButton target_i3j2 = new JButton();
+	private JButton target_i3j3 = new JButton();
+	private JButton target_i3j4 = new JButton();
+	private JButton target_i3j5 = new JButton();
+	private JButton target_i3j6 = new JButton();
+	private JButton target_i3j7 = new JButton();
+	private JButton target_i3j8 = new JButton();
+	private JButton target_i3j9 = new JButton();
+	private JButton target_i4j0 = new JButton();
+	private JButton target_i4j1 = new JButton();
+	private JButton target_i4j2 = new JButton();
+	private JButton target_i4j3 = new JButton();
+	private JButton target_i4j4 = new JButton();
+	private JButton target_i4j5 = new JButton();
+	private JButton target_i4j6 = new JButton();
+	private JButton target_i4j7 = new JButton();
+	private JButton target_i4j8 = new JButton();
+	private JButton target_i4j9 = new JButton();
+	private JButton target_i5j0 = new JButton();
+	private JButton target_i5j1 = new JButton();
+	private JButton target_i5j2 = new JButton();
+	private JButton target_i5j3 = new JButton();
+	private JButton target_i5j4 = new JButton();
+	private JButton target_i5j5 = new JButton();
+	private JButton target_i5j6 = new JButton();
+	private JButton target_i5j7 = new JButton();
+	private JButton target_i5j8 = new JButton();
+	private JButton target_i5j9 = new JButton();
+	private JButton target_i6j0 = new JButton();
+	private JButton target_i6j1 = new JButton();
+	private JButton target_i6j2 = new JButton();
+	private JButton target_i6j3 = new JButton();
+	private JButton target_i6j4 = new JButton();
+	private JButton target_i6j5 = new JButton();
+	private JButton target_i6j6 = new JButton();
+	private JButton target_i6j7 = new JButton();
+	private JButton target_i6j8 = new JButton();
+	private JButton target_i6j9 = new JButton();
+	private JButton target_i7j0 = new JButton();
+	private JButton target_i7j1 = new JButton();
+	private JButton target_i7j2 = new JButton();
+	private JButton target_i7j3 = new JButton();
+	private JButton target_i7j4 = new JButton();
+	private JButton target_i7j5 = new JButton();
+	private JButton target_i7j6 = new JButton();
+	private JButton target_i7j7 = new JButton();
+	private JButton target_i7j8 = new JButton();
+	private JButton target_i7j9 = new JButton();
+	private JButton target_i8j0 = new JButton();
+	private JButton target_i8j1 = new JButton();
+	private JButton target_i8j2 = new JButton();
+	private JButton target_i8j3 = new JButton();
+	private JButton target_i8j4 = new JButton();
+	private JButton target_i8j5 = new JButton();
+	private JButton target_i8j6 = new JButton();
+	private JButton target_i8j7 = new JButton();
+	private JButton target_i8j8 = new JButton();
+	private JButton target_i8j9 = new JButton();
+	private JButton target_i9j0 = new JButton();
+	private JButton target_i9j1 = new JButton();
+	private JButton target_i9j2 = new JButton();
+	private JButton target_i9j3 = new JButton();
+	private JButton target_i9j4 = new JButton();
+	private JButton target_i9j5 = new JButton();
+	private JButton target_i9j6 = new JButton();
+	private JButton target_i9j7 = new JButton();
+	private JButton target_i9j8 = new JButton();
+	private JButton target_i9j9 = new JButton();	
 
 	//Setup new JButton to allow the user to randomize their ships
 	private JButton setup_random = new JButton();	
@@ -408,7 +413,7 @@ public class View extends JFrame
 	
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(800, 600);
+		this.setSize(1000, 800);
 		this.setTitle("BATTLESHIP");
 		this.setLocationRelativeTo(null);
 	
@@ -834,7 +839,6 @@ public class View extends JFrame
 				{
 					//Place each tile and update model
 					playerBoard[i][col].setIcon(up_sprites[index]);
-					//model.getShipBoard().getTile(i, x).setType(TileType.SHIP);
 					index++;
 				}
 
@@ -847,7 +851,6 @@ public class View extends JFrame
 				{
 					//Place each tile and update model
 					playerBoard[row][i].setIcon(left_sprites[index]);
-					//model.getShipBoard().getTile(y, i).setType(TileType.SHIP);
 					index++;
 				}
 
@@ -884,6 +887,27 @@ public class View extends JFrame
 		{
 			ex.printStackTrace();
 		}
+	}
+
+	//Flash the image icon for a quick period of time
+	public void flashIcon(ShipLabel ship, Icon normal, Icon error)
+	{
+		ship.setIcon(error);	
+
+		long delay_time = 250; //Stored in milliseconds
+		
+		//When the timer ends, reset the icon
+		TimerTask resetIcon = new TimerTask()
+		{
+			public void run()
+			{
+					ship.setIcon(normal);
+			}
+		};
+
+		Timer reset_timer = new Timer();
+
+		reset_timer.schedule(resetIcon, delay_time); //Start the timer  		
 	}
 
 //						INNER CLASSES
@@ -997,10 +1021,9 @@ public class View extends JFrame
 	{
 		public CarLabel(int length, int direction, String up_resource, String left_resource)
 		{
-
 			//Call super class constructor
-			super(up_resource, left_resource);
-			
+			super(up_resource, left_resource, "Graphics/Ships/CarrierError.png", "Graphics/Ships/CarrierLeftError.png");
+
 			this.length = length;
 			this.direction = direction;
 			this.type = ShipType.CARRIER;
@@ -1138,6 +1161,19 @@ public class View extends JFrame
 				}
 
 				//playSplash();
+			}
+			else if (is_ship == true)
+			{
+				switch(direction)
+				{
+					case 0:
+						flashIcon(ship, ship.getUpIcon(), ship.getUpErrorIcon());
+						break;
+
+					case 1:
+						flashIcon(ship, ship.getLeftIcon(), ship.getLeftErrorIcon());
+						break;
+				}
 			}
 			
 			//If the user lets go of the ship, stop the drag action
