@@ -57,41 +57,41 @@ public class Player
 		//{
 		//	public void run()
 		//	{	
-				if (model.hasLost())
-				{
-					//END AND CLEAN UP GAME
-					System.out.println("YOU LOST");	
-					role.closeConnection();
-					//EXIT STUFF
-				}
-
+		//			
 				//Hold the shot read from the client
 				String shot = role.readMessage();
 					
 				//Convert to point
 				String coords[] = shot.split(" ");
 				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+				
 				//Get row and column for the shot
 				int row = (int)point.getX();
 				int column = (int)point.getY();
 
-				System.out.println(row + " " + column);
 				//Check all the ships for a hit
 				ShipType hit_ship = model.checkShips(row, column); 
-			
-				//new Thread(() -> setTargetBoardEnabled(true)).start();
 
+				//Check if the current player has lost, if so send info the other player and exit
+				if (model.hasLost())
+				{
+					//Send message to other player
+					System.out.println("YOU LOST");	
+					role.sendMessage("GAMEOVER");
+				
+					//Exit the game
+					role.closeConnection();
+					System.exit(0);
+				}	
+
+				//Write the result of the shot to the buffer
 				if (hit_ship != null)
 					role.sendMessage("1");
 				else
 					role.sendMessage("0");
 
-				view.targetBoardEnabled(true);
-		//	
-		//	}
-		//};
-		//actionThread.start();			
-
+				//Enable the target board
+				view.targetBoardEnabled(true);	
 	}
 
 	//Method to setup the initial game state and let the server play first
@@ -251,8 +251,15 @@ public class Player
 					role.sendMessage((int)point.getY() + " " + (int)point.getX());
 
 					view.targetBoardEnabled(false);		
-					String shot_status = role.readMessage();	
-					System.out.println("SHOT READ");
+					String shot_status = role.readMessage();		
+
+					//Check if game has been won
+					if (shot_status.equals("GAMEOVER"))
+					{
+						System.out.println("YOU WON");
+						role.closeConnection();
+						System.exit(0);
+					}
 
 					//Check if shot was a hit or a miss
 					if (shot_status.equals("1"))
