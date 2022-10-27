@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.*;
 import javax.sound.sampled.*;
 
-public class View extends JFrame implements Runnable
+public class View extends JFrame
 {
 	//					PRIVATE DATA MEMEBERS
 	//|====================================================================================================|
@@ -423,9 +423,27 @@ public class View extends JFrame implements Runnable
 		setVisible(true);
 	}
 
-	public void run()
+	//Return a reference to self
+	public View getView()
 	{
-		while(true);
+		return this;
+	}
+
+	//Change the target board from enabled to disabled and vice versa
+	public void targetBoardEnabled(boolean isEnabled) 
+	{
+	  	javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{
+				for (int i = 0; i < BOARD_SIZE; i++)
+		       			for (int j = 0; j < BOARD_SIZE; j++)	
+						targetBoard[i][j].setEnabled(isEnabled);
+			
+				revalidate();
+				repaint();
+			}
+		});
 	}
 
 	public ImageIcon scaleImage(ImageIcon icon, int w, int h)

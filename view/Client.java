@@ -33,7 +33,6 @@ public class Client extends JPanel implements Role
    private String message = ""; // message from server
    private String chatServer; // host server for this application
    private Socket client; // socket to communicate with server
-   private final String ROLE = "CLIENT";
 
    // initialize chatServer and set up GUI
    public Client( String host )
@@ -204,12 +203,7 @@ public class Client extends JPanel implements Role
 	   }
 
 	   return line;
-   }
-
-   public String getRole()
-   {
-	   return ROLE;
-   }
+   } 
 
    /*
    // send message to server

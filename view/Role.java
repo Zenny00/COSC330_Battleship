@@ -5,7 +5,7 @@
 import java.io.IOException;
 import java.awt.Point;
 
-public interface Role
+public interface Role extends Runnable
 {
 	//Setup phase
 	//public void setup();
@@ -28,6 +28,4 @@ public interface Role
 	
 	//Run the server or client
 	public void run();
-		
-	public String getRole();
 }

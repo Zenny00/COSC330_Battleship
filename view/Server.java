@@ -34,7 +34,6 @@ public class Server extends JPanel implements Role
    private ServerSocket server; // server socket
    private Socket connection; // connection to client
    private int counter = 1; // counter of number of connections
-   private final String ROLE = "SERVER";
    
    // set up GUI
    public Server()
@@ -180,37 +179,23 @@ public class Server extends JPanel implements Role
 	System.out.println(str);
 	pw.println(str);
 	pw.flush();
-	/*
+   }
+
+   public String readMessage()
+   {	
+	String line = ""; 
 	try
 	{
+		line = br.readLine();  
 	}
 	catch ( IOException ioException )
 	{
 		displayArea.append( "\nError writing object" );
-	}
-	*/
-   }
-
-   public String readMessage()
-   {
-	   String line = ""; 
-		try
-		{
-			line = br.readLine();  
-		}
-		catch ( IOException ioException )
-		{
-			displayArea.append( "\nError writing object" );
-		}  
-	   return line;
+	}  
+  
+	return line;
    }
    
-   public String getRole()
-   {
-	   return ROLE;
-   }
-
-
    /*
    // send message to client
    public void sendData( Object obj )

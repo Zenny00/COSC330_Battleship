@@ -26,110 +26,83 @@ public class Player
 	private State state; //State (current action being taken by the player, setup, attacking, etc)
 	private boolean gameStart = false; //Set to true when the setup phase is complete
 
-	private final String SERVER = "SERVER"; //Constant for the server role string
-	private final String CLIENT = "CLIENT"; //Constant for the client role string
-
 	//Player constructor
 	public Player(Role role)
 	{
 		this.role = role; //assign role
 		this.model = new Model(); //Setup new model
 		this.view = new View(model, role); //Create a new view
-
-		Runnable runnable = view;
-      		Thread thread = new Thread(runnable);
-      		thread.start();
-	   	System.out.println(thread.isAlive());
 		
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
 		view.addDoneListener(new DoneListener());	
 
-		state = new Initial(this);
+		//state = new Initial(this);
+		//setTargetBoardEnabled(false);
+		view.targetBoardEnabled(false);
+		//setTargetBoardEnabled(false);
 		
-		/*
-		Runnable runnable = role;
-      		Thread thread = new Thread(runnable);
-      		thread.start();
-	   	System.out.println(thread.isAlive());
-		*/
+		//new Thread(() -> setTargetBoardEnabled(false)).start();
+
+		//Runnable role_runnable = role;
+      		//Thread role_thread = new Thread(role_runnable);
+      		//role_thread.start();
+	   	//System.out.println(role_thread.isAlive());
 		role.run();
 	}
 
-	public void clientAction()
+	public void defendAction()
 	{
-		if (model.hasLost())
+		Thread actionThread = new Thread()
 		{
-			//END AND CLEAN UP GAME
-			System.out.println("YOU LOST");	
-			role.closeConnection();
-			//EXIT STUFF
-		}
-		
-		//read coordinates of shots fired from the server
-		String shot = role.readMessage();
+			public void run()
+			{	
+				if (model.hasLost())
+				{
+					//END AND CLEAN UP GAME
+					System.out.println("YOU LOST");	
+					role.closeConnection();
+					//EXIT STUFF
+				}
 
-		//Convert to point
-		String coords[] = shot.split(" ");
-		Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-		//Get row and column for the shot
-		int row = (int)point.getX();
-		int column = (int)point.getY();
+				setTargetBoardEnabled(true);
 
-		System.out.println(row + " " + column);
-		//Check all the ships for a hit
-		ShipType hit_ship = model.checkShips(row, column); 
-		
-		if (hit_ship != null)
-			role.sendMessage("1");
-		else
-			role.sendMessage("0");
+				//Hold the shot read from the client
+				String shot = role.readMessage();
+					
+				//Convert to point
+				String coords[] = shot.split(" ");
+				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+				//Get row and column for the shot
+				int row = (int)point.getX();
+				int column = (int)point.getY();
 
-		state = new Attack(this);	
+				System.out.println(row + " " + column);
+				//Check all the ships for a hit
+				ShipType hit_ship = model.checkShips(row, column); 
+			
+				//new Thread(() -> setTargetBoardEnabled(true)).start();
+
+				if (hit_ship != null)
+				{
+					role.sendMessage("1");
+					System.out.println(hit_ship);
+				}
+				else
+					role.sendMessage("0");
+			}
+		};
+		actionThread.start();
 	}
 
-	public void serverAction()
-	{
-		if (model.hasLost())
-		{
-			//END AND CLEAN UP GAME
-			System.out.println("YOU LOST");	
-			role.closeConnection();
-			//EXIT STUFF
-		}
-
-		String shot = role.readMessage();
-
-		//Convert to point
-		String coords[] = shot.split(" ");
-		Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-		//Get row and column for the shot
-		int row = (int)point.getX();
-		int column = (int)point.getY();
-
-		System.out.println(row + " " + column);
-		//Check all the ships for a hit
-		ShipType hit_ship = model.checkShips(row, column); 
-		
-		if (hit_ship != null)
-		{
-			role.sendMessage("1");
-			System.out.println(hit_ship);
-		}
-		else
-			role.sendMessage("0");
-
-		state = new Attack(this);
-	}
-
+	//Method to setup the initial game state and let the server play first
 	public void startGame()
 	{
 		System.out.println("Start game called");
-		// run client or server
-		
-		String message = "";
-		
-		message = role.readMessage();
+	
+		//Get message from client and server accordingly	
+		String message = role.readMessage();
+			
 		System.out.println(message);
 		
 		if (message.equals("ready"))
@@ -137,13 +110,13 @@ public class Player
 		else
 			System.out.println("Game has not begun");
 		
-		if (role.getRole() == CLIENT)
+		if (role instanceof Client)
 		{
-			state = new Defend(this);
-			clientAction();
+			view.targetBoardEnabled(false);
+			defendAction();
 		}
 		else
-			state = new Attack(this);
+			view.targetBoardEnabled(true);			
 	}
 
 	//Get icon
@@ -198,33 +171,39 @@ public class Player
 	// True enables board and checks if each button is clickable
 	// False disables all tiles in the panel
 	public void setTargetBoardEnabled(boolean isEnabled) {
-		int row, column;	
-		System.out.println("Set board called");
+		//javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		//	@Override
+		//	public void run() 
+		//	{   	
+				int row, column;	
+				System.out.println("Set board called");
 
-		//view.getTargetPanel().setEnabled(isEnabled);
-		
-		//Get JPanel from the view
-		JPanel panel = view.getTargetPanel();
-		Component[] tiles = panel.getComponents();
-		for (Component tile : tiles) {
-			tile.setEnabled(isEnabled);
-			/*
-			if (tile instanceof JButton)
-			{
-				JButton button = (JButton)tile;	
-				String coords[] = button.getActionCommand().split(" ");
-				row = Integer.parseInt(coords[0]);
-				column = Integer.parseInt(coords[1]);
-				if (model.getTargetBoard().getClickable(row, column) && isEnabled)
+				//view.getTargetPanel().setEnabled(isEnabled);
+				
+				//Get JPanel from the view
+				JPanel panel = view.getTargetPanel();
+				Component[] tiles = panel.getComponents();
+				for (Component tile : tiles) {
 					tile.setEnabled(isEnabled);
-				else
-					tile.setEnabled(false);
-			}
-			*/
-		}
+					/*
+					if (tile instanceof JButton)
+					{
+						JButton button = (JButton)tile;	
+						String coords[] = button.getActionCommand().split(" ");
+						row = Integer.parseInt(coords[0]);
+						column = Integer.parseInt(coords[1]);
+						if (model.getTargetBoard().getClickable(row, column) && isEnabled)
+							tile.setEnabled(isEnabled);
+						else
+							tile.setEnabled(false);
+					}
+					*/
+				}
 
-		panel.revalidate();
-		panel.repaint();
+				panel.revalidate();
+				panel.repaint();
+		//	}
+		//});
 	}
 
 	public void setOceanBoardEnabled(boolean isEnabled) {
@@ -241,50 +220,56 @@ public class Player
 		panel.repaint();
 	}
 
+	public void setTargetIcon(int row, int column, String source)
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{   	
+				view.getTargetButton(row, column).setIcon(sourceIcon(source));
+				view.getTargetButton(row, column).repaint();
+			}
+		});
+	}
+
 	class TileListener implements ActionListener
 	{
 		//When a tile is pressed grab the coordinates
 		public void actionPerformed(ActionEvent e)
 		{
-			Object obj = e.getSource();
-			if (!(obj instanceof JButton))
-				return;
-
-			JButton button = (JButton)obj;
-			
-			String coords[] = button.getActionCommand().split(" ");
-			Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-                	System.out.println(point.getY() + " " + point.getX());
-			role.sendMessage((int)point.getY() + " " + (int)point.getX());
-
-			state = new Defend(Player.this);
-
-			String shot_status = role.readMessage();
-
-			System.out.println("SHOT READ");
-
-			//Check if shot was a hit or a miss
-			if (shot_status.equals("1"))
+			Thread actionThread = new Thread()
 			{
-				view.getTargetButton((int)point.getY(), (int)point.getX())  .setIcon(sourceIcon("./Graphics/Water/WaterHit.png"));
-				view.getTargetButton((int)point.getY(), (int)point.getX()).repaint();
-				System.out.println("HIT");
-			}
-			else
-			{
-				view.getTargetButton((int)point.getY(), (int)point.getX()).setIcon(sourceIcon("./Graphics/Water/WaterMiss.png"));
-				view.getTargetButton((int)point.getY(), (int)point.getX()).repaint();
-				System.out.println("MISS");
-			}
+				public void run()
+				{
+					Object obj = e.getSource();
+					if (!(obj instanceof JButton))
+						return;
 
-			System.out.println("Moving states");
-			
-			
-			if (role.getRole() == CLIENT)
-				clientAction();
-			else	
-				serverAction();				
-			
+					JButton button = (JButton)obj;
+					button.setEnabled(false);	
+					String coords[] = button.getActionCommand().split(" ");
+					Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+					System.out.println(point.getY() + " " + point.getX());
+					role.sendMessage((int)point.getY() + " " + (int)point.getX());
+
+					setTargetBoardEnabled(false);		
+
+					String shot_status = role.readMessage();	
+					System.out.println("SHOT READ");
+
+					//Check if shot was a hit or a miss
+					if (shot_status.equals("1"))
+						setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
+					else
+						setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterMiss.png");
+					
+					//setTargetBoardEnabled(false);
+					System.out.println("Moving states");
+					
+					defendAction();
+				}
+			};
+			actionThread.start();	
 		}
 	} //Inner actionListener class
 
