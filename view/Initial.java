@@ -7,7 +7,7 @@ public class Initial implements State
 		this.player = player;
 		
 		// enable ship board
-		player.setOceanBoardEnabled(true);
+		//player.setOceanBoardEnabled(true);
 		// disable target board
 		player.setTargetBoardEnabled(false);
 	}

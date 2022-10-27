@@ -37,9 +37,9 @@ public class Player
 		view.addTileListener(new TileListener());
 		view.addDoneListener(new DoneListener());	
 
-		//state = new Initial(this);
+		state = new Initial(this);
 		//setTargetBoardEnabled(false);
-		view.targetBoardEnabled(false);
+		//setTargetBoardEnabled(false);
 		//setTargetBoardEnabled(false);
 		
 		//new Thread(() -> setTargetBoardEnabled(false)).start();
@@ -91,7 +91,8 @@ public class Player
 					role.sendMessage("0");
 
 				//Enable the target board
-				view.targetBoardEnabled(true);	
+				//setTargetBoardEnabled(true);	
+				state = new Attack(this);
 	}
 
 	//Method to setup the initial game state and let the server play first
@@ -111,11 +112,13 @@ public class Player
 		
 		if (role instanceof Client)
 		{
-			view.targetBoardEnabled(false);
+			state = new Defend(this);
+			//setTargetBoardEnabled(false);
 			defendAction();
 		}
 		else
-			view.targetBoardEnabled(true);			
+			state = new Attack(this);
+			//setTargetBoardEnabled(true);			
 	}
 
 	//Get icon
@@ -170,10 +173,10 @@ public class Player
 	// True enables board and checks if each button is clickable
 	// False disables all tiles in the panel
 	public void setTargetBoardEnabled(boolean isEnabled) {
-		//javax.swing.SwingUtilities.invokeLater(new Runnable() {
-		//	@Override
-		//	public void run() 
-		//	{   	
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{   	
 				int row, column;	
 				System.out.println("Set board called");
 
@@ -201,8 +204,8 @@ public class Player
 
 				panel.revalidate();
 				panel.repaint();
-		//	}
-		//});
+			}
+		});
 	}
 
 	public void setOceanBoardEnabled(boolean isEnabled) {
@@ -250,7 +253,8 @@ public class Player
 					System.out.println(point.getY() + " " + point.getX());
 					role.sendMessage((int)point.getY() + " " + (int)point.getX());
 
-					view.targetBoardEnabled(false);		
+					state = new Defend(Player.this);
+					//setTargetBoardEnabled(false);		
 					String shot_status = role.readMessage();		
 
 					//Check if game has been won
@@ -263,10 +267,16 @@ public class Player
 
 					//Check if shot was a hit or a miss
 					if (shot_status.equals("1"))
+					{
 						setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
+						view.playHit();
+					}
 					else
+					{
 						setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterMiss.png");
-					
+						view.playMiss();
+					}
+
 					//setTargetBoardEnabled(false);
 					System.out.println("Moving states");
 					defendAction();
@@ -284,6 +294,7 @@ public class Player
 			Object obj = e.getSource();
 			if (obj instanceof JButton)
 			{
+				view.startBackgroundMusic();
 				JButton button = (JButton)obj;
 
 				button.setVisible(false);

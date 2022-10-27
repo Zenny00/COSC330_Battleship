@@ -25,6 +25,9 @@ import javax.sound.sampled.*;
 import java.util.concurrent.TimeUnit;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
+import javax.sound.sampled.LineEvent;
+import java.applet.*;
 
 public class View extends JFrame
 {
@@ -277,10 +280,14 @@ public class View extends JFrame
 	//Int to keep track of the number of ships left to place
 	private int ships_placed;
 
-	private AudioInputStream audioStream = null;
-	private URL sound_url = null;
-	private File water_sound = null;
-	private Clip water_clip = null;
+	//Used for water splash sound
+	private URL water_sound_url = null;
+	private URL incorrect_sound_url = null;
+	private URL hit_sound_url = null;
+	private URL miss_sound_url = null;
+	private URL music_sound_url = null;
+	private AudioClip background_music = null;
+	private AudioClip sound_clip = null;
 
 	//|=====================================================================================================|
 	//|													|
@@ -290,7 +297,7 @@ public class View extends JFrame
 	
 	//Constructor 
 	public View(Model model, Role connect_panel)
-	{	
+	{
 		//Set the model
 		this.model = model;
 
@@ -331,11 +338,11 @@ public class View extends JFrame
 		ships_placed = 0;
 		
 		//Ship label objs to hold the ship icons and actions
-		des = new DesLabel(2, 0, "Graphics/Ships/Destroyer.png", "Graphics/Ships/DestroyerLeft.png");
-		sub = new SubLabel(3, 0, "Graphics/Ships/Submarine.png", "Graphics/Ships/SubmarineLeft.png");	
-		cru = new CruLabel(3, 0, "Graphics/Ships/Cruiser.png", "Graphics/Ships/CruiserLeft.png");	
-		bat = new BatLabel(4, 0, "Graphics/Ships/Battleship.png", "Graphics/Ships/BattleshipLeft.png");
-		car = new CarLabel(5, 0, "Graphics/Ships/Carrier.png", "Graphics/Ships/CarrierLeft.png");
+		des = new DesLabel(2, 0, "Graphics/Ships/Destroyer.png", "Graphics/Ships/DestroyerLeft.png", "Graphics/Ships/DestroyerError.png", "Graphics/Ships/DestroyerLeftError.png");
+		sub = new SubLabel(3, 0, "Graphics/Ships/Submarine.png", "Graphics/Ships/SubmarineLeft.png", "Graphics/Ships/SubmarineError.png", "Graphics/Ships/SubmarineLeftError.png");	
+		cru = new CruLabel(3, 0, "Graphics/Ships/Cruiser.png", "Graphics/Ships/CruiserLeft.png", "Graphics/Ships/CruiserError.png", "Graphics/Ships/CruiserLeftError.png");	
+		bat = new BatLabel(4, 0, "Graphics/Ships/Battleship.png", "Graphics/Ships/BattleshipLeft.png", "Graphics/Ships/BattleshipError.png", "Graphics/Ships/BattleshipLeftError.png");
+		car = new CarLabel(5, 0, "Graphics/Ships/Carrier.png", "Graphics/Ships/CarrierLeft.png", "Graphics/Ships/CarrierError.png", "Graphics/Ships/CarrierLeftError.png");
 
 		//Create new mouse action handlers
 		DragShip drag_des = new DragShip();
@@ -410,7 +417,22 @@ public class View extends JFrame
 
 		//Setup shipbox for holding ships
 		shipBox.setLayout(new GridLayout(1, 7));
-	
+
+		//Setup sound
+		try
+		{
+			water_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");
+ 			incorrect_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/IncorrectPlacement.wav");
+ 			hit_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/HitSound.wav");
+
+ 			miss_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/MissSound.wav");
+			music_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/MusicTrack.wav");
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+
 		//Configure frame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 800);
@@ -859,8 +881,6 @@ public class View extends JFrame
 				break;
 		}	
 
-		//playSplash();
-
 		//Disable ship icons	
 		ship.setEnabled(false);
 		ship.setVisible(false);
@@ -869,24 +889,35 @@ public class View extends JFrame
 		setup_done.setEnabled(true);
 		setup_done.setVisible(true);
 	}
-
+	
 	public void playSplash()
 	{
-		//Setup sound system
-		try
-		{
-			sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WaterSplash.wav");	
-			audioStream = AudioSystem.getAudioInputStream(sound_url);
-			water_clip = AudioSystem.getClip();
-			water_clip.open(audioStream);
-					
-			water_clip.start();
-			water_clip.close();
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
+		AudioClip sound_clip = Applet.newAudioClip(water_sound_url);
+		sound_clip.play();
+	}
+
+	public void playIncorrect()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(incorrect_sound_url);
+		sound_clip.play();
+	}
+
+	public void playHit()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(hit_sound_url);
+		sound_clip.play();
+	}
+
+	public void playMiss()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(miss_sound_url);
+		sound_clip.play();
+	}
+
+	public void startBackgroundMusic()
+	{
+		background_music = Applet.newAudioClip(music_sound_url);
+		background_music.play();
 	}
 
 	//Flash the image icon for a quick period of time
@@ -917,11 +948,10 @@ public class View extends JFrame
 	//Destroyer Class
 	class DesLabel extends ShipLabel
 	{
-		public DesLabel(int length, int direction, String up_resource, String left_resource)
+		public DesLabel(int length, int direction, String up_resource, String left_resource, String up_error, String left_error)
 		{
-
 			//Call super class constructor
-			super(up_resource, left_resource);
+			super(up_resource, left_resource, up_error, left_error);
 			
 			this.length = length;
 			this.direction = direction;
@@ -941,11 +971,10 @@ public class View extends JFrame
 	//Battleship Class
 	class CruLabel extends ShipLabel
 	{
-		public CruLabel(int length, int direction, String up_resource, String left_resource)
+		public CruLabel(int length, int direction, String up_resource, String left_resource, String up_error, String left_error)
 		{
-
 			//Call super class constructor
-			super(up_resource, left_resource);
+			super(up_resource, left_resource, up_error, left_error);
 			
 			this.length = length;
 			this.direction = direction;
@@ -967,10 +996,11 @@ public class View extends JFrame
 	//Submarine Class
 	class SubLabel extends ShipLabel
 	{
-		public SubLabel(int length, int direction, String up_resource, String left_resource)
+		public SubLabel(int length, int direction, String up_resource, String left_resource, String up_error, String left_error)
 		{
-			super(up_resource, left_resource);
 			//Call super class constructor
+			super(up_resource, left_resource, up_error, left_error);
+			
 			this.length = length;
 			this.direction = direction;
 			this.type = ShipType.SUBMARINE;
@@ -991,11 +1021,11 @@ public class View extends JFrame
 	//Battleship Class
 	class BatLabel extends ShipLabel
 	{
-		public BatLabel(int length, int direction, String up_resource, String left_resource)
+		public BatLabel(int length, int direction, String up_resource, String left_resource, String up_error, String left_error)
 		{
 
 			//Call super class constructor
-			super(up_resource, left_resource);
+			super(up_resource, left_resource, up_error, left_error);
 			
 			this.length = length;
 			this.direction = direction;
@@ -1019,10 +1049,10 @@ public class View extends JFrame
 	//Carrier Class
 	class CarLabel extends ShipLabel
 	{
-		public CarLabel(int length, int direction, String up_resource, String left_resource)
+		public CarLabel(int length, int direction, String up_resource, String left_resource, String up_error, String left_error)
 		{
 			//Call super class constructor
-			super(up_resource, left_resource, "Graphics/Ships/CarrierError.png", "Graphics/Ships/CarrierLeftError.png");
+			super(up_resource, left_resource, up_error, left_error);
 
 			this.length = length;
 			this.direction = direction;
@@ -1104,7 +1134,7 @@ public class View extends JFrame
 		public void mouseReleased(MouseEvent e)
 		{		
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (lastEntered instanceof JButton && is_ship == true)
+			if ((lastEntered instanceof JButton) && (is_ship == true))
 			{
 				JButton button = (JButton)lastEntered;
 				String coords[] = button.getActionCommand().split(" ");
@@ -1160,10 +1190,11 @@ public class View extends JFrame
 					}
 				}
 
-				//playSplash();
+				playSplash();
 			}
 			else if (is_ship == true)
 			{
+				playIncorrect();
 				switch(direction)
 				{
 					case 0:
@@ -1201,7 +1232,7 @@ public class View extends JFrame
 			placeRandom(bat);
 			placeRandom(car);
 
-			//playSplash();	
+			playSplash();	
 
 			//Disable the button
 			button.setEnabled(false);
