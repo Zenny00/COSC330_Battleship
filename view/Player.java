@@ -53,10 +53,10 @@ public class Player
 
 	public void defendAction()
 	{
-		Thread actionThread = new Thread()
-		{
-			public void run()
-			{	
+		//Thread actionThread = new Thread()
+		//{
+		//	public void run()
+		//	{	
 				if (model.hasLost())
 				{
 					//END AND CLEAN UP GAME
@@ -64,8 +64,6 @@ public class Player
 					role.closeConnection();
 					//EXIT STUFF
 				}
-
-				setTargetBoardEnabled(true);
 
 				//Hold the shot read from the client
 				String shot = role.readMessage();
@@ -84,15 +82,16 @@ public class Player
 				//new Thread(() -> setTargetBoardEnabled(true)).start();
 
 				if (hit_ship != null)
-				{
 					role.sendMessage("1");
-					System.out.println(hit_ship);
-				}
 				else
 					role.sendMessage("0");
-			}
-		};
-		actionThread.start();
+
+				view.targetBoardEnabled(true);
+		//	
+		//	}
+		//};
+		//actionThread.start();			
+
 	}
 
 	//Method to setup the initial game state and let the server play first
@@ -246,14 +245,12 @@ public class Player
 						return;
 
 					JButton button = (JButton)obj;
-					button.setEnabled(false);	
 					String coords[] = button.getActionCommand().split(" ");
 					Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
 					System.out.println(point.getY() + " " + point.getX());
 					role.sendMessage((int)point.getY() + " " + (int)point.getX());
 
-					setTargetBoardEnabled(false);		
-
+					view.targetBoardEnabled(false);		
 					String shot_status = role.readMessage();	
 					System.out.println("SHOT READ");
 
@@ -265,11 +262,10 @@ public class Player
 					
 					//setTargetBoardEnabled(false);
 					System.out.println("Moving states");
-					
 					defendAction();
 				}
 			};
-			actionThread.start();	
+			actionThread.start();
 		}
 	} //Inner actionListener class
 
