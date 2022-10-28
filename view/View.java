@@ -601,9 +601,9 @@ public class View extends JFrame
 	}
 
 	//Update a button at a specified location in the grid
-	public void updateButton(int x, int y)
+	public void updateShipButton(int row, int col, Icon new_icon)
 	{
-		//TODO
+		playerBoard[row][col].setIcon(new_icon);
 	}
 
 	//Getters for the JPanels holding the water and ship tiles
@@ -883,7 +883,7 @@ public class View extends JFrame
 				for (int i = row; i < row + length ; i++)
 				{
 					//Place each tile and update model
-					playerBoard[i][col].setIcon(up_sprites[index]);
+					playerBoard[i][col].setIcon(new CompoundIcon(sourceIcon("Graphics/Water/Water.png"), up_sprites[index]));
 					index++;
 				}
 
@@ -895,7 +895,7 @@ public class View extends JFrame
 				for (int i = col; i < col + length ; i++)
 				{
 					//Place each tile and update model
-					playerBoard[row][i].setIcon(left_sprites[index]);
+					playerBoard[row][i].setIcon(new CompoundIcon(sourceIcon("Graphics/Water/Water.png"), left_sprites[index]));
 					index++;
 				}
 
@@ -1213,7 +1213,7 @@ public class View extends JFrame
 							//Place ship on the selected tiles
 							for (int i = row; i < row + length ; i++)
 							{
-								playerBoard[i][col].setIcon(up_sprites[index]);
+								playerBoard[i][col].setIcon(new CompoundIcon(sourceIcon("Graphics/Water/Water.png"), up_sprites[index]));
 								index++;
 							}
 
@@ -1222,7 +1222,7 @@ public class View extends JFrame
 						case 1:		
 							for (int i = col; i < col + length ; i++)
 							{
-								playerBoard[row][i].setIcon(left_sprites[index]);	
+								playerBoard[row][i].setIcon(new CompoundIcon(sourceIcon("Graphics/Water/Water.png"), left_sprites[index]));	
 								index++;
 							}
 

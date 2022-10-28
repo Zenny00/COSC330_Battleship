@@ -46,7 +46,7 @@ public class CompoundIcon implements Icon
 	 */
     public CompoundIcon(Icon... icons)
     {
-    	this(Axis.X_AXIS, icons);
+    	this(Axis.Z_AXIS, icons);
     }
 
 	/**
