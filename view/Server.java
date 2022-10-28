@@ -95,6 +95,12 @@ public class Server extends JPanel implements Role
       displayMessage( "Connection " + counter + " received from: " +
          connection.getInetAddress().getHostName() );
    } // end method waitForConnection
+   
+   public void writeStatus(String str)
+   {
+	   //write message on display
+	displayMessage(str + "\n");
+   }
 
    // get streams to send and receive data
    public void getStreams() throws IOException

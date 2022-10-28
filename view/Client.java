@@ -83,6 +83,12 @@ public class Client extends JPanel implements Role
       */
    } // end method runClient
 
+   public void writeStatus(String str)
+   {
+	   //write message on display
+	displayMessage(str + "\n");
+   }
+
    // connect to server
    public void connectToServer() throws IOException
    {      

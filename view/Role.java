@@ -25,7 +25,9 @@ public interface Role extends Runnable
 	//Send and recieve coordinates
    	public void sendMessage(String str);
 	public String readMessage();
-	
+
+	public void writeStatus(String str);
+
 	//Run the server or client
 	public void run();
 }

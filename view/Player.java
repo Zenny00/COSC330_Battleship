@@ -91,24 +91,26 @@ public class Player
 				//Write the result of the shot to the buffer
 				if (hit_ship != null)
 				{
-						
 					//Check if ship was sunk, if so update local icon and send message 
 					if (model.getShip(hit_ship.getIndex()).isSunk())
 					{
 						view.playShipSunk();
-						status_board.friendlyShipDestroyed(hit_ship);	
+						status_board.friendlyShipDestroyed(hit_ship);
+						role.writeStatus("The enemy sunk your " + hit_ship);
 						role.sendMessage("11" + " " + hit_ship.getIndex());
 					}
 					else
 					{
 						//Play hit sound
 						view.playEnemyHit();
+						role.writeStatus("The enemy hit your " + hit_ship);
 						role.sendMessage("10" + " " + hit_ship.getIndex());
 					}
 				}	
 				else
 				{
 					view.playEnemyMiss();
+					role.writeStatus("The enemy missed your ship!");
 					role.sendMessage("00" + " 0");
 				}
 
@@ -304,17 +306,21 @@ public class Player
 						{
 							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");	
 							view.playHit();
+
+							role.writeStatus("You hit an enemy ship!");
 						}
 						else if (shot_value.equals("11"))
 						{
 							status_board.enemyShipDestroyed(ship_type);	
 							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
 							view.playShipSunk();
+							role.writeStatus("You sunk the enemy " + ship_type + "!");
 						}
 						else
 						{
 							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterMiss.png");
 							view.playMiss();
+							role.writeStatus("You missed the enemy!");
 						}
 
 						//setTargetBoardEnabled(false);
