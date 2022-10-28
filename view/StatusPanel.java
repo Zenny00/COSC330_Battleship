@@ -19,6 +19,9 @@ public class StatusPanel extends JPanel
 	//Holds player ship icons
 	private JPanel friendly_ship_box = new JPanel();
 
+	//Separate the two ship boxes
+	private JPanel barrier = new JPanel();
+
 	//Holds text for status headers
 	private JLabel friendlyText = new JLabel();
 	private JLabel enemyText = new JLabel();
@@ -71,15 +74,26 @@ public class StatusPanel extends JPanel
 	StatusPanel()
 	{
 		//Setup grid to hold text and icon trays
-		GridLayout contentLayout = new GridLayout(4, 1);
+		GridLayout contentLayout = new GridLayout(5, 1);
 		contentLayout.setVgap(10);
 		contentLayout.setHgap(10);
+		
+		setBackground(Color.white);
 
 		friendly_ship_box.setLayout(new GridLayout(1, 5));
 		enemy_ship_box.setLayout(new GridLayout(1, 5));
 
+		Font text_font = new Font("Dialog", Font.BOLD, 25);
+
+		friendlyText.setHorizontalAlignment(SwingConstants.CENTER);
+		friendlyText.setFont(text_font);
 		friendlyText.setText("PLAYER");
+		friendlyText.setForeground(Color.black);
+
+		enemyText.setHorizontalAlignment(SwingConstants.CENTER);
+		enemyText.setFont(text_font);
 		enemyText.setText("ENEMY");
+		enemyText.setForeground(Color.black);
 
 		//Give the JPanel the specified layout
 		setLayout(contentLayout);
@@ -133,12 +147,17 @@ public class StatusPanel extends JPanel
 		enemy_ship_box.add(enemy_submarine);
 		enemy_ship_box.add(enemy_destroyer);
 		
+		barrier.setBackground(Color.white);
+		friendly_ship_box.setBackground(Color.white);
+		enemy_ship_box.setBackground(Color.white);
+
 		add(friendlyText);
 		add(friendly_ship_box);
-		add(enemyText);
+		add(barrier);
 		add(enemy_ship_box);
-
-      		setPreferredSize(new Dimension(400, 400));
+		add(enemyText);
+      		
+		setPreferredSize(new Dimension(400, 400));
 		setVisible(true);
 	}
 
@@ -211,7 +230,6 @@ public class StatusPanel extends JPanel
 				break;
 		}			
 	}
-
 
 	//Stream icon from url
 	public Icon sourceIcon(String str)

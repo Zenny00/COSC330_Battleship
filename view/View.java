@@ -298,7 +298,7 @@ public class View extends JFrame
 	//|=====================================================================================================|
 	
 	//Constructor 
-	public View(Model model, Role connect_panel)
+	public View(Model model, JPanel status)
 	{
 		//Set the model
 		this.model = model;
@@ -446,7 +446,7 @@ public class View extends JFrame
 	
 		//Add panels to content pane	
 		this.getContentPane().add(targetContainerPanel);
-		this.getContentPane().add(((JPanel)connect_panel));
+		this.getContentPane().add(status);
 		this.getContentPane().add(shipContainerPanel);
 		this.getContentPane().add(shipBox);
 			

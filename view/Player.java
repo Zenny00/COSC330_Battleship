@@ -27,13 +27,15 @@ public class Player
 	private ChatRole chat;
 	private boolean gameStart = false; //Set to true when the setup phase is complete
 
+	private StatusPanel status_board;
+
 	//Player constructor
 	public Player(Role role)
 	{
 		this.role = role; //assign role
 		this.model = new Model(); //Setup new model
-		//this.chat = chat;
-		this.view = new View(model, role); //Create a new view
+		this.status_board = new StatusPanel(); //Create new status board to display the current state of the game
+		this.view = new View(model, status_board); //Create a new view
 		
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
@@ -89,13 +91,22 @@ public class Player
 				//Write the result of the shot to the buffer
 				if (hit_ship != null)
 				{
+					//Play hit sound
 					view.playEnemyHit();
-					role.sendMessage("1");
+
+					//Check if ship was sunk, if so update local icon and send message 
+					if (model.getShip(hit_ship.getIndex()).isSunk())
+					{
+						status_board.friendlyShipDestroyed(hit_ship);	
+						role.sendMessage("11" + " " + hit_ship.getIndex());
+					}
+					else
+						role.sendMessage("10" + " " + hit_ship.getIndex());
 				}
 				else
 				{
 					view.playEnemyMiss();
-					role.sendMessage("0");
+					role.sendMessage("00" + " 0");
 				}
 
 				//Enable the target board
@@ -278,9 +289,22 @@ public class Player
 							System.exit(0);
 						}
 
+						//Get result of shot and ship hit
+						String values[] = shot_status.split(" ");
+						int ship_index = Integer.parseInt(values[1]);
+
+						String shot_value = values[0];
+						ShipType ship_type = ShipType.values()[ship_index];
+
 						//Check if shot was a hit or a miss
-						if (shot_status.equals("1"))
+						if (shot_value.equals("10"))
 						{
+							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
+							view.playHit();
+						}
+						else if (shot_value.equals("11"))
+						{
+							status_board.enemyShipDestroyed(ship_type);	
 							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
 							view.playHit();
 						}
