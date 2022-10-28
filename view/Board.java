@@ -22,6 +22,7 @@ public class Board
 		//throw new nonTileException("Tile does not exist");
 	}
 
+	public void setNoClick(int row, int column) {tiles[row][column].setClickability(false);}
 	public boolean getClickable(int row, int column){return tiles[row][column].isClickable();}
 }
 

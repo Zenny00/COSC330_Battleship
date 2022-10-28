@@ -86,12 +86,10 @@ public class Model
 		return null;
 	}
 
-	// input_board should be the enemy sea board I think
-	public TileType fireShot(Board input_board, int x, int y) throws nonTileException 
+	//Update clickability on model board
+	public void fireShot(int row, int column) 
 	{
-		Tile target = input_board.getTile(x, y);
-		TileType status = target.addShot();
-		return status;
+		target_board.setNoClick(row, column);
 	}
 
 	public boolean hasLost() {
@@ -111,7 +109,7 @@ public class Model
 		return false;
 	}
 
-	public boolean validTarget(int x, int y){return ocean_board.getClickable(x, y);}
+	public boolean validTarget(int row, int column){return target_board.getClickable(row, column);}
 
 	public Ship getShip(int index)
 	{

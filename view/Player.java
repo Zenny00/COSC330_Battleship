@@ -24,6 +24,7 @@ public class Player
 	private Role role; //Role (determiens network actions, server or client)
 	private Model model; //Model (game state)
 	private State state; //State (current action being taken by the player, setup, attacking, etc)
+	private ChatRole chat;
 	private boolean gameStart = false; //Set to true when the setup phase is complete
 
 	//Player constructor
@@ -31,6 +32,7 @@ public class Player
 	{
 		this.role = role; //assign role
 		this.model = new Model(); //Setup new model
+		//this.chat = chat;
 		this.view = new View(model, role); //Create a new view
 		
 		//Add action listeners to the view
@@ -86,9 +88,15 @@ public class Player
 
 				//Write the result of the shot to the buffer
 				if (hit_ship != null)
+				{
+					view.playEnemyHit();
 					role.sendMessage("1");
+				}
 				else
+				{
+					view.playEnemyMiss();
 					role.sendMessage("0");
+				}
 
 				//Enable the target board
 				//setTargetBoardEnabled(true);	
@@ -248,38 +256,46 @@ public class Player
 						return;
 
 					JButton button = (JButton)obj;
+
 					String coords[] = button.getActionCommand().split(" ");
 					Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
 					System.out.println(point.getY() + " " + point.getX());
-					role.sendMessage((int)point.getY() + " " + (int)point.getX());
+					
+					if (model.validTarget((int)point.getY(), (int)point.getX()))
+					{		
+						model.fireShot((int)point.getY(), (int)point.getX()); 
+						role.sendMessage((int)point.getY() + " " + (int)point.getX());
 
-					state = new Defend(Player.this);
-					//setTargetBoardEnabled(false);		
-					String shot_status = role.readMessage();		
+						state = new Defend(Player.this);
+						//setTargetBoardEnabled(false);		
+						String shot_status = role.readMessage();		
 
-					//Check if game has been won
-					if (shot_status.equals("GAMEOVER"))
-					{
-						System.out.println("YOU WON");
-						role.closeConnection();
-						System.exit(0);
-					}
+						//Check if game has been won
+						if (shot_status.equals("GAMEOVER"))
+						{
+							System.out.println("YOU WON");
+							role.closeConnection();
+							System.exit(0);
+						}
 
-					//Check if shot was a hit or a miss
-					if (shot_status.equals("1"))
-					{
-						setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
-						view.playHit();
+						//Check if shot was a hit or a miss
+						if (shot_status.equals("1"))
+						{
+							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
+							view.playHit();
+						}
+						else
+						{
+							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterMiss.png");
+							view.playMiss();
+						}
+
+						//setTargetBoardEnabled(false);
+						System.out.println("Moving states");
+						defendAction();
 					}
 					else
-					{
-						setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterMiss.png");
-						view.playMiss();
-					}
-
-					//setTargetBoardEnabled(false);
-					System.out.println("Moving states");
-					defendAction();
+						view.targetBoardError();
 				}
 			};
 			actionThread.start();

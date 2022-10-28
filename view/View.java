@@ -285,6 +285,8 @@ public class View extends JFrame
 	private URL incorrect_sound_url = null;
 	private URL hit_sound_url = null;
 	private URL miss_sound_url = null;
+	private URL enemy_hit_sound_url = null;
+	private URL enemy_miss_sound_url = null;
 	private URL music_sound_url = null;
 	private AudioClip background_music = null;
 	private AudioClip sound_clip = null;
@@ -427,6 +429,9 @@ public class View extends JFrame
 
  			miss_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/MissSound.wav");
 			music_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/MusicTrack.wav");
+
+			enemy_hit_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/EnemyHit.wav");
+			enemy_miss_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/EnemyMiss.wav");
 		}
 		catch (Exception ex)
 		{
@@ -450,10 +455,26 @@ public class View extends JFrame
 		setVisible(true);
 	}
 
-	//Return a reference to self
-	public View getView()
+	public void targetBoardError()
 	{
-		return this;
+		targetButtonPanel.setBorder(new LineBorder(new Color(255, 0, 0), 2));
+		
+		long delay_time = 250; //Stored in milliseconds
+		
+		playIncorrect(); //Play incorrect sound
+
+		//When the timer ends, reset the icon
+		TimerTask resetBorder = new TimerTask()
+		{
+			public void run()
+			{
+				targetButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+			}
+		};
+
+		Timer reset_timer = new Timer();
+
+		reset_timer.schedule(resetBorder, delay_time); //Start the timer  		
 	}
 
 	//Change the target board from enabled to disabled and vice versa
@@ -914,10 +935,22 @@ public class View extends JFrame
 		sound_clip.play();
 	}
 
+	public void playEnemyHit()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(enemy_hit_sound_url);
+		sound_clip.play();
+	}
+
+	public void playEnemyMiss()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(enemy_miss_sound_url);
+		sound_clip.play();
+	}
+
 	public void startBackgroundMusic()
 	{
 		background_music = Applet.newAudioClip(music_sound_url);
-		background_music.play();
+		background_music.loop();
 	}
 
 	//Flash the image icon for a quick period of time
@@ -939,6 +972,21 @@ public class View extends JFrame
 		Timer reset_timer = new Timer();
 
 		reset_timer.schedule(resetIcon, delay_time); //Start the timer  		
+	}
+
+	public void invalidPlacement(ShipLabel ship, int direction)
+	{
+		playIncorrect();
+		switch(direction)
+		{
+			case 0:
+				flashIcon(ship, ship.getUpIcon(), ship.getUpErrorIcon());
+				break;
+
+			case 1:
+				flashIcon(ship, ship.getLeftIcon(), ship.getLeftErrorIcon());
+				break;
+		}
 	}
 
 //						INNER CLASSES
@@ -1188,24 +1236,14 @@ public class View extends JFrame
 						setup_done.setEnabled(true);
 						setup_done.setVisible(true);
 					}
-				}
 
-				playSplash();
+					playSplash();
+				}
+				else
+					invalidPlacement(ship, direction);
 			}
 			else if (is_ship == true)
-			{
-				playIncorrect();
-				switch(direction)
-				{
-					case 0:
-						flashIcon(ship, ship.getUpIcon(), ship.getUpErrorIcon());
-						break;
-
-					case 1:
-						flashIcon(ship, ship.getLeftIcon(), ship.getLeftErrorIcon());
-						break;
-				}
-			}
+				invalidPlacement(ship, direction);
 			
 			//If the user lets go of the ship, stop the drag action
 			is_ship = false;
