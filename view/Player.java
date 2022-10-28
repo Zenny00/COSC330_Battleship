@@ -91,18 +91,21 @@ public class Player
 				//Write the result of the shot to the buffer
 				if (hit_ship != null)
 				{
-					//Play hit sound
-					view.playEnemyHit();
-
+						
 					//Check if ship was sunk, if so update local icon and send message 
 					if (model.getShip(hit_ship.getIndex()).isSunk())
 					{
+						view.playShipSunk();
 						status_board.friendlyShipDestroyed(hit_ship);	
 						role.sendMessage("11" + " " + hit_ship.getIndex());
 					}
 					else
+					{
+						//Play hit sound
+						view.playEnemyHit();
 						role.sendMessage("10" + " " + hit_ship.getIndex());
-				}
+					}
+				}	
 				else
 				{
 					view.playEnemyMiss();
@@ -299,14 +302,14 @@ public class Player
 						//Check if shot was a hit or a miss
 						if (shot_value.equals("10"))
 						{
-							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
+							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");	
 							view.playHit();
 						}
 						else if (shot_value.equals("11"))
 						{
 							status_board.enemyShipDestroyed(ship_type);	
 							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
-							view.playHit();
+							view.playShipSunk();
 						}
 						else
 						{

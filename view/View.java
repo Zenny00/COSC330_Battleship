@@ -288,6 +288,7 @@ public class View extends JFrame
 	private URL enemy_hit_sound_url = null;
 	private URL enemy_miss_sound_url = null;
 	private URL music_sound_url = null;
+	private URL ship_sunk_sound_url = null;
 	private AudioClip background_music = null;
 	private AudioClip sound_clip = null;
 
@@ -432,6 +433,7 @@ public class View extends JFrame
 
 			enemy_hit_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/EnemyHit.wav");
 			enemy_miss_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/EnemyMiss.wav");
+			ship_sunk_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/ShipSink.wav");
 		}
 		catch (Exception ex)
 		{
@@ -944,6 +946,12 @@ public class View extends JFrame
 	public void playEnemyMiss()
 	{
 		AudioClip sound_clip = Applet.newAudioClip(enemy_miss_sound_url);
+		sound_clip.play();
+	}
+
+	public void playShipSunk()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(ship_sunk_sound_url);
 		sound_clip.play();
 	}
 
