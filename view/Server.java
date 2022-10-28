@@ -40,12 +40,15 @@ public class Server extends JPanel implements Role
       super();
       
       displayArea = new JTextArea(); // create displayArea
+      
       displayArea.setEditable(false);
-      displayArea.setPreferredSize(new Dimension(200, 100));
-      add( new JScrollPane( displayArea ), BorderLayout.CENTER );
+	JScrollPane scroll = new JScrollPane( displayArea );
+      scroll.setPreferredSize(new Dimension(200, 100));
+
+      add(scroll);
       
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-      //setSize( 300, 150 ); // set size of window
+      setSize( 300, 150 ); // set size of window
       setPreferredSize(new Dimension(300, 300));
       setVisible( true ); // show window
    } // end Server constructor
