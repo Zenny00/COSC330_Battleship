@@ -24,7 +24,6 @@ import java.io.*;
 
 public class Client extends JPanel implements Role
 {
-   private JTextField enterField; // enters information from user
    private JTextArea displayArea; // display information to user
    //private ObjectOutputStream output; // output stream to server
    //private ObjectInputStream input; // input stream from server
@@ -41,23 +40,6 @@ public class Client extends JPanel implements Role
 
       chatServer = host; // set server to which this client connects
       
-      enterField = new JTextField(); // create enterField
-      enterField.setPreferredSize(new Dimension(200, 25));
-      enterField.setEditable( false );
-      enterField.addActionListener(
-         new ActionListener() 
-         {
-            // send message to client
-            public void actionPerformed( ActionEvent event )
-            {
-               //sendData( event.getActionCommand() );
-               enterField.setText( "" );
-            } // end method actionPerformed
-         } // end anonymous inner class
-      ); // end call to addActionListener
-
-      add( enterField, BorderLayout.NORTH );
-
       displayArea = new JTextArea(); // create displayArea
       displayArea.setPreferredSize(new Dimension(200, 250));
       add( new JScrollPane( displayArea ), BorderLayout.CENTER );
@@ -128,14 +110,12 @@ public class Client extends JPanel implements Role
 
       displayMessage( "\nGot I/O streams\n" );
       */
-
    } // end method getStreams
 
    // process connection with server
    public void processConnection() throws IOException
    {
       // enable enterField so client user can send messages
-      setTextFieldEditable( true );
      
      /* 
       do // process messages sent from server
@@ -235,20 +215,6 @@ public class Client extends JPanel implements Role
          }  // end anonymous inner class
       ); // end call to SwingUtilities.invokeLater
    } // end method displayMessage
-
-   // manipulates enterField in the event-dispatch thread
-   private void setTextFieldEditable( final boolean editable )
-   {
-      SwingUtilities.invokeLater(
-         new Runnable() 
-         {
-            public void run() // sets enterField's editability
-            {
-               enterField.setEditable( editable );
-            } // end method run
-         } // end anonymous inner class
-      ); // end call to SwingUtilities.invokeLater
-   } // end method setTextFieldEditable
 } // end class Client
 
 /**************************************************************************

@@ -71,7 +71,7 @@ public class StatusPanel extends JPanel
 	//Holds the root directory
 	private final String ROOT_DIR = "Graphics/Status/";
 
-	StatusPanel()
+	StatusPanel(Role role)
 	{
 		//Setup grid to hold text and icon trays
 		GridLayout contentLayout = new GridLayout(5, 1);
@@ -153,10 +153,10 @@ public class StatusPanel extends JPanel
 
 		add(friendlyText);
 		add(friendly_ship_box);
-		add(barrier);
 		add(enemy_ship_box);
 		add(enemyText);
-      		
+		add((JPanel)role);
+		
 		setPreferredSize(new Dimension(400, 400));
 		setVisible(true);
 	}

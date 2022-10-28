@@ -34,7 +34,7 @@ public class Player
 	{
 		this.role = role; //assign role
 		this.model = new Model(); //Setup new model
-		this.status_board = new StatusPanel(); //Create new status board to display the current state of the game
+		this.status_board = new StatusPanel(role); //Create new status board to display the current state of the game
 		this.view = new View(model, status_board); //Create a new view
 		
 		//Add action listeners to the view

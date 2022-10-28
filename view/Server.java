@@ -25,7 +25,6 @@ import java.io.*;
 
 public class Server extends JPanel implements Role 
 {
-   private JTextField enterField; // inputs message from user
    private JTextArea displayArea; // display information to user
    //private ObjectOutputStream output; // output stream to client
    //private ObjectInputStream input; // input stream from client
@@ -39,27 +38,11 @@ public class Server extends JPanel implements Role
    public Server()
    {
       super();
-      enterField = new JTextField(); // create enterField
-      enterField.setPreferredSize(new Dimension(200, 10));
-      enterField.setEditable( false );
-      enterField.addActionListener(
-         new ActionListener() 
-         {
-            // send message to client
-            public void actionPerformed( ActionEvent event )
-            {
-               //sendData( event.getActionCommand() );
-               enterField.setText( "" );
-            } // end method actionPerformed
-         } // end anonymous inner class
-      ); // end call to addActionListener
-
-      add( enterField, BorderLayout.NORTH );
-
+      
       displayArea = new JTextArea(); // create displayArea
       displayArea.setPreferredSize(new Dimension(200, 100));
-      add( displayArea, BorderLayout.SOUTH );
-
+      add( new JScrollPane( displayArea ), BorderLayout.CENTER );
+      
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
       //setSize( 300, 150 ); // set size of window
       setPreferredSize(new Dimension(300, 300));
@@ -136,7 +119,6 @@ public class Server extends JPanel implements Role
       //sendData( message ); // send connection successful message
 
       // enable enterField so server user can send messages
-      setTextFieldEditable( true );
 
       /*
       do // process messages sent from client
@@ -160,7 +142,6 @@ public class Server extends JPanel implements Role
    {
 	System.out.println("CLOSED");
       displayMessage( "\nTerminating connection\n" );
-      setTextFieldEditable( false ); // disable enterField
 
       try 
       {
@@ -226,20 +207,6 @@ public class Server extends JPanel implements Role
          } // end anonymous inner class
       ); // end call to SwingUtilities.invokeLater
    } // end method displayMessage
-
-   // manipulates enterField in the event-dispatch thread
-   private void setTextFieldEditable( final boolean editable )
-   {
-      SwingUtilities.invokeLater(
-         new Runnable()
-         {
-            public void run() // sets enterField's editability
-            {
-               enterField.setEditable( editable );
-            } // end method run
-         }  // end inner class
-      ); // end call to SwingUtilities.invokeLater
-   } // end method setTextFieldEditable
 } // end class Server
 
 /**************************************************************************
