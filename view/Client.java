@@ -99,7 +99,7 @@ public class Client extends JPanel implements Role
 
       // display connection information
       displayMessage( "Connected to: " + 
-         client.getInetAddress().getHostName() );
+         client.getInetAddress().getHostName() + "\n");
    } // end method connectToServer
 
    // get streams to send and receive data

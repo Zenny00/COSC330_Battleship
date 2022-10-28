@@ -93,7 +93,7 @@ public class Server extends JPanel implements Role
       displayMessage( "Waiting for connection\n" );
       connection = server.accept(); // allow server to accept connection            
       displayMessage( "Connection " + counter + " received from: " +
-         connection.getInetAddress().getHostName() );
+         connection.getInetAddress().getHostName() + "\n");
    } // end method waitForConnection
    
    public void writeStatus(String str)
