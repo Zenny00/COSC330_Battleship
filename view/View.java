@@ -399,9 +399,9 @@ public class View extends JFrame
 	
 		//Setup colors
 		shipBox.setBackground(new Color(0, 0, 80));
-		this.getContentPane().setBackground(new Color(0, 0, 0));
-		targetContainerPanel.setBackground(new Color(0, 0, 0));
-		shipContainerPanel.setBackground(new Color(0, 0, 0));
+		this.getContentPane().setBackground(new Color(141, 153, 174));
+		targetContainerPanel.setBackground(new Color(141, 153, 174));
+		shipContainerPanel.setBackground(new Color(141, 153, 174));
 
 		//Add white border to ship panel
 		shipBox.setBorder(new LineBorder(new Color(255, 255, 255), 3));

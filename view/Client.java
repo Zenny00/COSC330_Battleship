@@ -41,6 +41,7 @@ public class Client extends JPanel implements Role
       chatServer = host; // set server to which this client connects
       
       displayArea = new JTextArea(); // create displayArea
+      displayArea.setEditable(false);
       displayArea.setPreferredSize(new Dimension(200, 250));
       add( new JScrollPane( displayArea ), BorderLayout.CENTER );
 

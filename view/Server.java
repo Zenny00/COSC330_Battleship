@@ -40,6 +40,7 @@ public class Server extends JPanel implements Role
       super();
       
       displayArea = new JTextArea(); // create displayArea
+      displayArea.setEditable(false);
       displayArea.setPreferredSize(new Dimension(200, 100));
       add( new JScrollPane( displayArea ), BorderLayout.CENTER );
       
