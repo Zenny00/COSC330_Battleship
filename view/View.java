@@ -1182,7 +1182,7 @@ public class View extends JFrame
 
 	public void playWin()
 	{
-		AudioClip sound_clip = Applet.newAudioClip(lose_sound_url);
+		AudioClip sound_clip = Applet.newAudioClip(win_sound_url);
 		sound_clip.play();
 	}
 
