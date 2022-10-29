@@ -111,7 +111,6 @@ public class Client extends JPanel implements Role
    // close streams and socket
    public void closeConnection() 
    {
-	System.out.println("CLOSED");
       displayMessage( "\nClosing connection" );
       //setTextFieldEditable( false ); // disable enterField
 

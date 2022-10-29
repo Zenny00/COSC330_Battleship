@@ -1,4 +1,6 @@
 //Super class for ship view class
+//Name(s): Joshua Comfort & Justin Conklin
+//Description: Ship JLabel that holds ship information for the view
 
 //Needed libraries
 import javax.swing.*;
@@ -15,12 +17,12 @@ import javax.imageio.ImageIO;
 
 public class ShipLabel extends JLabel
 {
-	private final int BASE_DIMENSION = 30;
-	
+	//Direction, length, and type	
 	protected int direction;
         protected int length;
 	protected ShipType type;
 
+	//Icon resources
 	protected String up_resource;
         protected String left_resource;
         protected Icon up_icon = null;
@@ -30,22 +32,18 @@ public class ShipLabel extends JLabel
         protected Icon left_error = null;
         protected Icon left_sprites[] = null;	
 	
-	public ShipLabel(String up_resource, String left_resource)
+	//Constructor	
+	public ShipLabel(String up_resource, String left_resource, String up_error_resource, String left_error_resource)
 	{
+		//Up and left icons
                 up_icon = sourceIcon(up_resource);
 		left_icon = sourceIcon(left_resource);
 		
-		addMouseListener(new RotationHandler());
-		setIcon(up_icon);
-	}
-
-	public ShipLabel(String up_resource, String left_resource, String up_error_resource, String left_error_resource)
-	{
-                up_icon = sourceIcon(up_resource);
-		left_icon = sourceIcon(left_resource);
+		//Error icons
 		up_error = sourceIcon(up_error_resource);
 		left_error = sourceIcon(left_error_resource);
 		
+		//Set rotation handler and default icon
 		addMouseListener(new RotationHandler());
 		setIcon(up_icon);
 	}
@@ -82,6 +80,7 @@ public class ShipLabel extends JLabel
 		return direction;
 	}
 
+	//Get sprites
 	public Icon[] getUpSprites()
 	{
 		return up_sprites;
@@ -117,51 +116,32 @@ public class ShipLabel extends JLabel
                 return new ImageIcon(buf_img); 
 	}
 
-
-	//Rescale icon while keeping aspect ratio (https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon)
-	public ImageIcon scaleImage(ImageIcon icon, int w, int h)
-        {
-                int nw = icon.getIconWidth();
-                int nh = icon.getIconHeight();
-
-                if(icon.getIconWidth() > w)
-                {
-                        nw = w;
-                        nh = (nw * icon.getIconHeight()) / icon.getIconWidth();
-                }
-
-                if(nh > h)
-                {
-                        nh = h;
-                        nw = (icon.getIconWidth() * nh) / icon.getIconHeight();
-                }
-
-                return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
-        }
-
-
+	//Allows the user to rotate the ship
 	class RotationHandler extends MouseAdapter
         {
                 @Override
                 public void mouseClicked(MouseEvent e)
                 {
+			//If the user right clicks rotate the icon
                         if (e.getModifiers() == MouseEvent.BUTTON3_MASK)
                         {
                                 Object obj = e.getSource();
                                 if (obj instanceof JLabel)
                                 {
+					//Change the direction
                                         direction++;
                                         if (direction > 1)
                                                 direction = 0;
 
-					System.out.println(direction);
                                         JLabel ship = (JLabel)obj;
 
+					//Update the icon
                                         if (direction == 0)
                                                 ship.setIcon(up_icon);
                                         else
                                                 ship.setIcon(left_icon);
 
+					//Repaint
                                         ship.revalidate();
                                         ship.repaint();
                                 }

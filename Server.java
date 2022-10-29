@@ -106,7 +106,6 @@ public class Server extends JPanel implements Role
    // close streams and socket
    public void closeConnection() 
    {
-	System.out.println("CLOSED");
       displayMessage( "\nTerminating connection\n" );
 
       try 
@@ -125,7 +124,6 @@ public class Server extends JPanel implements Role
    public void sendMessage( String str )
    {
 	//Send message and flush output stream
-	System.out.println(str);
 	pw.println(str);
 	pw.flush();
    }

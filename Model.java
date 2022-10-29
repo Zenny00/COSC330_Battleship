@@ -74,7 +74,6 @@ public class Model
 		for (Ship currentShip : ship_list)
 		{
 			boolean sunk = currentShip.isSunk();
-			System.out.println(sunk);
 			if (!sunk)
 			       return false;
 		}
