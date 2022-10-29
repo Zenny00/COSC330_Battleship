@@ -27,6 +27,7 @@ public interface Role extends Runnable
 	public String readMessage();
 
 	public void writeStatus(String str);
+	public void resetField();
 
 	//Run the server or client
 	public void run();

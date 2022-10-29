@@ -33,6 +33,7 @@ public class Server extends JPanel implements Role
    private ServerSocket server; // server socket
    private Socket connection; // connection to client
    private int counter = 1; // counter of number of connections
+   private int index = 0;
    
    // set up GUI
    public Server()
@@ -53,13 +54,21 @@ public class Server extends JPanel implements Role
       setVisible( true ); // show window
    } // end Server constructor
 
+   public void resetField()
+   {
+	displayArea.setText("");
+	displayMessage("Game restarted\n");
+	closeConnection();
+	run();
+   }
+
    // set up and run server 
    public void run()
    {
 
       try // set up server to receive connections; process connections
       {
-         server = new ServerSocket( 12345, 100 ); // create ServerSocket
+         server = new ServerSocket( 12345 + index, 100 + index++); // create ServerSocket
 	 waitForConnection();
 	 getStreams();
 	 

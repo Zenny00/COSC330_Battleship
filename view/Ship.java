@@ -64,52 +64,35 @@ public class Ship
 
 	public boolean placeShip(ShipBoard input_board, int direction, int row, int col)
 	{
-		try {
-			this.direction = direction;
-			this.origin = input_board.getTile(row, col);
-			
-			//Used to index the ship array
-			
-			int index = 0;
-			switch(direction) 
-			{
-				case 0: 
-					for(int i = row; i < row + size; i++)  
-					{
-						
-						input_board.getTile(i, col).addShip();
-						shipTiles[index] = input_board.getTile(i, col);
-						index++;
-					}
-
-					break;
-				case 1:
-					for(int i = col; i < col + size; i++)
-					{
-						input_board.getTile(row, i).addShip();
-						shipTiles[index] = input_board.getTile(row, i);
-						index++;
-					}
-						
-					break;
-
-				//Not needed right now
-				/*
-				 case SOUTH: 
-					for(int i = 0; i < size; i++) 
-					{
-						input_board.getTile(x, y - i).addShip();
-					}
+		this.direction = direction;
+		this.origin = input_board.getTile(row, col);
+		
+		//Used to index the ship array
+		
+		int index = 0;
+		switch(direction) 
+		{
+			case 0: 
+				for(int i = row; i < row + size; i++)  
+				{
 					
-					break;
-				case EAST: 
-					for(int i = 0; i < size; i++) input_board.getTile(x, y + i).addShip();
-						break;
-				*/
-			}
-		} catch(Exception nonTileException) { //Throws a nonTileException if the requested tile does not exist, returns false 
-			return false;
+					input_board.getTile(i, col).addShip();
+					shipTiles[index] = input_board.getTile(i, col);
+					index++;
+				}
+
+				break;
+			case 1:
+				for(int i = col; i < col + size; i++)
+				{
+					input_board.getTile(row, i).addShip();
+					shipTiles[index] = input_board.getTile(row, i);
+					index++;
+				}
+					
+				break;
 		}
-		return input_board.validBoard();
-	}
+
+		return true;
+	} 
 }

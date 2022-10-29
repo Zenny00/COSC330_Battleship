@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.*;
 
+import javax.swing.border.*;
 import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -88,12 +89,12 @@ public class StatusPanel extends JPanel
 		friendlyText.setHorizontalAlignment(SwingConstants.CENTER);
 		friendlyText.setFont(text_font);
 		friendlyText.setText("PLAYER");
-		friendlyText.setForeground(Color.black);
+		friendlyText.setForeground(Color.white);
 
 		enemyText.setHorizontalAlignment(SwingConstants.CENTER);
 		enemyText.setFont(text_font);
 		enemyText.setText("ENEMY");
-		enemyText.setForeground(Color.black);
+		enemyText.setForeground(Color.white);
 
 		//Give the JPanel the specified layout
 		setLayout(contentLayout);
@@ -147,18 +148,38 @@ public class StatusPanel extends JPanel
 		enemy_ship_box.add(enemy_submarine);
 		enemy_ship_box.add(enemy_destroyer);
 		
-		barrier.setBackground(Color.white);
-		friendly_ship_box.setBackground(Color.white);
-		enemy_ship_box.setBackground(Color.white);
+		barrier.setBackground(new Color(0, 0, 80));
+		friendly_ship_box.setBackground(new Color(0, 0, 80));
+		enemy_ship_box.setBackground(new Color(0, 0, 80));
 
 		add(friendlyText);
 		add(friendly_ship_box);
 		add(enemy_ship_box);
 		add(enemyText);
 		add((JPanel)role);
-		
+
+		setBorder(new LineBorder(new Color(255, 255, 255), 3));
+		setBackground(new Color(0, 0, 80));
+
+
 		setPreferredSize(new Dimension(400, 400));
 		setVisible(true);
+
+	}
+
+	public void resetPanel()
+	{
+		friendly_carrier.setIcon(friendly_carrier_icon);
+		friendly_battleship.setIcon(friendly_battleship_icon);
+		friendly_cruiser.setIcon(friendly_cruiser_icon);
+		friendly_submarine.setIcon(friendly_submarine_icon);
+		friendly_destroyer.setIcon(friendly_destroyer_icon);
+
+		enemy_carrier.setIcon(enemy_carrier_icon);
+		enemy_battleship.setIcon(enemy_battleship_icon);
+		enemy_cruiser.setIcon(enemy_cruiser_icon);
+		enemy_submarine.setIcon(enemy_submarine_icon);
+		enemy_destroyer.setIcon(enemy_destroyer_icon);
 	}
 
 	public void enemyShipDestroyed(ShipType ship)

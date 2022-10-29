@@ -32,6 +32,7 @@ public class Client extends JPanel implements Role
    private String message = ""; // message from server
    private String chatServer; // host server for this application
    private Socket client; // socket to communicate with server
+   private int index = 0;
 
    // initialize chatServer and set up GUI
    public Client( String host )
@@ -53,6 +54,14 @@ public class Client extends JPanel implements Role
       setPreferredSize(new Dimension(300, 300));
       setVisible( true ); // show window
    } // end Client constructor
+
+   public void resetField()
+   {
+	displayArea.setText("");
+	displayMessage("Game restarted\n");
+   	closeConnection();
+	run(); 
+   }
 
    // connect to server and process messages from server
    public void run() 
@@ -98,7 +107,7 @@ public class Client extends JPanel implements Role
       displayMessage( "Attempting connection\n" );
 
       // create Socket to make connection to server
-      client = new Socket( InetAddress.getByName( chatServer ), 12345 );
+      client = new Socket( InetAddress.getByName( chatServer ), 12345 + index++ );
 
       // display connection information
       displayMessage( "Connected to: " + 

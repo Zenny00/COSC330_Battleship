@@ -13,6 +13,15 @@ import java.util.Scanner;
 
 public class Battleship
 {
+	//Holds the ip address of the host
+	private static String ip; 
+
+	//Holds the player
+	private static Player player;
+
+	//Holds the role of the player
+	private static String role;
+ 
 	public static void main(String args[])
 	{
 		//Check there is only one command line argument
@@ -22,8 +31,11 @@ public class Battleship
 			System.exit(1);
 		}
 
+		//Input from the user
+		role = args[0];
+
 		//Check which command line argument was passed
-		switch(args[0])
+		switch(role)
 		{
 			case "Client":
 				runClient();
@@ -46,14 +58,14 @@ public class Battleship
 		
 		//Print a prompt to get user input
 		System.out.printf("Please enter the IP address of the game host: ");
-		String ip = scanner.nextLine();
+		ip = scanner.nextLine();
 
-		Player player = new Player(new Client(ip));
+		player = new Player(new Client(ip));
 	}
 
 	//Run the server's code
 	static void runServer()
 	{
-		Player player = new Player(new Server());
+		player = new Player(new Server());
 	}
 }

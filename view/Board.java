@@ -11,6 +11,17 @@ public class Board
 			for (int column = 0; column < BOARD_SIZE; column++)
 				tiles[row][column] = new Tile(row, column);
 	}
+
+	//Reset the tile type to sea
+	public void resetBoard()
+	{
+		for (int row = 0; row < BOARD_SIZE; row++)
+			for (int column = 0; column < BOARD_SIZE; column++)
+			{
+				tiles[row][column].setType(TileType.SEA);
+				tiles[row][column].setClickability(true);
+			}
+	}
 	
 	public Tile getTile(int row, int column) //throws nonTileException
 	{

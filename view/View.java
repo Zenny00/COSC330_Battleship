@@ -277,8 +277,21 @@ public class View extends JFrame
 	//JButton that will be pressed when player is done setting up their ships
 	private JButton setup_done = new JButton();	
 
+	//JButton that will be pressed if player wants to restart ship setup
+	private JButton reset_button = new JButton();	
+
+	//Allow the user to restart the game
+	private JButton restart_button = new JButton();
+
+	//Allow the user to exit the game
+	private JButton exit_button = new JButton();
+
 	//Int to keep track of the number of ships left to place
 	private int ships_placed;
+
+	private JPanel status;
+	private JPanel button_panel;
+	private JLabel game_end;
 
 	//Used for water splash sound
 	private URL water_sound_url = null;
@@ -289,6 +302,8 @@ public class View extends JFrame
 	private URL enemy_miss_sound_url = null;
 	private URL music_sound_url = null;
 	private URL ship_sunk_sound_url = null;
+	private URL win_sound_url = null;
+	private URL lose_sound_url = null;
 	private AudioClip background_music = null;
 	private AudioClip sound_clip = null;
 
@@ -301,6 +316,7 @@ public class View extends JFrame
 	//Constructor 
 	public View(Model model, JPanel status)
 	{
+		this.status = status;
 		//Set the model
 		this.model = model;
 
@@ -379,23 +395,44 @@ public class View extends JFrame
 
 		//Setup randomize button
 		setup_random.setPreferredSize(new Dimension(60, 30));
-		setup_random.setText("Randomize");
+		setup_random.setText("RANDOMIZE");
 		setup_random.addActionListener(new RandomSetupListener());
 
 		//Setup done button
 		setup_done.setPreferredSize(new Dimension(60, 30));
-		setup_done.setText("Ready");
+		setup_done.setText("READY");
 		setup_done.setEnabled(false);
 		setup_done.setVisible(false);
 
+		reset_button.setPreferredSize(new Dimension(60, 30));
+		reset_button.setText("RESET");
+
+		restart_button.setPreferredSize(new Dimension(120, 60));
+		restart_button.setText("RESET");
+
+		exit_button.setPreferredSize(new Dimension(120, 60));
+		exit_button.setText("EXIT");
+
+		restart_button.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		restart_button.setBackground(new Color(51, 153, 255));
+		restart_button.setOpaque(true);	
+		
+		exit_button.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		exit_button.setBackground(new Color(51, 153, 255));
+		exit_button.setOpaque(true);
+
 		//Add ships to the content pane
+		shipBox.add(setup_random);
+		shipBox.add(new JLabel());
+		shipBox.add(reset_button);
+		shipBox.add(new JLabel());
+		shipBox.add(setup_done);
+		
 		shipBox.add(des);
 		shipBox.add(sub);
 		shipBox.add(cru);
 		shipBox.add(bat);
 		shipBox.add(car);
-		shipBox.add(setup_random);
-		shipBox.add(setup_done);
 	
 		//Setup colors
 		shipBox.setBackground(new Color(0, 0, 80));
@@ -411,15 +448,18 @@ public class View extends JFrame
 		targetButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2));
 		
 		//Give buttons gold border and set background to light blue
-		setup_random.setBorder(new LineBorder(new Color(232, 167, 17)));
+		setup_random.setBorder(new LineBorder(new Color(255, 255, 255), 2));
 		setup_random.setBackground(new Color(51, 153, 255));
 		setup_random.setOpaque(true);
-		setup_done.setBorder(new LineBorder(new Color(232, 167, 17)));
+		setup_done.setBorder(new LineBorder(new Color(255, 255, 255), 2));
 		setup_done.setBackground(new Color(51, 153, 255));
 		setup_done.setOpaque(true);
+		reset_button.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		reset_button.setBackground(new Color(51, 153, 255));
+		reset_button.setOpaque(true);
 
 		//Setup shipbox for holding ships
-		shipBox.setLayout(new GridLayout(1, 7));
+		shipBox.setLayout(new GridLayout(2, 5));
 
 		//Setup sound
 		try
@@ -434,6 +474,9 @@ public class View extends JFrame
 			enemy_hit_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/EnemyHit.wav");
 			enemy_miss_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/EnemyMiss.wav");
 			ship_sunk_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/ShipSink.wav");
+		
+			win_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/WinSound.wav");
+			lose_sound_url = this.getClass().getClassLoader().getResource("Graphics/Sounds/LoseSound.wav");
 		}
 		catch (Exception ex)
 		{
@@ -516,6 +559,12 @@ public class View extends JFrame
 		return new ImageIcon(icon.getImage().getScaledInstance(nw, nh, Image.SCALE_DEFAULT));
 	}	
 
+	public void addResetListener(ActionListener action)
+	{
+		//Add reset listener to the reset button
+		reset_button.addActionListener(action);
+	}	
+
 	public void addDoneListener(ActionListener action)
 	{
 		//Add done listener to the finish setup button
@@ -561,22 +610,174 @@ public class View extends JFrame
 			}
 	}
 
-	public void reset()
+	//Remove all ships from the player's board
+	public void resetOceanBoard()
 	{
-		invalidate();	
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{
+				for (int i = 0; i < BOARD_SIZE; i++)
+				       for (int j = 0; j < BOARD_SIZE; j++)	
+						playerBoard[i][j].setIcon(sourceIcon("Graphics/Water/Water.png"));
+	
+			}
+		});
 	}
 
-	//Get user input from the JTextField
-	public String getUserInput()
+	public void resetTargetBoard()
 	{
-		//TODO
-		return new String();
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{
+				for (int i = 0; i < BOARD_SIZE; i++)
+				       for (int j = 0; j < BOARD_SIZE; j++)	
+						targetBoard[i][j].setIcon(sourceIcon("Graphics/Water/Water.png"));
+			}
+		});
 	}
 
-	//Display output in JTextArea
-	public void printText(String input)
+	//Enable and set all ships to visible
+	public void resetShips()
 	{
-		//TODO
+		ships_placed = 0;
+
+		//Enable ship icons	
+		car.setEnabled(true);
+		car.setVisible(true);
+		bat.setEnabled(true);
+		bat.setVisible(true);
+		cru.setEnabled(true);
+		cru.setVisible(true);
+		sub.setEnabled(true);
+		sub.setVisible(true);
+		des.setEnabled(true);
+		des.setVisible(true);
+	}
+
+	//Reset buttons to initial state
+	public void resetButtons()
+	{
+		setup_random.setEnabled(true);
+		setup_random.setVisible(true);
+		reset_button.setEnabled(true);
+		reset_button.setVisible(true);
+		setup_done.setEnabled(false);
+		setup_done.setVisible(false);
+	}
+
+	//Hide and disable the reset button
+	public void hideReset()
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{
+				reset_button.setEnabled(false);
+				reset_button.setVisible(false);
+			}
+		});
+	}
+
+	public void resetView()
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{
+				//Setup main grid
+				GridLayout contentLayout = new GridLayout(2, 2);
+				contentLayout.setVgap(10);
+				contentLayout.setHgap(10);
+				
+				//Set layout format
+				getContentPane().setLayout(contentLayout);
+
+				remove(game_end);
+				remove(button_panel);
+
+				add(targetContainerPanel);
+				add(status);
+				add(shipContainerPanel);
+				add(shipBox);
+		
+				revalidate();
+				repaint();
+			}
+		});
+	}
+
+	public void displayWin()
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{
+				stopMusic();
+				playWin();
+
+				remove(targetContainerPanel);
+				remove(status);
+				remove(shipContainerPanel);
+				remove(shipBox);
+
+				setLayout(new GridLayout(2, 1));
+				game_end = new JLabel(sourceIcon("Graphics/GameWon.png"));  
+				add(game_end);
+				button_panel = new JPanel();
+				
+				GridBagConstraints c = new GridBagConstraints();
+				c.insets = new Insets(5, 5, 5, 5);
+
+				button_panel.setLayout(new GridBagLayout());
+				button_panel.setBackground(new Color(141, 153, 174));
+
+				button_panel.add(exit_button, c);
+				button_panel.add(restart_button, c);
+
+				add(button_panel);
+
+				revalidate();
+				repaint();
+			}
+		});
+	}
+
+	public void displayLoss()
+	{
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() 
+			{
+				stopMusic();
+				playLose();
+
+				remove(targetContainerPanel);
+				remove(status);
+				remove(shipContainerPanel);
+				remove(shipBox);
+
+				setLayout(new GridLayout(2, 1));
+				game_end = new JLabel(sourceIcon("Graphics/GameLost.png"));  
+				add(game_end);
+				button_panel = new JPanel();
+				
+				GridBagConstraints c = new GridBagConstraints();
+				c.insets = new Insets(5, 5, 5, 5);
+
+				button_panel.setLayout(new GridBagLayout());
+				button_panel.setBackground(new Color(141, 153, 174));
+
+				button_panel.add(exit_button, c);
+				button_panel.add(restart_button, c);
+
+				add(button_panel);
+
+				revalidate();
+				repaint();		
+			}
+		});
 	}
 
 	//Add a tile listener to the tiles
@@ -586,6 +787,18 @@ public class View extends JFrame
 		for (JButton[] row: targetBoard)	
 			for (JButton button: row)
 				button.addActionListener(fire);
+	}
+
+	//Add restart listener to the restart button
+	public void addRestartListener(ActionListener restart)
+	{
+		restart_button.addActionListener(restart);	
+	}
+
+	//Add exit listener to the exit button
+	public void addExitListener(ActionListener exit)
+	{
+		exit_button.addActionListener(exit);	
 	}
 	
 	//Return JButton at specified location within the grid
@@ -959,6 +1172,23 @@ public class View extends JFrame
 	{
 		background_music = Applet.newAudioClip(music_sound_url);
 		background_music.loop();
+	}
+
+	public void playLose()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(lose_sound_url);
+		sound_clip.play();
+	}
+
+	public void playWin()
+	{
+		AudioClip sound_clip = Applet.newAudioClip(lose_sound_url);
+		sound_clip.play();
+	}
+
+	public void stopMusic()
+	{
+		background_music.stop();
 	}
 
 	//Flash the image icon for a quick period of time

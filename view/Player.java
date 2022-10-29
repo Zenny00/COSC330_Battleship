@@ -41,19 +41,31 @@ public class Player
 		//Add action listeners to the view
 		view.addTileListener(new TileListener());
 		view.addDoneListener(new DoneListener());	
+		view.addResetListener(new ResetListener());
+		view.addRestartListener(new RestartListener());	
+		view.addExitListener(new ExitListener());
 
+		//Setup state and run the socket
 		state = new Initial(this);
-		//setTargetBoardEnabled(false);
-		//setTargetBoardEnabled(false);
-		//setTargetBoardEnabled(false);
-		
-		//new Thread(() -> setTargetBoardEnabled(false)).start();
-
-		//Runnable role_runnable = role;
-      		//Thread role_thread = new Thread(role_runnable);
-      		//role_thread.start();
-	   	//System.out.println(role_thread.isAlive());
 		role.run();
+	}
+
+	//Reset the game by calling start game and reseting components
+	public void resetGame()
+	{
+		state = new Initial(this);
+		
+		view.resetView();
+
+		model.getTargetBoard().resetBoard();
+		view.resetTargetBoard();
+		view.resetShips();
+		view.resetButtons();
+		view.resetOceanBoard();
+		model.resetShips();
+		model.resetOcean();
+		role.resetField();
+		status_board.resetPanel();
 	}
 
 	public void defendAction()
@@ -62,99 +74,92 @@ public class Player
 		player_miss[0] = sourceIcon("Graphics/Water/WaterStruck.png");
 		player_miss[1] = sourceIcon("Graphics/Water/WaterStruck2.png");
 
-		//Thread actionThread = new Thread()
-		//{
-		//	public void run()
-		//	{	
-		//			
-				//Hold the shot read from the client
-				String shot = role.readMessage();
-					
-				//Convert to point
-				String coords[] = shot.split(" ");
-				Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-				
-				//Get row and column for the shot
-				int row = (int)point.getX();
-				int column = (int)point.getY();
+		//Hold the shot read from the client
+		String shot = role.readMessage();
+			
+		//Convert to point
+		String coords[] = shot.split(" ");
+		Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+		
+		//Get row and column for the shot
+		int row = (int)point.getX();
+		int column = (int)point.getY();
 
-				//Check all the ships for a hit
-				ShipType hit_ship = model.checkShips(row, column); 
+		//Check all the ships for a hit
+		ShipType hit_ship = model.checkShips(row, column); 
 
-				//Check if the current player has lost, if so send info the other player and exit
-				if (model.hasLost())
+		//Check if the current player has lost, if so send info the other player and exit
+		if (model.hasLost())
+		{
+			//Send message to other player
+			System.out.println("YOU LOST");	
+			role.sendMessage("GAMEOVER");
+		
+			view.displayLoss();
+			//Exit the game
+			//role.closeConnection();
+			//System.exit(0);
+		}
+		else
+		{	
+			//Write the result of the shot to the buffer
+			if (hit_ship != null)
+			{
+				Icon explosion = sourceIcon("Graphics/Ships/Explosion.png");	
+				Icon ship_icon = view.getShipButton(row, column).getIcon();
+				CompoundIcon new_icon = new CompoundIcon(ship_icon, explosion);
+				view.updateShipButton(row, column, new_icon);
+
+				//Check if ship was sunk, if so update local icon and send message 
+				if (model.getShip(hit_ship.getIndex()).isSunk())
 				{
-					//Send message to other player
-					System.out.println("YOU LOST");	
-					role.sendMessage("GAMEOVER");
-				
-					//Exit the game
-					role.closeConnection();
-					System.exit(0);
-				}	
-				
-				//Write the result of the shot to the buffer
-				if (hit_ship != null)
-				{
-					Icon explosion = sourceIcon("Graphics/Ships/Explosion.png");	
-					Icon ship_icon = view.getShipButton(row, column).getIcon();
-					CompoundIcon new_icon = new CompoundIcon(ship_icon, explosion);
-					view.updateShipButton(row, column, new_icon);
-
-					//Check if ship was sunk, if so update local icon and send message 
-					if (model.getShip(hit_ship.getIndex()).isSunk())
-					{
-						view.playShipSunk();
-						status_board.friendlyShipDestroyed(hit_ship);
-						role.writeStatus("The enemy SUNK your " + hit_ship);
-						role.sendMessage("11" + " " + hit_ship.getIndex());
-					}
-					else
-					{
-						//Play hit sound
-						view.playEnemyHit();
-						role.writeStatus("The enemy HIT your " + hit_ship);
-						role.sendMessage("10" + " " + hit_ship.getIndex());
-					}
-				}	
+					view.playShipSunk();
+					status_board.friendlyShipDestroyed(hit_ship);
+					role.writeStatus("The enemy SUNK your " + hit_ship);
+					role.sendMessage("11" + " " + hit_ship.getIndex());
+				}
 				else
 				{
-					//Update ocean board to splash icon
-					view.updateShipButton(row, column, player_miss[ThreadLocalRandom.current().nextInt(0, 1 + 1)]);
-					view.playEnemyMiss();
-					role.writeStatus("The enemy MISSED your ship!");
-					role.sendMessage("00" + " 0");
+					//Play hit sound
+					view.playEnemyHit();
+					role.writeStatus("The enemy HIT your " + hit_ship);
+					role.sendMessage("10" + " " + hit_ship.getIndex());
 				}
+			}	
+			else
+			{
+				//Update ocean board to splash icon
+				view.updateShipButton(row, column, player_miss[ThreadLocalRandom.current().nextInt(0, 1 + 1)]);
+				view.playEnemyMiss();
+				role.writeStatus("The enemy MISSED your ship!");
+				role.sendMessage("00" + " 0");
+			}
 
-				//Enable the target board
-				//setTargetBoardEnabled(true);	
-				state = new Attack(this);
+			//Enable the target board
+			state = new Attack(this);
+		}
 	}
 
 	//Method to setup the initial game state and let the server play first
 	public void startGame()
 	{
-		System.out.println("Start game called");
-	
 		//Get message from client and server accordingly	
 		String message = role.readMessage();
 			
-		System.out.println(message);
+		if (!message.equals("ready"))
+		{
+			System.out.println("Error starting game");
+			System.exit(0);
+		}
 		
-		if (message.equals("ready"))
-			System.out.println("Game has begun");
-		else
-			System.out.println("Game has not begun");
-		
+		//Start the game for the client and server
 		if (role instanceof Client)
 		{
 			state = new Defend(this);
-			//setTargetBoardEnabled(false);
 			defendAction();
 		}
 		else
 			state = new Attack(this);
-			//setTargetBoardEnabled(true);			
 	}
 
 	//Get icon
@@ -176,35 +181,6 @@ public class Player
 		return new ImageIcon(buf_img);
 	}
 
-	/*	NOTE: NVM IT WONT WORK CAUSE OF THE LOOPS, CAN NEVER PRESS THE BUTTONS
-		// NOTE: Bad way to do this but it'll work for now
-		if (role.getRole() == CLIENT)
-		{
-			while (!model.hasLost())
-			{
-				System.out.println("CODE FOR CLIENT");
-				//RUN CLIENT CODE
-				
-				//Set to defend mode
-				//state = new Defend(this);
-
-				}
-		}
-		else
-		{
-			//RUN SERVER CODE
-			System.out.println("CODE FOR SERVER");
-			
-			//Set the attack state
-			//state = new Attack(this);
-			
-			while (!model.hasLost())
-			{
-				//System.out.println("HAS NOT LOST");
-			}
-		}
-	*/
-
 	// Enable/Disable for Target Button Panel
 	// True enables board and checks if each button is clickable
 	// False disables all tiles in the panel
@@ -213,30 +189,11 @@ public class Player
 			@Override
 			public void run() 
 			{   	
-				int row, column;	
-				System.out.println("Set board called");
-
-				//view.getTargetPanel().setEnabled(isEnabled);
-				
 				//Get JPanel from the view
 				JPanel panel = view.getTargetPanel();
 				Component[] tiles = panel.getComponents();
-				for (Component tile : tiles) {
+				for (Component tile : tiles)
 					tile.setEnabled(isEnabled);
-					/*
-					if (tile instanceof JButton)
-					{
-						JButton button = (JButton)tile;	
-						String coords[] = button.getActionCommand().split(" ");
-						row = Integer.parseInt(coords[0]);
-						column = Integer.parseInt(coords[1]);
-						if (model.getTargetBoard().getClickable(row, column) && isEnabled)
-							tile.setEnabled(isEnabled);
-						else
-							tile.setEnabled(false);
-					}
-					*/
-				}
 
 				panel.revalidate();
 				panel.repaint();
@@ -303,41 +260,45 @@ public class Player
 						{
 							System.out.println("YOU WON");
 							role.closeConnection();
-							System.exit(0);
-						}
-
-						//Get result of shot and ship hit
-						String values[] = shot_status.split(" ");
-						int ship_index = Integer.parseInt(values[1]);
-
-						String shot_value = values[0];
-						ShipType ship_type = ShipType.values()[ship_index];
-
-						//Check if shot was a hit or a miss
-						if (shot_value.equals("10"))
-						{
-							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");	
-							view.playHit();
-
-							role.writeStatus("You HIT an enemy ship!");
-						}
-						else if (shot_value.equals("11"))
-						{
-							status_board.enemyShipDestroyed(ship_type);	
-							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
-							view.playShipSunk();
-							role.writeStatus("You SUNK the enemy " + ship_type + "!");
+							
+							view.displayWin();
+							//System.exit(0);
 						}
 						else
 						{
-							setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterMiss.png");
-							view.playMiss();
-							role.writeStatus("You MISSED the enemy!");
-						}
+							//Get result of shot and ship hit
+							String values[] = shot_status.split(" ");
+							int ship_index = Integer.parseInt(values[1]);
 
-						//setTargetBoardEnabled(false);
-						System.out.println("Moving states");
-						defendAction();
+							String shot_value = values[0];
+							ShipType ship_type = ShipType.values()[ship_index];
+
+							//Check if shot was a hit or a miss
+							if (shot_value.equals("10"))
+							{
+								setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");	
+								view.playHit();
+
+								role.writeStatus("You HIT an enemy ship!");
+							}
+							else if (shot_value.equals("11"))
+							{
+								status_board.enemyShipDestroyed(ship_type);	
+								setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterHit.png");
+								view.playShipSunk();
+								role.writeStatus("You SUNK the enemy " + ship_type + "!");
+							}
+							else
+							{
+								setTargetIcon((int)point.getY(), (int)point.getX(), "./Graphics/Water/WaterMiss.png");
+								view.playMiss();
+								role.writeStatus("You MISSED the enemy!");
+							}
+
+							//setTargetBoardEnabled(false);
+							System.out.println("Moving states");
+							defendAction();
+						}
 					}
 					else
 						view.targetBoardError();
@@ -356,6 +317,8 @@ public class Player
 			if (obj instanceof JButton)
 			{
 				view.startBackgroundMusic();
+				view.hideReset();
+
 				JButton button = (JButton)obj;
 
 				button.setVisible(false);
@@ -376,6 +339,50 @@ public class Player
 			}
 		}
 	}
+
+	class ResetListener implements ActionListener
+	{
+		//When a tile is pressed grab the coordinates
+		public void actionPerformed(ActionEvent e)
+		{
+			Object obj = e.getSource();
+			if (obj instanceof JButton)
+			{
+				view.resetShips();
+				view.resetButtons();
+				view.resetOceanBoard();
+				model.resetShips();
+				model.resetOcean();
+			}
+		}
+	}
+
+	class ExitListener implements ActionListener
+	{
+		//When a tile is pressed grab the coordinates
+		public void actionPerformed(ActionEvent e)
+		{
+			Object obj = e.getSource();
+			if (obj instanceof JButton)
+			{
+				//Exit the game
+				role.closeConnection();
+				System.exit(0);
+			}
+		}
+	}
+
+	class RestartListener implements ActionListener
+	{
+		//When a tile is pressed grab the coordinates
+		public void actionPerformed(ActionEvent e)
+		{
+			Object obj = e.getSource();
+			if (obj instanceof JButton)
+				resetGame();
+		}
+	}
+
 
 	/*
 	//Inner class DragListener allows the player to drag ships to different locations on the ship board

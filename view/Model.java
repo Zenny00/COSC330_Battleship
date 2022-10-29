@@ -58,6 +58,22 @@ public class Model
 	}
 	*/
 
+	//Reset ship locations to inital state
+	public void resetShips()
+	{
+		ship_list[0] = new Ship(ShipType.DESTROYER);
+		ship_list[1] = new Ship(ShipType.SUBMARINE);
+		ship_list[2] = new Ship(ShipType.CRUISER);
+		ship_list[3] = new Ship(ShipType.BATTLESHIP);
+		ship_list[4] = new Ship(ShipType.CARRIER);
+	}
+
+	//Reset ocean
+	public void resetOcean()
+	{
+		ocean_board.resetBoard();
+	}
+
 	// For us in updated ocean_board since target_board 
 	// should be updated when fireShot() is called
 	public void updateBoard(int x, int y, TileType status) throws nonTileException
