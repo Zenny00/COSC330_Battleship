@@ -1,0 +1,28 @@
+Documentation:
+
+Starting the game -
+	1. The game uses a client & server model thus you will need two players to play
+	2. In the command line navigate to the folder containing the game source code files
+	3. Run the command java Battleship Server to start the server, replace server with Client to run the client
+	4. To get the IP address of the host (on linux) run the command hostname -I
+	5. The client will prompt the user for the IP address of the host, type the address into the command line to start
+
+Setup Stage -
+	1. To drag and drop your ships, click and hold on the ship you would like to place and drag to where you would like to place. Release the the ship, it will be placed from the top left corner
+	2. Right click to rotate your ship before placing
+	3. If you do not like the layout of your ships, use the reset button to reset your ships to the starting positions
+	4. If you would not like to place the ships yourself you may use the random placement button. If you don't like the layout use to reset button and randomly place again.
+	5. After you have your ships in the layout you desire, press the the ready button and wait for the other user to complete their setup
+
+Playing stage - 
+	1. The server player will play their turn first
+	2. The server player will click to fire a shot in the location they desire
+	3. The shot will automatically be updated on both the client and server side
+	4. After the shot has been registered, the player's turn will end and the current player will have their board disabled
+	5. If all the tiles on a ship are hit, the ship will be sunk. This will be updated on the ship status board
+	6. The game will alternate between the two players until one player has all of their ships sunk
+	
+Ending stage -
+	1. After all a player's ships have been sunk, the game is over.
+	2. A winning a losing screen will be properly displayed to each player.
+	3. A quit and restart button will be displayed, if you would like to restart the server must press restart first and the client second
