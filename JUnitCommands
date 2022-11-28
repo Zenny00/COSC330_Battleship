@@ -1,2 +1,2 @@
-Compile: javac -cp JUnit/junit-4.13.2.jar:. Battleship.java
-Run: java -cp .:JUnit/junit-4.13.2.jar:JUnit/hamcrest-core-1.3.jar org.junit.runner.JUnitCore Battleship
+Compile: javac -cp JUnit/junit-4.13.2.jar:. TestBattleship.java
+Run: java -cp .:JUnit/junit-4.13.2.jar:JUnit/hamcrest-core-1.3.jar org.junit.runner.JUnitCore TestBattleship
