@@ -2,20 +2,16 @@
 import org.junit.Test;
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class TestBattleship
 {
-	//Fail case
+	//Test if the ships are being created using the proper type
 	@Test
-	public void testFail()
+	public void testShipCreationType()
 	{
-		fail("Tests failed!");
-	}
-
-	//Pass case
-	@Test
-	public void testTrue()
-	{
-		assertTrue(true);
+		//Create new ship of type destroyer
+		Ship newShip = new Ship(ShipType.DESTROYER);
+		assertEquals(ShipType.DESTROYER, newShip.getType());
 	}
 }
