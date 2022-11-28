@@ -70,6 +70,17 @@ public class Player
 		status_board.resetPanel();
 	}
 
+	//Get the points from the from the other player
+	public Point getPoints()
+	{
+		//Hold the shot read from the client
+		String shot = role.readMessage();
+			
+		//Convert to point
+		String coords[] = shot.split(" ");
+		return new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+	}
+
 	//Function called when a player is defending
 	public void defendAction()
 	{
@@ -78,13 +89,9 @@ public class Player
 		player_miss[0] = sourceIcon("Graphics/Water/WaterStruck.png");
 		player_miss[1] = sourceIcon("Graphics/Water/WaterStruck2.png");
 
-		//Hold the shot read from the client
-		String shot = role.readMessage();
-			
-		//Convert to point
-		String coords[] = shot.split(" ");
-		Point point = new Point(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
-		
+		//Get the points from the other player
+		Point point = getPoints();
+				
 		//Get row and column for the shot
 		int row = (int)point.getX();
 		int column = (int)point.getY();
